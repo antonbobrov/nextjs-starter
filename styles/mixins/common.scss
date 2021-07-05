@@ -1,0 +1,11 @@
+@mixin is-ltr {
+    @at-root html.ltr & {
+        @content;
+    }
+}
+
+@mixin is-rtl {
+    @at-root html.rtl & {
+        @content;
+    }
+}
