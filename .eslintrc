@@ -1,3 +1,43 @@
 {
-  "extends": ["next", "next/core-web-vitals"]
+  "extends": ["eslint:recommended", "airbnb", "next", "next/core-web-vitals"],
+  "rules": {
+    "linebreak-style": "off",
+    "import/extensions": [
+        "error",
+        "ignorePackages",
+        {
+            "js": "never",
+            "ts": "never",
+            "jsx": "never",
+            "tsx": "never"
+        }
+    ],
+    "react/jsx-filename-extension": [
+        1, 
+        { 
+            "extensions": [".tsx"] 
+        }
+    ],
+    "indent": [
+        "error",
+        4,
+        {
+            "SwitchCase": 1
+        }
+    ],
+    "react/jsx-indent-props": ["error", 4],
+    "react/jsx-indent": ["error", 4]
+  },
+  "settings": {
+      "import/resolver": {
+          "node": {
+              "extensions": [
+                  ".js",
+                  ".jsx",
+                  ".ts",
+                  ".tsx"
+              ]
+          }
+      }
+  }
 }
