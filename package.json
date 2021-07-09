@@ -14,7 +14,8 @@
     "normalize-scss": "^7.0.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "sass": "^1.32.13"
+    "sass": "^1.32.13",
+    "vevet": "file:../vevet"
   },
   "devDependencies": {
     "@types/node-fetch": "^2.5.10",
