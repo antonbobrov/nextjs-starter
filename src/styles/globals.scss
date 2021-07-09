@@ -1,4 +1,8 @@
 @import '~normalize-scss';
 @include normalize();
 
+@import './settings';
 @import './mixins/mixins';
+
+// layout elements
+@import './layout/wrap';
