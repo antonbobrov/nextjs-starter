@@ -1,0 +1,9 @@
+.app {
+
+    @at-root html:not(.use-native-scroll) & {
+        position: relative;
+        z-index: 1;
+        height: calc-vh(100);
+    }
+    
+}

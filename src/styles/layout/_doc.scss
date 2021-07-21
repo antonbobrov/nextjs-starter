@@ -1,0 +1,16 @@
+html {
+    font-size: $font-size;
+    font-family: $font-family;
+    
+    &:not(.use-native-scroll) {
+        overflow: hidden;
+        body {
+            position: fixed;
+            width: 100%;
+        }
+    }
+
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    
+}

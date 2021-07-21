@@ -1,0 +1,5 @@
+@mixin hide-scroll-bars {
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}

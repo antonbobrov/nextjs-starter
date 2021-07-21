@@ -5,4 +5,11 @@
 @import './mixins/mixins';
 
 // layout elements
+@import './layout/common';
+@import './layout/doc';
 @import './layout/wrap';
+@import './layout/app';
+
+// typography
+@import './layout/typography/headers';
+@import './layout/typography/link';

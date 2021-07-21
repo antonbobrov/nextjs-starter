@@ -1,0 +1,39 @@
+@mixin hover() {
+    &:hover {
+        @content;
+    }
+    &.hover {
+        @content;
+    }
+}
+
+@mixin focus() {
+    @include desktop {
+        &:focus {
+            @content;
+        }
+    }
+}
+
+@mixin active() {
+    &.active {
+        @content;
+    }
+}
+
+@mixin hover-active() {
+    @include hover {
+        @content;
+    }
+    @include active {
+        @content;
+    }
+}
+
+@mixin non-mobile-hover {
+    @include non-mobile-device {
+        @include hover {
+            @content;
+        }
+    }
+}

@@ -1,0 +1,7 @@
+@function calc-vw ($val) {
+    @return calc(#{$val} * var(--vw));
+}
+
+@function calc-vh ($val) {
+    @return calc(#{$val} * var(--vh));
+}
