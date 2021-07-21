@@ -7,7 +7,7 @@ export const PATHS = {
 
 // get pages rest api server url
 let PagesApiUrl = '';
-export function getPagesApiUrl() {
+export function getPagesApiUrl () {
     return PagesApiUrl;
 }
 try {
