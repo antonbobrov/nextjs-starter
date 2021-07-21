@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import LayoutHead from '../components/layout/head/Head';
 import type { ITemplateBase } from './placeholder';
