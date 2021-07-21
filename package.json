@@ -15,6 +15,7 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "sass": "^1.32.13",
+    "ts-essentials": "^7.0.2",
     "vevet": "file:../vevet"
   },
   "devDependencies": {
