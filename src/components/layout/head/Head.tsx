@@ -1,5 +1,7 @@
 import Head from 'next/head';
-import ITemplateData from './types';
+import type { ITemplateBase } from '../../../templates/placeholder';
+
+const favicons = [16, 32, 64, 96];
 
 export default function LayoutHead ({
     siteName,
@@ -8,9 +10,7 @@ export default function LayoutHead ({
     lang,
     url,
     meta,
-}: ITemplateData) {
-    const favicons = [16, 32, 64, 96];
-
+}: ITemplateBase) {
     return (
         <Head>
 
@@ -32,7 +32,7 @@ export default function LayoutHead ({
                     sizes={`${ico}x${ico}`}
                 />
             ))}
-            <link rel="apple-touch-icon" href={`${url.staticUrl}image/favicon-192x192.png`} />
+            <link rel="apple-touch-icon" href={`${url.staticUrl}image/192x192.png`} />
 
             {/* web */}
             <meta name="apple-mobile-web-app-capable" content="yes" />

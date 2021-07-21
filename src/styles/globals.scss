@@ -1,8 +1,8 @@
 @import '~normalize-scss';
 @include normalize();
 
-@import './settings';
 @import './mixins/mixins';
+@import './settings';
 
 // layout elements
 @import './layout/common';
@@ -13,3 +13,6 @@
 // typography
 @import './layout/typography/headers';
 @import './layout/typography/link';
+
+// content
+@import './layout/content/page-content';

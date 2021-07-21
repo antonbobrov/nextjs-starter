@@ -2,3 +2,9 @@ html,
 body {
     @include hide-scroll-bars;
 }
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}

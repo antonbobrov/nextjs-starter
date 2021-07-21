@@ -1,11 +1,11 @@
 import fetch from 'node-fetch';
-import { getPagesApiUrl } from '../../../server-config';
-import ITemplateData from '../../templates/types';
+import { getPagesApiUrl } from '../../server-config';
+import { ITemplateBase } from '../templates/placeholder';
 
 export default async function getPageServerProps (
     reqUrl: string | undefined,
 ) {
-    async function getResponse (): Promise<ITemplateData> {
+    async function getResponse (): Promise<ITemplateBase> {
         const apiUrl = getPagesApiUrl();
         const url = new URL(apiUrl);
         if (reqUrl) {
@@ -15,6 +15,10 @@ export default async function getPageServerProps (
             method: 'get',
         });
         const json = await response.json();
+        json.res = {
+            status: response.status,
+            statusText: response.statusText,
+        };
         return json;
     }
 

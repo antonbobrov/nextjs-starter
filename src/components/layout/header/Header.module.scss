@@ -1,0 +1,42 @@
+@import '../../../styles/mixins/mixins';
+
+.header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--header-height);
+
+    padding: 0 var(--wrap);
+    
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    background-color: var(--header-bg);
+    border-bottom: 1px solid var(--header-line);
+
+    &__menu {
+        display: flex;
+
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+            li {
+                &:not(:last-child) {
+                    margin-right: px-to-rem(20);
+                }
+            }
+
+        }
+
+    }
+
+}

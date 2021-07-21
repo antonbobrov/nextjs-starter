@@ -4,11 +4,17 @@ $font-family: 'Arial';
 :root {
 
     // sizes
-    --wrap: 40px;
+    --wrap: #{px-to-rem(60)};
 
     // colors
     --color-bg: #1d1d1d;
     --color-text: #fff;
-    --color-link: #ccc;
+    --color-link: #fff;
+    
+    // header
+    --header-height: #{px-to-rem(80)};
+    --header-bg: #000;
+    --header-line: #fff;
+    --header-link: #fff;
 
 }

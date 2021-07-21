@@ -1,10 +1,18 @@
 import Link from 'next/link';
-import LayoutHead from './Head';
-import HomeTemplate from './home/Home';
-import IResPage from './types';
+import dynamic from 'next/dynamic';
+import LayoutHead from '../components/layout/head/Head';
+import type { ITemplateBase } from './placeholder';
+import Header from '../components/layout/header/Header';
+
+const Empty = dynamic(import('./Empty'), {
+    ssr: true,
+});
+const Home = dynamic(import('./home/Home'), {
+    ssr: true,
+});
 
 const BaseTemplate = (
-    props: IResPage,
+    props: ITemplateBase,
 ) => {
     const { template } = props;
 
@@ -14,33 +22,17 @@ const BaseTemplate = (
     function renderTemplate () {
         switch (template) {
             case 'home':
-                return <HomeTemplate {...props} />;
+                return <Home {...props as any} />;
             default:
-                return (
-                    <>
-                        <h1>No template for this page</h1>
-                        <p style={{
-                            fontSize: '1.25rem',
-                        }}
-                        >
-                            Check console
-                            <br />
-                            <br />
-                            <Link href="/">Go home</Link>
-                            {/* {
-                                // eslint-disable-next-line no-console
-                                console.log('Data for this page: ', props)
-                            } */}
-                        </p>
-                    </>
-                );
+                return <Empty {...props as any} />;
         }
     }
 
     return (
         <>
             <LayoutHead {...props} />
-            <div className="page" id="page">
+            <div className="app" id="app">
+                <Header {...props} />
                 {renderTemplate()}
             </div>
         </>
