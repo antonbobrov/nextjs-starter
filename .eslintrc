@@ -25,12 +25,21 @@
             "SwitchCase": 1
         }
     ],
+    "no-multiple-empty-lines": [
+        "error",
+        {
+            "max": 3,
+            "maxEOF": 1,
+            "maxBOF": 1
+        }
+    ],
     "func-names": ["error", "as-needed"],
     "no-use-before-define": ["error", { "functions": false, "classes": false }],
     "no-case-declarations": "off",
     "react/jsx-indent-props": ["error", 4],
     "react/jsx-indent": ["error", 4],
     "react/jsx-props-no-spreading": "off",
+    "react/no-danger": "off",
     "space-before-function-paren": ["error", "always"],
     "@next/next/no-html-link-for-pages": "off"
   },
