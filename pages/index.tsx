@@ -1,11 +1,11 @@
 import { GetServerSideProps } from 'next';
-import BaseTemplate from '../src/templates/Base';
+import RenderTemplate from '../src/templates/RenderTemplate';
 import type { ITemplateBase } from '../src/templates/placeholder';
 import getPageServerProps from '../src/server/getPageServerProps';
 
 const Router = (props: ITemplateBase) => (
     <>
-        <BaseTemplate {...props} />
+        <RenderTemplate {...props} />
     </>
 );
 

@@ -1,16 +1,21 @@
 import Head from 'next/head';
 import type { ITemplateBase } from '../../../templates/placeholder';
+import getHeadTitle from './getHeadTitle';
 
 const favicons = [16, 32, 64, 96];
 
 export default function LayoutHead ({
     siteName,
-    title,
-    searchable,
-    lang,
     url,
     meta,
+    document,
+    settings,
 }: ITemplateBase) {
+    const title = getHeadTitle({
+        pagetitle: document.pagetitle,
+        longtitle: document.longtitle,
+    });
+
     return (
         <Head>
 
@@ -39,10 +44,10 @@ export default function LayoutHead ({
             <meta name="theme-color" content="#000000" />
             <link rel="manifest" href={`${url.staticUrl}manifest.webmanifest`} />
 
-            {!searchable ? <meta name="robots" content="noindex" /> : ''}
+            {!settings.searchable ? <meta name="robots" content="noindex" /> : ''}
 
             {/* meta */}
-            <meta name="lang" content={lang} />
+            <meta name="lang" content={document.lang} />
             {meta.description ? <meta name="description" content={meta.description} /> : ''}
             {meta.keywords ? <meta name="keywords" content={meta.keywords} /> : ''}
             {meta.description ? <meta name="abstract" content={meta.keywords} /> : ''}

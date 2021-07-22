@@ -1,47 +1,68 @@
+import type { DeepRequired } from 'ts-essentials';
+
 export interface ITemplateBase {
-    lang: string;
-    dir: 'ltr' | 'rtl';
-    searchable: boolean;
 
     res: {
         status: number,
         statusText: string
     },
 
+    template: string;
+
     siteName: string;
-    title: string;
+
+    document: {
+        lang?: string;
+        dir?: 'ltr' | 'rtl';
+        pagetitle?: string;
+        longtitle?: string;
+        description?: string;
+        introtext?: string;
+        content?: string;
+    };
 
     url: {
         url: string;
         siteUrl: string;
         canonicalUrl: string;
         staticUrl: string;
-    }
+    };
 
     meta: {
         description?: string | undefined;
         keywords?: string | undefined;
         image?: string | undefined;
-    },
+    };
 
-    template: string;
+    settings: {
+        searchable: boolean;
+    };
+
 }
 
 export default function getPlaceholder (
     url: URL,
-): ITemplateBase {
+): DeepRequired<ITemplateBase> {
     return {
-        lang: 'en',
-        dir: 'ltr',
-        searchable: true,
 
         res: {
             status: 200,
             statusText: 'ok',
         },
 
+        template: '',
+
         siteName: 'Website',
-        title: '',
+
+        document: {
+            lang: 'en',
+            dir: 'ltr',
+            pagetitle: 'Page name',
+            longtitle: 'Long Page name',
+            description: '',
+            introtext: '',
+            content: '',
+        },
 
         url: {
             url: url.href,
@@ -56,6 +77,9 @@ export default function getPlaceholder (
             image: '',
         },
 
-        template: '',
+        settings: {
+            searchable: true,
+        },
+
     };
 }

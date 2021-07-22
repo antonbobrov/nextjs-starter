@@ -1,0 +1,38 @@
+@mixin text-header-font {
+    font-family: 'Verdana';
+}
+
+@mixin text-header-styles {
+    @include text-header-font();
+    font-weight: normal;
+}
+
+@mixin text-header-1 {
+    @include text-header-styles();
+    font-size: px-to-rem(60);
+}
+
+@mixin text-header-2 {
+    @include text-header-styles();
+    font-size: px-to-rem(44);
+}
+
+@mixin text-header-3 {
+    @include text-header-styles();
+    font-size: px-to-rem(40);
+}
+
+@mixin text-header-4 {
+    @include text-header-styles();
+    font-size: px-to-rem(36);
+}
+
+@mixin text-header-5 {
+    @include text-header-styles();
+    font-size: px-to-rem(32);
+}
+
+@mixin text-header-6 {
+    @include text-header-styles();
+    font-size: px-to-rem(21);
+}

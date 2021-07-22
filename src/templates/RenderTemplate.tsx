@@ -10,7 +10,7 @@ const Home = dynamic(import('./home/Home'), {
     ssr: true,
 });
 
-const BaseTemplate = (
+const RenderTemplate = (
     props: ITemplateBase,
 ) => {
     const { template } = props;
@@ -38,4 +38,4 @@ const BaseTemplate = (
     );
 };
 
-export default BaseTemplate;
+export default RenderTemplate;
