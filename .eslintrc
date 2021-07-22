@@ -43,6 +43,14 @@
     "space-before-function-paren": ["error", "always"],
     "@next/next/no-html-link-for-pages": "off"
   },
+  "overrides": [
+      {
+          "files": ["*.ts", "*.tsx"],
+          "rules": {
+              "no-undef": "off"
+          }
+      }
+  ],
   "settings": {
       "import/resolver": {
           "node": {
