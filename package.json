@@ -16,7 +16,8 @@
     "react-dom": "17.0.2",
     "sass": "^1.32.13",
     "ts-essentials": "^7.0.2",
-    "vevet": "file:../vevet"
+    "vevet": "file:../vevet",
+    "vevet-dom": "0.0.15"
   },
   "devDependencies": {
     "@types/node-fetch": "^2.5.10",
