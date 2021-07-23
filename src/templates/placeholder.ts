@@ -9,11 +9,11 @@ export interface ITemplateBase {
 
     template: string;
 
+    lang?: string;
+    dir?: 'ltr' | 'rtl';
     siteName: string;
 
     document: {
-        lang?: string;
-        dir?: 'ltr' | 'rtl';
         pagetitle?: string;
         longtitle?: string;
         description?: string;
@@ -52,11 +52,11 @@ export default function getPlaceholder (
 
         template: '',
 
+        lang: 'en',
+        dir: 'ltr',
         siteName: 'Website',
 
         document: {
-            lang: 'en',
-            dir: 'ltr',
             pagetitle: 'Page name',
             longtitle: 'Long Page name',
             description: '',
