@@ -3,9 +3,19 @@ import type { AppProps } from 'next/app';
 
 import '../src/utils/set-css/viewportSize';
 import app from '../src/app';
+import LayoutHead from '../src/components/layout/head/Head';
+import Header from '../src/components/layout/header/Header';
 
 function MyApp ({ Component, pageProps }: AppProps) {
-    return <Component {...pageProps} />;
+    return (
+        <>
+            <LayoutHead {...pageProps} />
+            <div className="app" id="app">
+                <Header {...pageProps} />
+                <Component {...pageProps} />
+            </div>
+        </>
+    );
 }
 
 export default MyApp;

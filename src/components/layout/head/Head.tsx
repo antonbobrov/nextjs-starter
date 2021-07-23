@@ -10,6 +10,7 @@ export default function LayoutHead ({
     meta,
     document,
     settings,
+    lang,
 }: ITemplateBase) {
     const title = getHeadTitle({
         pagetitle: document.pagetitle,
@@ -47,7 +48,7 @@ export default function LayoutHead ({
             {!settings.searchable ? <meta name="robots" content="noindex" /> : ''}
 
             {/* meta */}
-            <meta name="lang" content={document.lang} />
+            <meta name="lang" content={lang} />
             {meta.description ? <meta name="description" content={meta.description} /> : ''}
             {meta.keywords ? <meta name="keywords" content={meta.keywords} /> : ''}
             {meta.description ? <meta name="abstract" content={meta.keywords} /> : ''}
