@@ -3,4 +3,5 @@ module.exports = {
     serverRuntimeConfig: {
         PROJECT_ROOT: __dirname,
     },
+    trailingSlash: true,
 };

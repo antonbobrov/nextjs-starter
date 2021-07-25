@@ -1,25 +1,20 @@
-import fetch from 'node-fetch';
 import { getPagesApiUrl } from '../../server-config';
-import { ITemplateBase } from '../templates/placeholder';
+import { PagePlaceholderResponse } from '../templates/_base/types';
+import normalizeUrlSlashes from '../utils/types/normalizeUrlSlashes';
+import nodeFetch from './nodeFetch';
 
 export default async function getPageServerProps (
-    reqUrl: string | undefined,
+    resolvedUrl: string | undefined,
 ) {
-    async function getResponse (): Promise<ITemplateBase> {
-        const apiUrl = getPagesApiUrl();
-        const url = new URL(apiUrl);
-        if (reqUrl) {
-            url.searchParams.append('requestUrl', reqUrl);
-        }
-        const response = await fetch(url, {
-            method: 'get',
-        });
-        const json = await response.json();
-        json.res = {
-            status: response.status,
-            statusText: response.statusText,
+    async function getResponse (): Promise<PagePlaceholderResponse<any>> {
+        const apiUrl = normalizeUrlSlashes(`${getPagesApiUrl()}/${resolvedUrl}`);
+        const response = await nodeFetch(apiUrl);
+        return {
+            success: true,
+            code: response.code,
+            message: response.message,
+            object: response.object,
         };
-        return json;
     }
 
     const response = await getResponse();

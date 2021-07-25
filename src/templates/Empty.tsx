@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import PageDesc from '../components/layout/page-desc/PageDesc';
-import { ITemplateBase } from './placeholder';
+import { TemplateBaseData } from './_base/types';
 
 const EmptyTemplate = (
-    prop: ITemplateBase,
+    prop: TemplateBaseData,
 ) => (
     <div className="page-content">
         <div className="wrap">

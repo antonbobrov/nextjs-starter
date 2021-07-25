@@ -1,18 +1,23 @@
 import { GetServerSideProps } from 'next';
 import RenderTemplate from '../src/templates/RenderTemplate';
-import type { ITemplateBase } from '../src/templates/placeholder';
 import getPageServerProps from '../src/server/getPageServerProps';
+import { PagePlaceholderResponse } from '../src/templates/_base/types';
 
-const Router = (props: ITemplateBase) => (
+const Router = (
+    props: Record<string, any>,
+) => (
     <>
-        <RenderTemplate {...props} />
+        <RenderTemplate {...props as any} />
     </>
 );
-
 export default Router;
 
-export const getServerSideProps: GetServerSideProps<ITemplateBase> = async (context) => {
+export const getServerSideProps: GetServerSideProps<
+    PagePlaceholderResponse<Record<string, any>>
+> = async (context) => {
     const data = await getPageServerProps(context.resolvedUrl);
+    context.res.statusCode = data.code;
+    context.res.statusMessage = data.message;
     return {
         props: {
             ...data,

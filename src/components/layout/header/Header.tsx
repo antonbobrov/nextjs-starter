@@ -1,10 +1,11 @@
-import { ITemplateBase } from '../../../templates/placeholder';
+import { TemplateBaseData } from '../../../templates/_base/types';
+import getLexiconValue from '../../../utils/document/getLexiconValue';
 import styles from './Header.module.scss';
 
 const Header = ({
     url,
-    siteName,
-}: ITemplateBase) => (
+    lexicon,
+}: TemplateBaseData) => (
     <header
         className={styles.header}
     >
@@ -12,7 +13,7 @@ const Header = ({
             href={url.siteUrl}
             className={styles.header__logo}
         >
-            {siteName}
+            {getLexiconValue('siteName', lexicon)}
         </a>
         <nav className={styles.header__menu}>
             <ul>

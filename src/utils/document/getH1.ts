@@ -1,6 +1,6 @@
-import { ITemplateBase } from '../../templates/placeholder';
+import { TemplateBaseData } from '../../templates/_base/types';
 
-function getH1 (prop: ITemplateBase) {
+function getH1 (prop: TemplateBaseData) {
     const { document } = prop;
     const { description, longtitle, pagetitle } = document;
     if (description) {

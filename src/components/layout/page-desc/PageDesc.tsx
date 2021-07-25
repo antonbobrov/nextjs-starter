@@ -1,11 +1,11 @@
-import { ITemplateBase } from '../../../templates/placeholder';
+import { TemplateBaseData } from '../../../templates/_base/types';
 import stringIsEmpty from '../../../utils/types/stringIsEmpty';
 import TextContent from '../text-content/TextContent';
 import styles from './PageDesc.module.scss';
 
 const PageDesc = ({
     document,
-}: ITemplateBase) => {
+}: TemplateBaseData) => {
     const { introtext, content } = document;
     const headerEmpty = stringIsEmpty(introtext);
     const contentEmpty = stringIsEmpty(content);
@@ -16,7 +16,7 @@ const PageDesc = ({
                 {headerEmpty ? '' : <h2 className={styles.page_desc__header}>{introtext}</h2>}
                 {contentEmpty ? '' : (
                     <div className={styles.page_desc__desc}>
-                        <TextContent html={content || ''} />
+                        <TextContent html={content} />
                     </div>
                 )}
             </div>

@@ -1,17 +1,13 @@
 import Head from 'next/head';
-import type { ITemplateBase } from '../../../templates/placeholder';
+import { TemplateBaseData } from '../../../templates/_base/types';
 import getHeadTitle from './getHeadTitle';
 
-const favicons = [16, 32, 64, 96];
-
 export default function LayoutHead ({
-    siteName,
-    url,
-    meta,
     document,
+    meta,
     settings,
-    lang,
-}: ITemplateBase) {
+    url,
+}: TemplateBaseData) {
     const title = getHeadTitle({
         pagetitle: document.pagetitle,
         longtitle: document.longtitle,
@@ -29,13 +25,13 @@ export default function LayoutHead ({
             <title>{title}</title>
 
             {/* icons */}
-            {favicons.map((ico) => (
+            {[16, 32, 64, 96].map((size) => (
                 <link
-                    key={ico}
+                    key={size}
                     rel="icon"
                     type="image/png"
-                    href={`${url.staticUrl}image/favicon-${ico}x${ico}.png`}
-                    sizes={`${ico}x${ico}`}
+                    href={`${url.staticUrl}image/favicon-${size}x${size}.png`}
+                    sizes={`${size}x${size}`}
                 />
             ))}
             <link rel="apple-touch-icon" href={`${url.staticUrl}image/192x192.png`} />
@@ -48,22 +44,28 @@ export default function LayoutHead ({
             {!settings.searchable ? <meta name="robots" content="noindex" /> : ''}
 
             {/* meta */}
-            <meta name="lang" content={lang} />
-            {meta.description ? <meta name="description" content={meta.description} /> : ''}
-            {meta.keywords ? <meta name="keywords" content={meta.keywords} /> : ''}
-            {meta.description ? <meta name="abstract" content={meta.keywords} /> : ''}
+            {meta.map((metaData) => {
+                if (metaData.attrType === 'name') {
+                    return (
+                        <meta
+                            key={metaData.attrVal}
+                            name={metaData.attrVal}
+                            content={metaData.content}
+                        />
+                    );
+                }
+                return (
+                    <meta
+                        key={metaData.attrVal}
+                        property={metaData.attrVal}
+                        content={metaData.content}
+                    />
+                );
+            })}
 
             {/* links */}
             <base href={url.siteUrl} />
             <link rel="canonical" href={url.canonicalUrl} />
-
-            {/* Facebook Tags */}
-            <meta property="og:site_name" content={siteName} />
-            <meta property="og:type" content="article" />
-            <meta property="og:title" content={title} />
-            {meta.description ? <meta property="og:description" content={meta.description} /> : ''}
-            <meta property="og:url" content={url.url} />
-            {meta.image ? <meta property="og:image" content={meta.image} /> : ''}
 
         </Head>
     );

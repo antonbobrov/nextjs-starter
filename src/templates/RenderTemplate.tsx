@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import type { ITemplateBase } from './placeholder';
+import { TemplateBaseData } from './_base/types';
 
 const Empty = dynamic(import('./Empty'), {
     ssr: true,
@@ -9,7 +9,7 @@ const Home = dynamic(import('./home/Home'), {
 });
 
 const RenderTemplate = (
-    props: ITemplateBase,
+    props: TemplateBaseData,
 ) => {
     const { template } = props;
 
