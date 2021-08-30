@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { ScrollBar, SmoothScroll } from 'vevet';
+import { ScrollBar, SmoothScroll, SmoothScrollKeyboardPlugin } from 'vevet';
 import app, { appSettings } from '../../../app';
 
 interface Data {
@@ -37,6 +37,9 @@ const LayoutSmoothScroll = ({
             container: scroll,
             optimizeCalculations: true,
         });
+
+        // add keyboard controls
+        scroll.addPlugin(new SmoothScrollKeyboardPlugin());
 
         return () => {
             scrollbar.destroy();
