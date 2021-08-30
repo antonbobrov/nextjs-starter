@@ -1,8 +1,6 @@
 import '../src/styles/globals.scss';
 import type { AppProps } from 'next/app';
 
-import '../src/utils/set-css/viewportSize';
-
 import LayoutHead from '../src/components/layout/head/Head';
 import Header from '../src/components/layout/header/Header';
 import { PagePlaceholderResponse, TemplateBaseData } from '../src/templates/_base/types';
