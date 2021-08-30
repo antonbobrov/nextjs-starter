@@ -1,6 +1,10 @@
 @import '~normalize-scss';
 @include normalize();
 
+// general
+@import './settings';
+@import './mixins/mixins';
+
 // include vevet
 @import '~vevet/src/sass/base';
 @import '~vevet/src/sass/components/scroll/smooth-scroll';
