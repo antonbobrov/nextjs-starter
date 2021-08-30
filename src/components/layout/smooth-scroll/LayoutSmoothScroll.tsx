@@ -35,6 +35,7 @@ const LayoutSmoothScroll = ({
         // add scrollbar
         const scrollbar = new ScrollBar({
             container: scroll,
+            optimizeCalculations: true,
         });
 
         return () => {
