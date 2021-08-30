@@ -1,6 +1,10 @@
 @import '~normalize-scss';
 @include normalize();
 
+// include vevet
+@import '~vevet/src/sass/base';
+
+// general
 @import './mixins/mixins';
 @import './settings';
 
