@@ -8,10 +8,7 @@
 // include vevet
 @import '~vevet/src/sass/base';
 @import '~vevet/src/sass/components/scroll/smooth-scroll';
-
-// general
-@import './mixins/mixins';
-@import './settings';
+@import '~vevet/src/sass/components/scroll/scrollbar';
 
 // layout elements
 @import './layout/common';

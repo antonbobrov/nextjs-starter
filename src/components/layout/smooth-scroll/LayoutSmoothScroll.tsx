@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { SmoothScroll } from 'vevet';
+import { ScrollBar, SmoothScroll } from 'vevet';
 import app, { appSettings } from '../../../app';
 
 interface Data {
@@ -32,7 +32,13 @@ const LayoutSmoothScroll = ({
             });
         }
 
+        // add scrollbar
+        const scrollbar = new ScrollBar({
+            container: scroll,
+        });
+
         return () => {
+            scrollbar.destroy();
             scroll.destroy();
         };
     }, [outer]);
