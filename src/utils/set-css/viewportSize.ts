@@ -5,7 +5,7 @@ export default (function viewportSize () {
         app.viewport.add('', () => {
             set();
         }, {
-            name: 'Viewport Size',
+            name: 'Viewport CSS Vars',
         });
         app.pageLoad.add('', () => {
             set();
