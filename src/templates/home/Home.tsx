@@ -45,7 +45,9 @@ const HomeTemplate = (
                         <PageDesc {...prop} />
                         <br />
                         <br />
-                        <Link href="/not-existing-page">Test link</Link>
+                        <div className="v-view_b">
+                            <Link href="/not-existing-page">Test link</Link>
+                        </div>
                     </div>
 
                 </div>
