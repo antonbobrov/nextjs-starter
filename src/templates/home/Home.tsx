@@ -6,6 +6,7 @@ import styles from './Home.module.scss';
 import { TemplateBaseData } from '../_base/types';
 import AppPage from '../../app/AppPage';
 import LayoutSmoothScroll from '../../components/layout/smooth-scroll/LayoutSmoothScroll';
+import app from '../../app';
 
 
 
@@ -24,6 +25,11 @@ const HomeTemplate = (
             name: prop.template,
         });
         page.create();
+        if (app) {
+            app.pageLoad.onLoaded(() => {
+                page.show();
+            });
+        }
     });
 
     // render the template
