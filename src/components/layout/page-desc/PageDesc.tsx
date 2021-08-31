@@ -13,9 +13,9 @@ const PageDesc = ({
     return (
         isEmpty ? <></> : (
             <div className={styles.page_desc}>
-                {headerEmpty ? '' : <h2 className={styles.page_desc__header}>{introtext}</h2>}
+                {headerEmpty ? '' : <h2 className={`${styles.page_desc__header} v-view_b`}>{introtext}</h2>}
                 {contentEmpty ? '' : (
-                    <div className={styles.page_desc__desc}>
+                    <div className={`${styles.page_desc__desc} v-view_b`}>
                         <TextContent html={content} />
                     </div>
                 )}

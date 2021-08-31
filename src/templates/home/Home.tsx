@@ -33,7 +33,7 @@ const HomeTemplate = (
                 <div className="page-content">
 
                     <div className="wrap">
-                        <h1>
+                        <h1 className="v-view_b">
                             {getH1(prop)}
                         </h1>
                         <PageDesc {...prop} />
