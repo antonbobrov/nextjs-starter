@@ -2,8 +2,8 @@
 @include normalize();
 
 // general
-@import './settings';
-@import './mixins/mixins';
+@import './base';
+@import './root';
 
 // include vevet
 @import '~vevet/src/sass/base';
