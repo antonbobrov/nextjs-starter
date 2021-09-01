@@ -23,6 +23,13 @@ export default class AppPage extends Page {
      */
     protected _innerShow () {
         super._innerShow();
+        this._createScrollView();
+    }
+
+    /**
+     * Create ScrollView component
+     */
+    protected _createScrollView () {
         // create ScrollView
         const container = this.smoothScroll ? this.smoothScroll : window;
         this._scrollView = new ScrollView({
