@@ -1,11 +1,23 @@
-@mixin is-ltr {
-    @at-root html.ltr & {
-        @content;
+@mixin is-ltr ($css-module: false) {
+    @if $css-module == true {
+        @at-root :global(html.ltr) & {
+            @content;
+        }   
+    } @else {
+        @at-root html.ltr & {
+            @content;
+        }      
     }
 }
 
 @mixin is-rtl {
-    @at-root html.rtl & {
-        @content;
+    @if $css-module == true {
+        @at-root :global(html.rtl) & {
+            @content;
+        }   
+    } @else {
+        @at-root html.rtl & {
+            @content;
+        }      
     }
 }
