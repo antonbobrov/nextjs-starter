@@ -7,6 +7,9 @@ const Empty = dynamic(import('./Empty'), {
 const Home = dynamic(import('./home/Home'), {
     ssr: true,
 });
+const TextPage = dynamic(import('./text-page'), {
+    ssr: true,
+});
 
 const RenderTemplate = (
     props: TemplateBaseData,
@@ -16,6 +19,8 @@ const RenderTemplate = (
     switch (template) {
         case 'home':
             return <Home {...props as any} />;
+        case 'text':
+            return <TextPage {...props as any} />;
         default:
             return <Empty {...props as any} />;
     }
