@@ -29,7 +29,7 @@
     q,
     cite {
         position: relative;
-        // @include reset-button;
+        @include reset-button;
         margin: 0;
         padding-left: px-to-rem(40);
         
@@ -59,7 +59,7 @@
 
     ul,
     ol {
-        // @include reset-ul;
+        @include reset-ul;
 
         li {
             list-style-position: inside;
@@ -97,14 +97,29 @@
         }
     }
 
+    :global .justifyleft {
+        text-align: left;
+    }
     .justifyleft {
         text-align: left;
+    }
+    
+    :global .justifycenter {
+        text-align: center;
     }
     .justifycenter {
         text-align: center;
     }
+
+    :global .justifyright {
+        text-align: right;
+    }
     .justifyright {
         text-align: right;
+    }
+
+    :global .justifyfull {
+        text-align: justify;
     }
     .justifyfull {
         text-align: justify;
