@@ -1,0 +1,9 @@
+@import '../../styles/base';
+
+.text_page {
+
+    &__content {
+        @include text-styles;
+    }
+
+}
