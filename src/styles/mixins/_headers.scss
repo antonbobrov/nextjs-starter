@@ -5,6 +5,7 @@
 @mixin text-header-styles {
     @include text-header-font();
     font-weight: normal;
+    line-height: normal;
 }
 
 @mixin text-header-1 {
