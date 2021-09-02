@@ -18,17 +18,21 @@ class MyDocument extends Document {
         // get data
         let lang = 'en';
         let dir = 'ltr';
+        let pageClassName = '';
         if (props.object) {
             const data = props.object;
             lang = data.lang;
             dir = data.dir;
+            if (data.template) {
+                pageClassName = `v-page-${data.template}`;
+            }
         }
 
         return (
             <Html
                 lang={lang}
                 dir={dir}
-                className={`${dir} v-reset`}
+                className={`${dir} ${pageClassName}`}
             >
                 <Head />
                 <body>
