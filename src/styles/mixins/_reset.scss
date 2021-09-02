@@ -9,3 +9,15 @@
         margin-bottom: 0;
     }
 }
+
+@mixin reset-button {
+    background: transparent;
+    border: 0;
+    padding: 0;
+}
+
+@mixin reset-ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
