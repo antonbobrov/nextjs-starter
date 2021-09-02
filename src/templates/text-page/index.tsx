@@ -6,7 +6,7 @@ import TextContent from '../../components/layout/text-content/TextContent';
 
 
 export interface TextPageTemplateData extends TemplateBaseData {
-    template: 'text';
+    template: 'text-page';
 }
 
 

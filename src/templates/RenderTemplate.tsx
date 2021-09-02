@@ -19,7 +19,7 @@ const RenderTemplate = (
     switch (template) {
         case 'home':
             return <Home {...props as any} />;
-        case 'text':
+        case 'text-page':
             return <TextPage {...props as any} />;
         default:
             return <Empty {...props as any} />;

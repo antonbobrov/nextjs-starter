@@ -23,7 +23,7 @@ export default async function handler (
         object: baseData.object ? {
             ...baseData.object,
 
-            template: 'text',
+            template: 'text-page',
 
             document: {
                 pagetitle: 'Home',
