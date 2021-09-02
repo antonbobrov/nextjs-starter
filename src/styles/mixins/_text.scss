@@ -155,10 +155,3 @@
     line-height: 140%;
 
 }
-
-
-
-@mixin layout-text {
-    font-size: px-to-rem(16);
-    line-height: px-to-rem(18);
-}
