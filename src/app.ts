@@ -11,6 +11,7 @@ const useWindowScroll = !useSmoothScroll;
 export const appSettings = {
     useSmoothScroll,
     useWindowScroll,
+    useAdaptiveFontSize: true,
 };
 
 // fix scroll
