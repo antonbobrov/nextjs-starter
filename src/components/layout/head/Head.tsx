@@ -39,7 +39,7 @@ export default function LayoutHead ({
             {/* web */}
             <meta name="apple-mobile-web-app-capable" content="yes" />
             <meta name="theme-color" content="#000000" />
-            <link rel="manifest" href={`${url.staticUrl}manifest.webmanifest`} />
+            <link rel="manifest" href={`${url.staticUrl}api/manifest.webmanifest`} />
 
             {!settings.searchable ? <meta name="robots" content="noindex" /> : ''}
 
