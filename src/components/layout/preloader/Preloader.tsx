@@ -31,7 +31,7 @@ const Preloader = () => {
             });
             preloader = mod;
             // show the page on preloader is to be hidden
-            mod.addCallback('loaded', () => {
+            mod.addCallback('hide', () => {
                 if (!!app && !!app.page) {
                     app.page.show();
                 }
