@@ -37,6 +37,10 @@ const TextPageTemplate = (
                         <br />
                         <br />
 
+                        <h2>Horizontal scroll list</h2>
+                        <br />
+                        <ItemsScrollList />
+
                     </div>
                 </div>
             </div>
