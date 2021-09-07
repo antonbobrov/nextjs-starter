@@ -40,7 +40,7 @@ const Preloader = () => {
     }, [ref]);
 
     return (
-        <div className={styles.preloader} ref={ref}>
+        <div className={`${styles.preloader} v-preloader`} ref={ref}>
             <span>
                 {progress}
                 %
