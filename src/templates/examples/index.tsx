@@ -5,6 +5,7 @@ import LayoutSmoothScroll from '../../components/layout/smooth-scroll/LayoutSmoo
 import ItemsScrollList from '../../components/content/item-scroll-list';
 import styles from './styles.module.scss';
 import getH1 from '../../utils/document/getH1';
+import SplitText from '../../components/content/split-text';
 
 
 export interface ExamplesTemplateData extends TemplateBaseData {
@@ -40,6 +41,18 @@ const TextPageTemplate = (
                         <h2>Horizontal scroll list</h2>
                         <br />
                         <ItemsScrollList />
+
+                        <br />
+                        <br />
+                        <h2>Split text</h2>
+                        <br />
+                        <h6>
+                            <SplitText>
+                                Lorem ipsum
+                                <br />
+                                Slor sit amet.
+                            </SplitText>
+                        </h6>
 
                     </div>
                 </div>
