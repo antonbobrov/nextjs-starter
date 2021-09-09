@@ -10,12 +10,14 @@
 @import '~vevet/src/sass/components/loading/preloader';
 @import '~vevet/src/sass/components/scroll/smooth-scroll';
 @import '~vevet/src/sass/components/scroll/scrollbar';
+@import '~vevet/src/sass/components/cursor/custom-cursor';
 
 // layout elements
 @import './layout/common';
 @import './layout/doc';
 @import './layout/wrap';
 @import './layout/app';
+@import './layout/custom-cursor';
 @import './layout/v-view';
 
 // typography
