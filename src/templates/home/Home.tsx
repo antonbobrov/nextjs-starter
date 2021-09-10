@@ -23,6 +23,10 @@ const HomeTemplate = (
             name: prop.template,
         });
         page.create();
+        return () => {
+            page.hide();
+            page.destroy();
+        };
     });
 
     // render the template

@@ -1,4 +1,5 @@
 import { Page, ScrollView, SmoothScroll } from 'vevet';
+import { getPreloader } from '../components/layout/preloader/Preloader';
 
 export default class AppPage extends Page {
     // smooth scrolling
@@ -14,6 +15,21 @@ export default class AppPage extends Page {
     protected _scrollView?: ScrollView;
     get scrollView () {
         return this._scrollView;
+    }
+
+
+
+    /**
+     * Create th page
+     */
+    protected _innerCreate () {
+        super._innerCreate();
+        const preloader = getPreloader();
+        if (preloader) {
+            preloader.onHide(() => {
+                this.show();
+            });
+        }
     }
 
 
