@@ -1,4 +1,4 @@
-import { Application, CustomCursor } from 'vevet';
+import { Application } from 'vevet';
 import AppPage from './app/AppPage';
 import isBrowser from './utils/browser/isBrowser';
 
@@ -37,15 +37,5 @@ if (!!app && !useWindowScroll) {
     });
 }
 
-
-
-// add cursor
-const useCustomCursor = !!app && !app.isMobile;
-if (useCustomCursor) {
-    app.onPageShown().then(() => {
-        const cursor = new CustomCursor({
-            run: false,
-        });
-        cursor.enable();
-    });
-}
+// custom cursor
+export const useCustomCursor = !!app && !app.isMobile;
