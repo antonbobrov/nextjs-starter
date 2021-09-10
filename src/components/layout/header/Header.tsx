@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { TemplateBaseData } from '../../../templates/_base/types';
 import getLexiconValue from '../../../utils/document/getLexiconValue';
 import styles from './Header.module.scss';
@@ -18,10 +19,13 @@ const Header = ({
         <nav className={styles.header__menu}>
             <ul>
                 <li>
-                    <a href="/">Home page</a>
+                    <Link href="/">Home page</Link>
                 </li>
                 <li>
-                    <a href="/text-page">Text page</a>
+                    <Link href="/text-page">Text page</Link>
+                </li>
+                <li>
+                    <Link href="/examples">Examples</Link>
                 </li>
             </ul>
         </nav>
