@@ -1,13 +1,19 @@
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { CustomCursor as VevetCursor } from 'vevet';
 import app, { useCustomCursor } from '../../../app';
 
-let cursor: VevetCursor | undefined;
+let windowCursor: VevetCursor | undefined;
 export function getCursor () {
-    return cursor;
+    return windowCursor;
 }
 
-const CustomCursor = () => {
+interface Data {
+    container?: Window | Element | string;
+}
+
+const CustomCursor: FC<Data> = ({
+    container,
+}) => {
     const [pageShown, setPageShown] = useState(false);
 
     useEffect(() => {
@@ -22,9 +28,13 @@ const CustomCursor = () => {
         if (!pageShown || !useCustomCursor) {
             return () => {};
         }
-        cursor = new VevetCursor({
+        const cursor = new VevetCursor({
+            container: container || window,
             run: false,
         });
+        if (cursor.container === window) {
+            windowCursor = cursor;
+        }
         cursor.enable();
         return () => {
             if (cursor) {
