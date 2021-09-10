@@ -52,7 +52,8 @@
         {
             "props": false
         }
-    ]
+    ],
+    "import/no-cycle": "off"
   },
   "overrides": [
       {
