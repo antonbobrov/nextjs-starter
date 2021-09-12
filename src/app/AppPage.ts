@@ -20,10 +20,10 @@ export default class AppPage extends Page {
 
 
     /**
-     * Create th page
+     * Create the page
      */
-    protected _innerCreate () {
-        super._innerCreate();
+    protected _create () {
+        super._create();
         const preloader = getPreloader();
         if (preloader) {
             preloader.onHide(() => {
@@ -37,8 +37,8 @@ export default class AppPage extends Page {
     /**
      * Show the page
      */
-    protected _innerShow () {
-        super._innerShow();
+    protected _show () {
+        super._show();
         this._createScrollView();
     }
 
