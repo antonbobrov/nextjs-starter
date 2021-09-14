@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { ScrollBar, SmoothScroll } from 'vevet';
+import { ScrollBar, SmoothScroll, SmoothScrollDragPlugin } from 'vevet';
 import styles from './styles.module.scss';
 
 interface Data {
@@ -27,6 +27,8 @@ const HorizontalScrollList = ({
         const scrollbar = new ScrollBar({
             container: scroll,
         });
+        // add dragger
+        scroll.addPlugin(new SmoothScrollDragPlugin());
         // destroy the scene
         return () => {
             scrollbar.destroy();
