@@ -23,8 +23,9 @@ const HomeTemplate = (
         });
         page.create();
         return () => {
-            page.hide();
-            page.destroy();
+            page.hide().then(() => {
+                page.destroy();
+            });
         };
     });
 

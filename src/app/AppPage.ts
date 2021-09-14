@@ -23,13 +23,19 @@ export default class AppPage extends Page {
      * Create the page
      */
     protected _create () {
-        super._create();
-        const preloader = getPreloader();
-        if (preloader) {
-            preloader.onHide(() => {
-                this.show();
+        return new Promise<void>((
+            resolve,
+        ) => {
+            super._create().then(() => {
+                const preloader = getPreloader();
+                if (preloader) {
+                    preloader.onHide(() => {
+                        this.show();
+                    });
+                }
+                resolve();
             });
-        }
+        });
     }
 
 
@@ -38,8 +44,14 @@ export default class AppPage extends Page {
      * Show the page
      */
     protected _show () {
-        super._show();
-        this._createScrollView();
+        return new Promise<void>((
+            resolve,
+        ) => {
+            super._show().then(() => {
+                this._createScrollView();
+                resolve();
+            });
+        });
     }
 
     /**
@@ -55,6 +67,26 @@ export default class AppPage extends Page {
                 max: 1000,
                 dir: 'y',
             },
+        });
+    }
+
+
+
+    /**
+     * Hide the page
+     */
+    protected _hide () {
+        return new Promise<void>((
+            resolve,
+        ) => {
+            super._hide().then(() => {
+                if (this.smoothScroll) {
+                    this.smoothScroll.changeProp({
+                        enabled: false,
+                    });
+                }
+                resolve();
+            });
         });
     }
 }
