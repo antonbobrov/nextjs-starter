@@ -26,6 +26,7 @@ const TextPageTemplate = (
         return () => {
             page.hide().then(() => {
                 page.destroy();
+            });
         };
     });
 
