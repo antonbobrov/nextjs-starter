@@ -5,6 +5,11 @@ import isBrowser from './utils/browser/isBrowser';
 const app = isBrowser ? new Application<AppPage>() : false;
 export default app;
 
+// get current Vevet page
+export function getAppPage () {
+    return app ? app.page : false;
+}
+
 // Scroll Settings
 const useSmoothScroll = !(!!app && app.isMobile);
 const useWindowScroll = !useSmoothScroll;
