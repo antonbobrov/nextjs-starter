@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import Link from 'next/link';
 import PageDesc from '../../components/layout/page-desc/PageDesc';
 import getH1 from '../../utils/document/getH1';
 import styles from './Home.module.scss';
@@ -43,7 +44,7 @@ const HomeTemplate = (
                         <br />
                         <br />
                         <div className="v-view_b">
-                            <a href="/not-existing-page">Test link</a>
+                            <Link href="/not-existing-page">Test link</Link>
                         </div>
                     </div>
 

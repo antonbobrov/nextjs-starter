@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import PageDesc from '../components/layout/page-desc/PageDesc';
 import { TemplateBaseData } from './_base/types';
 
@@ -10,7 +11,7 @@ const EmptyTemplate = (
             <PageDesc {...prop} />
             <br />
             <br />
-            <a href="/">Go home</a>
+            <Link href="/">Go home</Link>
         </div>
     </div>
 );
