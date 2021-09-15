@@ -15,11 +15,8 @@ export const appSettings = {
 };
 // set scroll classes
 if (app) {
-    if (useWindowScroll) {
-        app.html.classList.add('use-native-scroll');
-    } else if (useSmoothScroll) {
-        app.html.classList.add('use-smooth-scroll');
-    }
+    app.html.classList.toggle('use-native-scroll', useWindowScroll);
+    app.html.classList.toggle('use-smooth-scroll', useSmoothScroll);
 }
 // disable scroll restoration
 if (isBrowser) {
