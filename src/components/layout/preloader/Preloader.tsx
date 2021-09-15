@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { ProgressPreloader, utils } from 'vevet';
-import app from '../../../app';
 import styles from './Preloader.module.scss';
 
 let preloader: ProgressPreloader | undefined;
@@ -30,12 +29,6 @@ const Preloader = () => {
                 setProgress((percent).toFixed(0));
             });
             preloader = mod;
-            // show the page on preloader is to be hidden
-            mod.addCallback('hide', () => {
-                if (!!app && !!app.page) {
-                    app.page.show();
-                }
-            });
         }
     }, [ref]);
 
