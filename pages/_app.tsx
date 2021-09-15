@@ -1,6 +1,7 @@
 import '../src/styles/index.scss';
 import type { AppProps } from 'next/app';
 import '../src/utils/browser/adaptiveFontSize';
+import '../src/router';
 
 import LayoutHead from '../src/components/layout/head/Head';
 import Preloader from '../src/components/layout/preloader/Preloader';
