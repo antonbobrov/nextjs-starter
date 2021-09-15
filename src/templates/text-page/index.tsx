@@ -26,9 +26,9 @@ const TextPageTemplate = (
         return () => {
             page.hide().then(() => {
                 page.destroy();
-            });
+            }).catch(() => {});
         };
-    });
+    }, []);
 
     // render the template
     return (

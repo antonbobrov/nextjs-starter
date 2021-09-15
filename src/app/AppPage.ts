@@ -1,5 +1,9 @@
-import { Page, ScrollView, SmoothScroll } from 'vevet';
+import {
+    Page, ScrollBar, ScrollView, SmoothScroll, SmoothScrollKeyboardPlugin,
+} from 'vevet';
+import { selectOne } from 'vevet-dom';
 import { getPreloader } from '../components/layout/preloader/Preloader';
+import { appSettings } from '../app';
 
 export default class AppPage extends Page {
     // smooth scrolling
@@ -9,6 +13,12 @@ export default class AppPage extends Page {
     }
     set smoothScroll (val: SmoothScroll | undefined) {
         this._smoothScroll = val;
+    }
+
+    // scroll bar
+    protected _scrollBar?: ScrollBar;
+    get scrollBar () {
+        return this._scrollBar;
     }
 
     // scroll view
@@ -48,6 +58,8 @@ export default class AppPage extends Page {
             resolve,
         ) => {
             super._show().then(() => {
+                this._createSmoothScroll();
+                this._createScrollBar();
                 this._createScrollView();
                 resolve();
             });
@@ -55,12 +67,50 @@ export default class AppPage extends Page {
     }
 
     /**
-     * Create ScrollView component
+     * Create SmoothScroll
+     */
+    protected _createSmoothScroll () {
+        if (!appSettings.useSmoothScroll) {
+            return;
+        }
+        const container = selectOne('#smooth-scroll') as HTMLElement;
+        if (!container) {
+            return;
+        }
+        // create smooth scroll
+        this._smoothScroll = new SmoothScroll({
+            parent: this,
+            enabled: true,
+            selectors: {
+                outer: container,
+            },
+            overscroll: false,
+        });
+        // add keyboard controls
+        this._smoothScroll.addPlugin(new SmoothScrollKeyboardPlugin());
+    }
+
+    /**
+     * Create page scrollbar
+     */
+    protected _createScrollBar () {
+        const container = this.smoothScroll || window;
+        // add scrollbar
+        this._scrollBar = new ScrollBar({
+            parent: this,
+            container,
+            optimizeCalculations: true,
+        });
+    }
+
+    /**
+     * Create ScrollView
      */
     protected _createScrollView () {
         // create ScrollView
         const container = this.smoothScroll ? this.smoothScroll : window;
         this._scrollView = new ScrollView({
+            parent: this,
             container,
             elements: '*[class*="v-view"]',
             useDelay: {

@@ -1,62 +1,16 @@
-import { useEffect, useRef } from 'react';
-import { ScrollBar, SmoothScroll, SmoothScrollKeyboardPlugin } from 'vevet';
-import app, { appSettings } from '../../../app';
+import { FC } from 'react';
 
-interface Data {
-    children: JSX.Element;
-}
-
-const LayoutSmoothScroll = ({
+const LayoutSmoothScroll: FC = ({
     children,
-}: Data) => {
-    // smooth scroll outer
-    const outer = useRef<HTMLDivElement>(null);
-
-    // create smooth scrolling
-    useEffect(() => {
-        // only if available
-        if (!outer.current || !appSettings.useSmoothScroll) {
-            return () => {};
-        }
-
-        // smooth scroll
-        const scroll = new SmoothScroll({
-            selectors: {
-                outer: outer.current,
-            },
-            overscroll: false,
-        });
-        if (app) {
-            app.onPageCreated().then((page) => {
-                page.smoothScroll = scroll;
-            });
-        }
-
-        // add scrollbar
-        const scrollbar = new ScrollBar({
-            container: scroll,
-            optimizeCalculations: true,
-        });
-
-        // add keyboard controls
-        scroll.addPlugin(new SmoothScrollKeyboardPlugin());
-
-        return () => {
-            scrollbar.destroy();
-            scroll.destroy();
-        };
-    }, [outer]);
-
-    return (
-        <div
-            className="v-smooth-scroll"
-            ref={outer}
-        >
-            <div className="v-smooth-scroll__container">
-                {children}
-            </div>
+}) => (
+    <div
+        className="v-smooth-scroll"
+        id="smooth-scroll"
+    >
+        <div className="v-smooth-scroll__container">
+            {children}
         </div>
-    );
-};
+    </div>
+);
 
 export default LayoutSmoothScroll;

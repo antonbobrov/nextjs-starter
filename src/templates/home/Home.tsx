@@ -8,6 +8,7 @@ import AppPage from '../../app/AppPage';
 import LayoutSmoothScroll from '../../components/layout/smooth-scroll/LayoutSmoothScroll';
 
 
+
 export interface HomeTemplateData extends TemplateBaseData {
     template: 'home';
 }
@@ -26,9 +27,9 @@ const HomeTemplate = (
         return () => {
             page.hide().then(() => {
                 page.destroy();
-            });
+            }).catch(() => {});
         };
-    });
+    }, []);
 
     // render the template
     return (
