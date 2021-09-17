@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "lit-element": "^2.5.1",
+    "lit": "^2.0.0-rc.4",
     "next": "11.0.1",
     "next-transpile-modules": "^8.0.0",
     "node-fetch": "^2.6.1",
