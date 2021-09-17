@@ -4,6 +4,7 @@ import {
 import { selectOne } from 'vevet-dom';
 import { getPreloader } from '../components/layout/preloader/Preloader';
 import { appSettings } from '../app';
+import { hideLoaderCurtain, showLoaderCurtain } from '../components/layout/loader-curtain/states';
 
 export default class AppPage extends Page {
     // smooth scrolling
@@ -58,10 +59,12 @@ export default class AppPage extends Page {
             resolve,
         ) => {
             super._show().then(() => {
-                this._createSmoothScroll();
-                this._createScrollBar();
-                this._createScrollView();
-                resolve();
+                hideLoaderCurtain().then(() => {
+                    this._createSmoothScroll();
+                    this._createScrollBar();
+                    this._createScrollView();
+                    resolve();
+                });
             });
         });
     }
@@ -129,13 +132,15 @@ export default class AppPage extends Page {
         return new Promise<void>((
             resolve,
         ) => {
-            super._hide().then(() => {
-                if (this.smoothScroll) {
-                    this.smoothScroll.changeProp({
-                        enabled: false,
-                    });
-                }
-                resolve();
+            if (this.smoothScroll) {
+                this.smoothScroll.changeProp({
+                    enabled: false,
+                });
+            }
+            showLoaderCurtain().then(() => {
+                super._hide().then(() => {
+                    resolve();
+                });
             });
         });
     }
