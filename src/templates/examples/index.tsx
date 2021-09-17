@@ -23,7 +23,12 @@ const TextPageTemplate = (
             name: prop.template,
         });
         page.create();
-    });
+        return () => {
+            page.hide().then(() => {
+                page.destroy();
+            }).catch(() => {});
+        };
+    }, []);
 
 
 
