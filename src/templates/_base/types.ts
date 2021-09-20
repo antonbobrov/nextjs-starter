@@ -39,6 +39,7 @@ export interface LexiconData {
 
 
 export interface TemplateBaseData {
+    time: number;
     template: string;
 
     lang: string;

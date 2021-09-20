@@ -29,6 +29,8 @@ export default async function handler (
         message: 'ok',
         object: {
 
+            time: +new Date(),
+
             template: '',
 
             lang: 'en',

@@ -21,13 +21,13 @@ const RenderTemplate = (
 
     switch (template) {
         case 'home':
-            return <Home {...props as any} />;
+            return <Home {...props as any} key={props.time} />;
         case 'text-page':
-            return <TextPage {...props as any} />;
+            return <TextPage {...props as any} key={props.time} />;
         case 'examples':
-            return <Examples {...props as any} />;
+            return <Examples {...props as any} key={props.time} />;
         default:
-            return <Empty {...props as any} />;
+            return <Empty {...props as any} key={props.time} />;
     }
 };
 
