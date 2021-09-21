@@ -1,26 +1,27 @@
-import { useEffect } from 'react';
-import { TemplateBaseData } from '../_base/types';
+import { FC, useEffect } from 'react';
 import AppPage from '../../app/AppPage';
-import LayoutSmoothScroll from '../../components/layout/smooth-scroll/LayoutSmoothScroll';
+import LayoutSmoothScroll from '../../components/layout/smooth-scroll';
 import ItemsScrollList from '../../components/content/item-scroll-list';
 import styles from './styles.module.scss';
-import getH1 from '../../utils/document/getH1';
+import getH1 from '../../utils/data/getH1';
 import SplitText from '../../components/content/split-text';
+import { BaseTemplateData } from '../../types/page';
 
 
-export interface ExamplesTemplateData extends TemplateBaseData {
+
+export interface ExamplesTemplateData extends BaseTemplateData {
     template: 'examples';
 }
 
 
 
-const TextPageTemplate = (
-    prop: ExamplesTemplateData,
+const TextPageTemplate: FC<BaseTemplateData> = (
+    props,
 ) => {
     // create page instance
     useEffect(() => {
         const page = new AppPage({
-            name: prop.template,
+            name: props.template,
         });
         page.create();
         return () => {
@@ -39,7 +40,7 @@ const TextPageTemplate = (
                 <div className="page-content">
                     <div className="wrap v-view_b">
 
-                        <h1>{getH1(prop)}</h1>
+                        <h1>{getH1(props)}</h1>
                         <br />
                         <br />
 

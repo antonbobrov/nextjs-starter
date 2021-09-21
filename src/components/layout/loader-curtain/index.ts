@@ -1,6 +1,6 @@
 import { LitElement } from 'lit';
 import { Ctx2D, Timeline } from 'vevet';
-import styles from './LoaderCurtain.module.scss';
+import styles from './styles.module.scss';
 
 const tagName = 'loader-curtain';
 const duration = 350;

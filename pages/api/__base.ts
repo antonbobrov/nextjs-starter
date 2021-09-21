@@ -1,44 +1,47 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import fetch from 'node-fetch';
 import { DeepRequired } from 'ts-essentials';
-import { getHost, getPagesApiUrl } from '../../../server-config';
-import nodeFetch from '../../../src/server/nodeFetch';
-import { LexiconData, PagePlaceholderResponse, TemplateBaseData } from '../../../src/templates/_base/types';
-import normalizeUrlSlashes from '../../../src/utils/types/normalizeUrlSlashes';
-
+import { LexiconData } from '../../src/types/lexicon';
+import { BaseTemplateData } from '../../src/types/page';
+import { APIResponse } from '../../src/types/types';
+import normalizeUrlSlashes from '../../src/utils/data/normalizeUrlSlashes';
 
 export default async function handler (
     req: NextApiRequest,
-    res: NextApiResponse<PagePlaceholderResponse<DeepRequired<TemplateBaseData>>>,
+    res: NextApiResponse<
+        APIResponse<
+            DeepRequired<BaseTemplateData>
+        >
+    >,
 ) {
     // get request url
-    let pageUrl = new URL(getHost());
+    let pageUrl = new URL(process.env.URL!);
     const { requestUrl: requestAPIUrl } = req.query;
     if (typeof requestAPIUrl === 'string') {
-        const requestUrl = requestAPIUrl.replace('/api/placeholders/', '');
-        const currentUrl = normalizeUrlSlashes(getHost() + requestUrl);
+        const requestUrl = requestAPIUrl.replace('/api/page/', '');
+        const currentUrl = normalizeUrlSlashes(`${process.env.URL!}/${requestUrl}`);
         pageUrl = new URL(currentUrl);
     }
 
     // get lexicon
-    const lexicon = await (await nodeFetch<LexiconData>(`${getPagesApiUrl()}/__lexicon`)).object;
+    const lexicon: LexiconData = await (await fetch(`${process.env.API_URL!}__lexicon/`)).json();
 
-    // return base data
+    // return data
     res.status(200).json({
         success: true,
         code: 200,
         message: 'ok',
-        object: {
+        data: {
 
             time: +new Date(),
-
             template: '',
 
             lang: 'en',
             dir: 'ltr',
 
             document: {
-                pagetitle: 'Page name',
-                longtitle: 'Long Page name',
+                pagetitle: lexicon.siteName,
+                longtitle: lexicon.siteName,
                 description: '',
                 introtext: '',
                 content: '',

@@ -1,28 +1,27 @@
 import Link from 'next/link';
 import { FC } from 'react';
-import { TemplateBaseData } from '../../../templates/_base/types';
-import getLexiconValue from '../../../utils/document/getLexiconValue';
-import styles from './Header.module.scss';
+import { BaseTemplateData } from '../../../types/page';
+import styles from './styles.module.scss';
 
-const Header: FC<TemplateBaseData> = ({
+const Header: FC<BaseTemplateData> = ({
     url,
     lexicon,
 }) => (
     <header
-        className={styles.header}
+        className={styles.container}
     >
         {/* Logo */}
         <Link href={url.siteUrl}>
             <a
                 href={url.siteUrl}
-                className={styles.header__logo}
+                className={styles.container__logo}
             >
-                {getLexiconValue('siteName', lexicon)}
+                {lexicon.siteName}
             </a>
         </Link>
 
         {/* Menu Nav */}
-        <nav className={styles.header__menu}>
+        <nav className={styles.container__menu}>
             <ul>
                 <li>
                     <Link href="/">Home page</Link>

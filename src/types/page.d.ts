@@ -1,9 +1,4 @@
-export interface PagePlaceholderResponse<Data = {}> {
-    success: boolean;
-    code: number;
-    message: string;
-    object: Data | false;
-}
+import { LexiconData } from './lexicon';
 
 
 
@@ -32,13 +27,9 @@ export interface SettingsData {
     searchable: boolean;
 }
 
-export interface LexiconData {
-    siteName: string;
-}
 
 
-
-export interface TemplateBaseData {
+export interface BaseTemplateData {
     time: number;
     template: string;
 
@@ -49,6 +40,6 @@ export interface TemplateBaseData {
     meta: MetaData[];
     document: DocumentData;
     settings: SettingsData;
-    lexicon: LexiconData | false;
+    lexicon: LexiconData;
 
 }

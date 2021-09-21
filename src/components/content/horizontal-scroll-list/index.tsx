@@ -1,14 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { ScrollBar, SmoothScroll, SmoothScrollDragPlugin } from 'vevet';
 import styles from './styles.module.scss';
 
-interface Data {
-    children: JSX.Element;
-}
-
-const HorizontalScrollList = ({
+const HorizontalScrollList: FC = ({
     children,
-}: Data) => {
+}) => {
     const ref = useRef<HTMLDivElement>(null);
     useEffect(() => {
         if (!ref.current) {

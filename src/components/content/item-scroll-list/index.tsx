@@ -1,7 +1,8 @@
+import { FC } from 'react';
 import HorizontalScrollList from '../horizontal-scroll-list';
 import styles from './styles.module.scss';
 
-const ItemsScrollList = () => {
+const ItemsScrollList: FC = () => {
     const items = [{
         id: 0,
         header: 'Item 1',

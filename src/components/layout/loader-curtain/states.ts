@@ -1,4 +1,4 @@
-import type LoaderCurtain from './LoaderCurtain';
+import type LoaderCurtain from '.';
 
 let loader: LoaderCurtain;
 
@@ -7,7 +7,7 @@ function create () {
         resolve,
     ) => {
         if (!loader) {
-            import('./LoaderCurtain').then((mod) => {
+            import('./index').then((mod) => {
                 // eslint-disable-next-line new-cap
                 loader = new mod.default();
                 document.body.appendChild(loader);

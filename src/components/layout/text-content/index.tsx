@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { selectAll, createElement, insertAfter } from 'vevet-dom';
-import styles from './TextContent.module.scss';
+import styles from './styles.module.scss';
 
 interface Data {
     html: string;
@@ -27,7 +27,7 @@ const TextContent = ({
     function wrapIframes (
         outer: HTMLElement,
     ) {
-        const className = styles.text_content__iframe;
+        const className = styles.container__iframe;
         const iframes = selectAll('iframe', outer);
         iframes.forEach((iframe) => {
             const parent = iframe.parentElement;
@@ -49,7 +49,7 @@ const TextContent = ({
     function wrapVideos (
         outer: HTMLElement,
     ) {
-        const className = styles.text_content__video;
+        const className = styles.container__video;
         const videos = selectAll('video', outer);
         videos.forEach((video) => {
             const parent = video.parentElement;
@@ -71,7 +71,7 @@ const TextContent = ({
     function wrapImages (
         outer: HTMLElement,
     ) {
-        const className = styles.text_content__image;
+        const className = styles.container__image;
         const images = selectAll('img', outer);
         images.forEach((image) => {
             if (
@@ -98,7 +98,7 @@ const TextContent = ({
 
     return (
         <div
-            className={styles.text_content}
+            className={styles.container}
             ref={parentRef}
             dangerouslySetInnerHTML={{ __html: html }}
         />

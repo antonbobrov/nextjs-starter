@@ -1,6 +1,6 @@
 @import '../../../styles/base.scss';
 
-.page_desc {
+.container {
 
     @at-root * + & {
         margin-top: px-to-rem(40);

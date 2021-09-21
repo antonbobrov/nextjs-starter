@@ -1,13 +1,15 @@
-import { useEffect, useRef, useState } from 'react';
+import {
+    FC, useEffect, useRef, useState,
+} from 'react';
 import { ProgressPreloader, utils } from 'vevet';
-import styles from './Preloader.module.scss';
+import styles from './styles.module.scss';
 
 let preloader: ProgressPreloader | undefined;
 export function getPreloader () {
     return preloader;
 }
 
-const Preloader = () => {
+const Preloader: FC = () => {
     const ref = useRef<HTMLDivElement>(null);
     const [progress, setProgress] = useState('00');
 
@@ -33,7 +35,7 @@ const Preloader = () => {
     }, [ref]);
 
     return (
-        <div className={`${styles.preloader} v-preloader`} ref={ref}>
+        <div className={`${styles.container} v-preloader`} ref={ref}>
             <span>
                 {progress}
                 %

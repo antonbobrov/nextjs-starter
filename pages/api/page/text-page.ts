@@ -1,29 +1,33 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { DeepRequired } from 'ts-essentials';
-import { getPagesApiUrl } from '../../../server-config';
-import nodeFetch from '../../../src/server/nodeFetch';
-import { TextPageTemplateData } from '../../../src/templates/text-page';
-import { PagePlaceholderResponse, TemplateBaseData } from '../../../src/templates/_base/types';
+import fetch from 'node-fetch';
+import { BaseTemplateData } from '../../../src/types/page';
+import { APIResponse } from '../../../src/types/types';
+import normalizeUrlSlashes from '../../../src/utils/data/normalizeUrlSlashes';
+import { TextPageTemplateData } from '../../../src/templates/text';
+import { getEnvApiUrl } from '../../../src/utils/env';
 
 export default async function handler (
     req: NextApiRequest,
-    res: NextApiResponse<PagePlaceholderResponse<DeepRequired<TextPageTemplateData>>>,
+    res: NextApiResponse<
+        APIResponse<
+            DeepRequired<TextPageTemplateData>
+        >
+    >,
 ) {
     // get base data
-    const baseDataUrl = new URL(`${getPagesApiUrl()}/__base`);
-    baseDataUrl.searchParams.set('requestUrl', req.url || '');
-
-    // fetch base data
-    const baseData = await (await nodeFetch<TemplateBaseData>(baseDataUrl.href));
+    const baseDataUrl = new URL(normalizeUrlSlashes(`${getEnvApiUrl()}/__base`));
+    baseDataUrl.searchParams.set('requestUrl', req.url || '/');
+    const baseData: APIResponse<BaseTemplateData> = await (await fetch(baseDataUrl.href)).json();
 
     res.status(baseData.code).json({
         success: baseData.success,
         code: baseData.code,
         message: baseData.message,
-        object: baseData.object ? {
-            ...baseData.object,
+        data: {
+            ...baseData.data,
 
-            template: 'text-page',
+            template: 'text',
 
             document: {
                 pagetitle: 'Home',
@@ -77,6 +81,6 @@ export default async function handler (
                 `,
             },
 
-        } : false,
+        },
     });
 }

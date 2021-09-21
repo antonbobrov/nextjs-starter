@@ -1,7 +1,8 @@
 import { GetServerSideProps } from 'next';
 import RenderTemplate from '../src/templates/RenderTemplate';
-import getPageServerProps from '../src/server/getPageServerProps';
-import { PagePlaceholderResponse } from '../src/templates/_base/types';
+import { getEnvApiPageUrl } from '../src/utils/env';
+import normalizeUrlSlashes from '../src/utils/data/normalizeUrlSlashes';
+import { APIResponse } from '../src/types/types';
 
 const Router = (
     props: Record<string, any>,
@@ -13,9 +14,12 @@ const Router = (
 export default Router;
 
 export const getServerSideProps: GetServerSideProps<
-    PagePlaceholderResponse<Record<string, any>>
+    APIResponse<
+        Record<string, any>
+    >
 > = async (context) => {
-    const data = await getPageServerProps(context.resolvedUrl);
+    const apiURL = normalizeUrlSlashes(`${getEnvApiPageUrl()}/${context.resolvedUrl}`);
+    const data = await (await fetch(apiURL)).json();
     context.res.statusCode = data.code;
     context.res.statusMessage = data.message;
     return {

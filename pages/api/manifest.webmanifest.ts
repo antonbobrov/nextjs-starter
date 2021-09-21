@@ -1,15 +1,17 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import getPageServerProps from '../../src/server/getPageServerProps';
+import { BaseTemplateData } from '../../src/types/page';
+import { APIResponse } from '../../src/types/types';
+import { getEnvApiPageUrl } from '../../src/utils/env';
 
-export default async function func (
+export default async function handler (
     req: NextApiRequest,
     res: NextApiResponse,
 ) {
     // get home page data
-    const data = await getPageServerProps('/');
+    const data: APIResponse<BaseTemplateData> = await (await fetch(getEnvApiPageUrl())).json();
 
-    if (data.success && data.object) {
-        const info = data.object;
+    if (data && data.data) {
+        const info = data.data;
         res.status(200).json({
             name: info.lexicon.siteName,
             short_name: info.lexicon.siteName,

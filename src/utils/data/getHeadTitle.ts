@@ -3,7 +3,7 @@ interface Data {
     longtitle: string | undefined;
 }
 
-function getHeadTitle ({
+export default function getHeadTitle ({
     pagetitle,
     longtitle,
 }: Data) {
@@ -15,5 +15,3 @@ function getHeadTitle ({
     }
     return '';
 }
-
-export default getHeadTitle;

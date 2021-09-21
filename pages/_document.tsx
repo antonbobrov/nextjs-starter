@@ -2,7 +2,8 @@ import Document, {
     Html, Head, Main, NextScript,
     DocumentContext,
 } from 'next/document';
-import { PagePlaceholderResponse, TemplateBaseData } from '../src/templates/_base/types';
+import { BaseTemplateData } from '../src/types/page';
+import { APIResponse } from '../src/types/types';
 
 class MyDocument extends Document {
     static async getInitialProps (ctx: DocumentContext) {
@@ -13,14 +14,14 @@ class MyDocument extends Document {
     render () {
         // eslint-disable-next-line no-underscore-dangle
         const { pageProps } = this.props.__NEXT_DATA__.props;
-        const props = pageProps as PagePlaceholderResponse<TemplateBaseData>;
+        const props = pageProps as APIResponse<BaseTemplateData>;
 
         // get data
         let lang = 'en';
         let dir = 'ltr';
         let pageClassName = '';
-        if (props.object) {
-            const data = props.object;
+        if (props.data) {
+            const { data } = props;
             lang = data.lang;
             dir = data.dir;
             if (data.template) {

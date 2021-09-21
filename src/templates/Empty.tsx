@@ -1,14 +1,15 @@
 import Link from 'next/link';
-import PageDesc from '../components/layout/page-desc/PageDesc';
-import { TemplateBaseData } from './_base/types';
+import { FC } from 'react';
+import PageDesc from '../components/layout/page-desc';
+import { BaseTemplateData } from '../types/page';
 
-const EmptyTemplate = (
-    prop: TemplateBaseData,
+const EmptyTemplate: FC<BaseTemplateData> = (
+    props,
 ) => (
     <div className="page-content">
         <div className="wrap">
             <h1>No template for this page</h1>
-            <PageDesc {...prop} />
+            <PageDesc {...props} />
             <br />
             <br />
             <Link href="/">Go home</Link>

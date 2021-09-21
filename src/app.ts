@@ -1,6 +1,6 @@
 import { Application } from 'vevet';
 import AppPage from './app/AppPage';
-import isBrowser from './utils/browser/isBrowser';
+import { isBrowser } from './utils/browser/isBrowser';
 
 const app = isBrowser ? new Application<AppPage>() : false;
 export default app;

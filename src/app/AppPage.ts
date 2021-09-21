@@ -2,7 +2,7 @@ import {
     Page, ScrollBar, ScrollView, SmoothScroll, SmoothScrollKeyboardPlugin,
 } from 'vevet';
 import { selectOne } from 'vevet-dom';
-import { getPreloader } from '../components/layout/preloader/Preloader';
+import { getPreloader } from '../components/layout/preloader';
 import { appSettings } from '../app';
 import { hideLoaderCurtain, showLoaderCurtain } from '../components/layout/loader-curtain/states';
 

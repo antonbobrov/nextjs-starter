@@ -1,13 +1,14 @@
 import Head from 'next/head';
-import { TemplateBaseData } from '../../../templates/_base/types';
-import getHeadTitle from './getHeadTitle';
+import { FC } from 'react';
+import { BaseTemplateData } from '../../../types/page';
+import getHeadTitle from '../../../utils/data/getHeadTitle';
 
-export default function LayoutHead ({
+const LayoutHead: FC<BaseTemplateData> = ({
     document,
     meta,
     settings,
     url,
-}: TemplateBaseData) {
+}) => {
     const title = getHeadTitle({
         pagetitle: document.pagetitle,
         longtitle: document.longtitle,
@@ -69,4 +70,6 @@ export default function LayoutHead ({
 
         </Head>
     );
-}
+};
+
+export default LayoutHead;
