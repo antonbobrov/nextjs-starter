@@ -8,3 +8,10 @@ body {
 *:after {
     box-sizing: border-box;
 }
+
+input,
+textarea,
+button,
+select {
+    font-family: $font-family;
+}
