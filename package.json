@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@vimeo/player": "^2.16.1",
     "cancelable-promise": "^4.2.1",
     "lit": "^2.0.0-rc.4",
     "next": "11.0.1",
@@ -20,11 +21,14 @@
     "sass": "^1.32.13",
     "ts-essentials": "^7.0.2",
     "vevet": "file:../vevet",
-    "vevet-dom": "0.0.15"
+    "vevet-dom": "0.0.15",
+    "youtube-player": "^5.5.2"
   },
   "devDependencies": {
     "@types/node-fetch": "^2.5.10",
     "@types/react": "17.0.13",
+    "@types/vimeo__player": "^2.10.1",
+    "@types/youtube-player": "^5.5.5",
     "eslint": "7.30.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-next": "11.0.1",
