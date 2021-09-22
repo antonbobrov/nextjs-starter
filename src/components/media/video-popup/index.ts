@@ -64,6 +64,10 @@ export default class VideoPopup extends LitElement {
      * Vimeo player
      */
     protected _vmVideo?: any;
+    /**
+     * Video player
+     */
+    protected _mp4Video?: any;
 
     // events
     protected _timeline?: Timeline;
@@ -245,6 +249,14 @@ export default class VideoPopup extends LitElement {
                 });
                 return;
             }
+            if (this._videoSource === 'mp4') {
+                this._createMp4Player().then(() => {
+                    resolve();
+                }).catch(() => {
+                    reject();
+                });
+                return;
+            }
             reject();
         });
     }
@@ -257,6 +269,10 @@ export default class VideoPopup extends LitElement {
         if (this._vmVideo) {
             this._vmVideo.destroy();
             this._vmVideo = undefined;
+        }
+        if (this._mp4Video) {
+            this._mp4Video.destroy();
+            this._mp4Video = undefined;
         }
     }
 
@@ -326,6 +342,38 @@ export default class VideoPopup extends LitElement {
             }).catch(() => {
                 reject();
             });
+        });
+    }
+
+    /**
+     * Create a MP4 Video Player
+     */
+    protected _createMp4Player () {
+        return new Promise<void>((
+            resolve,
+            reject,
+        ) => {
+            if (!this.videoMp4 || !this._wrapper) {
+                reject();
+                return;
+            }
+            // create a video element
+            const video = document.createElement('video');
+            video.disablePictureInPicture = true;
+            video.setAttribute('preload', 'auto');
+            video.crossOrigin = 'anonymous';
+            video.autoplay = true;
+            video.controls = true;
+            video.playsInline = true;
+            // create video source
+            const source = document.createElement('source');
+            source.setAttribute('src', `${this.videoMp4}#t=0.1`);
+            source.setAttribute('type', 'video/mp4');
+            video.appendChild(source);
+            // append the video
+            this._wrapper.appendChild(video);
+
+            resolve();
         });
     }
 

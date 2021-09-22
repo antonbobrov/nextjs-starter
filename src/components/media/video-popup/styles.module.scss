@@ -127,6 +127,10 @@
         height: 100%;
     }
 
+    video {
+        object-fit: cover;
+    }
+
     font-size: 16px;
 
 }
