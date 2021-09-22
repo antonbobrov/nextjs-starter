@@ -6,6 +6,7 @@ import styles from './styles.module.scss';
 import getH1 from '../../utils/data/getH1';
 import SplitText from '../../components/content/split-text';
 import { BaseTemplateData } from '../../types/page';
+import VideoPopupButton from '../../components/media/video-popup-button';
 
 
 
@@ -47,6 +48,31 @@ const TextPageTemplate: FC<BaseTemplateData> = (
                         <h2>Horizontal scroll list</h2>
                         <br />
                         <ItemsScrollList />
+
+                        <br />
+                        <br />
+                        <h2>Video Popup</h2>
+                        <br />
+                        <VideoPopupButton
+                            source="yt"
+                            id="BHACKCNDMW8"
+                        >
+                            <span>Play YouTube video</span>
+                        </VideoPopupButton>
+                        <span>&nbsp;</span>
+                        <VideoPopupButton
+                            source="vm"
+                            id="601518684"
+                        >
+                            <span>Play Vimeo video</span>
+                        </VideoPopupButton>
+                        <span>&nbsp;</span>
+                        <VideoPopupButton
+                            source="mp4"
+                            src="/lorem/video.mp4"
+                        >
+                            <span>Play MP4 video</span>
+                        </VideoPopupButton>
 
                         <br />
                         <br />
