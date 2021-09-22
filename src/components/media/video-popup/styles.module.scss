@@ -1,3 +1,5 @@
+@import '../../../styles/base.scss';
+
 .component {
     position: fixed;
     z-index: 999;
@@ -10,16 +12,41 @@
     align-items: center;
     justify-content: center;
 
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 1);
 
     opacity: 0;
 
 }
 
+.close {
+    @include reset-button;
+    position: fixed;
+    top: px-to-rem(20);
+    left: 50%;
+    transform: translate(-50%, 0);
+    
+    display: inline-block;
+    padding: px-to-rem(10) px-to-rem(20);
+
+    border-radius: 3px;
+    background-color: #fff;
+    color: #000;
+
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+
+    span {
+        position: relative;
+    }
+
+}
+
 .container {
     position: relative;
-    width: 888px;
-    height: 500px;
+    width: 160px;
+    height: 90px;
 
     background-color: #3f3f3f;
     transition: background-color 0.35s;

@@ -2,12 +2,13 @@ import { LitElement } from 'lit';
 import {
     createElement, addEventListener, IAddEventListener, childOf,
 } from 'vevet-dom';
-import { Timeline } from 'vevet';
+import { NCallbacks, Timeline } from 'vevet';
 
 import styles from './styles.module.scss';
+import app from '../../../app';
 
 const tagName = 'video-popup';
-export type VideoPopupSource = 'srv' | 'yt' | 'vm';
+export type VideoPopupSource = 'mp4' | 'yt' | 'vm';
 
 export default class VideoPopup extends LitElement {
     /**
@@ -24,12 +25,12 @@ export default class VideoPopup extends LitElement {
     /**
      * MP4 Video
      */
-    protected _videoSrc?: string;
-    get videoSrc () {
-        return this._videoSrc;
+    protected _videoMp4?: string;
+    get videoMp4 () {
+        return this._videoMp4;
     }
-    set videoSrc (val) {
-        this._videoSrc = val;
+    set videoMp4 (val) {
+        this._videoMp4 = val;
     }
 
     /**
@@ -44,13 +45,17 @@ export default class VideoPopup extends LitElement {
     }
 
     /**
-     * Video Wrapper
+     * Close button
      */
-    protected _container!: HTMLElement;
+    protected _closeButton?: HTMLButtonElement;
+    /**
+      * Video Wrapper
+      */
+    protected _container?: HTMLElement;
     /**
       * Video Container
       */
-    protected _wrapper!: HTMLElement;
+    protected _wrapper?: HTMLElement;
     /**
      * YouTube player
      */
@@ -63,6 +68,7 @@ export default class VideoPopup extends LitElement {
     // events
     protected _timeline?: Timeline;
     protected _listeners!: IAddEventListener[];
+    protected _viewportEvent?: NCallbacks.AddedCallback;
 
 
 
@@ -77,6 +83,14 @@ export default class VideoPopup extends LitElement {
         this._listeners = [];
 
         // create elements
+        this._closeButton = createElement('button', {
+            attr: [
+                ['type', 'button'],
+            ],
+            class: styles.close,
+            html: `<span>${'Close'}</span>`,
+            parent: this,
+        });
         this._container = createElement('div', {
             class: styles.container,
             parent: this,
@@ -86,6 +100,11 @@ export default class VideoPopup extends LitElement {
             parent: this._container,
         });
 
+        // set "close" listener
+        this._listeners.push(addEventListener(this._closeButton, 'click', (e) => {
+            e.stopPropagation();
+            this.hide();
+        }));
         // set "escape" listener
         this._listeners.push(addEventListener(window, 'keydown', (e) => {
             if (e.keyCode === 27) {
@@ -94,6 +113,9 @@ export default class VideoPopup extends LitElement {
         }));
         // set outside click listener
         this._listeners.push(addEventListener(this, 'click', (e) => {
+            if (!this._container) {
+                return;
+            }
             if (!childOf(e.target as any, this._container)) {
                 this.hide();
             }
@@ -101,12 +123,31 @@ export default class VideoPopup extends LitElement {
 
         // show the popup
         this.show();
+
+        // set resize events
+        if (app) {
+            this._viewportEvent = app.viewport.add('', () => {
+                this._resize();
+            }, {
+                name: tagName,
+            });
+        }
     }
 
     disconnectedCallback () {
         super.disconnectedCallback();
-        this._wrapper.remove();
-        this._container.remove();
+        if (this._closeButton) {
+            this._closeButton.remove();
+            this._closeButton = undefined;
+        }
+        if (this._wrapper) {
+            this._wrapper.remove();
+            this._wrapper = undefined;
+        }
+        if (this._container) {
+            this._container.remove();
+            this._container = undefined;
+        }
 
         this._destroyPlayer();
 
@@ -118,6 +159,63 @@ export default class VideoPopup extends LitElement {
             listener.remove();
         });
         this._listeners = [];
+        if (this._viewportEvent) {
+            this._viewportEvent.remove();
+            this._viewportEvent = undefined;
+        }
+    }
+
+
+
+    /**
+     * Resize the container
+     */
+    protected _resize () {
+        // resize the container
+        if (this._container) {
+            const { containerSizes } = this;
+            this._container.style.marginTop = `${containerSizes.marginTop}px`;
+            this._container.style.width = `${containerSizes.width}px`;
+            this._container.style.height = `${containerSizes.height}px`;
+        }
+    }
+
+    /**
+     * Get sizes of the container
+     */
+    protected get containerSizes () {
+        if (!this._closeButton || !app) {
+            return {
+                marginTop: 0,
+                width: 0,
+                height: 0,
+            };
+        }
+        const { viewport } = app;
+
+        // get close-button sizes
+        const closeButtonBounding = this._closeButton.getBoundingClientRect();
+        const buttonTop = closeButtonBounding.top;
+        const buttonHeight = closeButtonBounding.height;
+
+        // get container sizes
+        const maxWidth = viewport.width * (viewport.isPhone ? 1 : 0.8);
+        const maxHeight = viewport.height;
+        let height = maxHeight - (buttonTop * 3 + buttonHeight);
+        let width = height * (1 / 0.5625);
+        if (width > maxWidth) {
+            width = maxWidth;
+            height = maxWidth * 0.5625;
+        }
+        if (width > 1800) {
+            width = 1800;
+            height = 1800 * 0.5625;
+        }
+        return {
+            marginTop: buttonHeight + buttonTop, // top +  / 2,
+            width,
+            height,
+        };
     }
 
 
@@ -175,7 +273,12 @@ export default class VideoPopup extends LitElement {
                 return;
             }
             import('youtube-player').then((mod) => {
-                const player = mod.default(this._wrapper, {
+                if (!this._wrapper) {
+                    reject();
+                    return;
+                }
+                const Module = mod.default;
+                const player = Module(this._wrapper, {
                     videoId: this.videoID,
                     playerVars: {
                         modestbranding: 1,
@@ -206,10 +309,13 @@ export default class VideoPopup extends LitElement {
                 return;
             }
             import('@vimeo/player').then((mod) => {
-                const VimeoPlayer = mod.default;
-                const player = new VimeoPlayer(this._wrapper, {
+                if (!this._wrapper) {
+                    reject();
+                    return;
+                }
+                const Module = mod.default;
+                const player = new Module(this._wrapper, {
                     id: parseInt(this.videoID || '0', 10),
-                    controls: false,
                     title: false,
                     portrait: false,
                 });
@@ -229,6 +335,9 @@ export default class VideoPopup extends LitElement {
      * Show the popup
      */
     public show () {
+        // resize the scene
+        this._resize();
+        // show the scene
         if (this._timeline) {
             this._timeline.destroy();
         }
@@ -240,9 +349,13 @@ export default class VideoPopup extends LitElement {
         });
         this._timeline.addCallback('end', () => {
             this._createPlayer().then(() => {
-                this._container.classList.add('loaded');
+                if (this._container) {
+                    this._container.classList.add('loaded');
+                }
             }).catch(() => {
-                this._wrapper.innerHTML = 'Some error while loading the video';
+                if (this._wrapper) {
+                    this._wrapper.innerHTML = 'Some error while loading the video';
+                }
             });
         });
         this._timeline.play();
