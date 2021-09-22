@@ -10,6 +10,10 @@ import app from '../../../app';
 const tagName = 'video-popup';
 export type VideoPopupSource = 'mp4' | 'yt' | 'vm';
 
+interface VideoElement extends HTMLVideoElement {
+    disablePictureInPicture: boolean;
+}
+
 export default class VideoPopup extends LitElement {
     /**
      * Video Source Type
@@ -358,7 +362,7 @@ export default class VideoPopup extends LitElement {
                 return;
             }
             // create a video element
-            const video = document.createElement('video');
+            const video = document.createElement('video') as VideoElement;
             video.disablePictureInPicture = true;
             video.setAttribute('preload', 'auto');
             video.crossOrigin = 'anonymous';
