@@ -1,6 +1,5 @@
 import dynamic from 'next/dynamic';
-import { FC } from 'react';
-import { BaseTemplateData } from '../types/page';
+import PageContext from '../store/pageContext';
 
 const Empty = dynamic(import('./Empty'), {
     ssr: true,
@@ -8,28 +7,29 @@ const Empty = dynamic(import('./Empty'), {
 const Home = dynamic(import('./home'), {
     ssr: true,
 });
-const TextPage = dynamic(import('./text'), {
+const Text = dynamic(import('./text'), {
     ssr: true,
 });
 const Examples = dynamic(import('./examples'), {
     ssr: true,
 });
 
-const RenderTemplate: FC<BaseTemplateData> = (
-    props,
-) => {
-    const { template } = props;
-
-    switch (template) {
-        case 'home':
-            return <Home {...props as any} key={props.time} />;
-        case 'text':
-            return <TextPage {...props as any} key={props.time} />;
-        case 'examples':
-            return <Examples {...props as any} key={props.time} />;
-        default:
-            return <Empty {...props as any} key={props.time} />;
-    }
-};
+const RenderTemplate = () => (
+    <PageContext.Consumer>
+        {(props) => {
+            const { template } = props;
+            switch (template) {
+                case 'home':
+                    return <Home {...props as any} key={props.time} />;
+                case 'text':
+                    return <Text {...props as any} key={props.time} />;
+                case 'examples':
+                    return <Examples {...props as any} key={props.time} />;
+                default:
+                    return <Empty key={props.time} />;
+            }
+        }}
+    </PageContext.Consumer>
+);
 
 export default RenderTemplate;

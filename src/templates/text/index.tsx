@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react';
 import AppPage from '../../app/AppPage';
 import LayoutSmoothScroll from '../../components/layout/smooth-scroll';
-import TextContent from '../../components/layout/text-content';
+import TextContent from '../../components/layout/text/text-content';
 import styles from './styles.module.scss';
 import { BaseTemplateData } from '../../types/page';
 

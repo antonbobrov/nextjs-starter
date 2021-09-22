@@ -3,10 +3,10 @@ import AppPage from '../../app/AppPage';
 import LayoutSmoothScroll from '../../components/layout/smooth-scroll';
 import ItemsScrollList from '../../components/content/item-scroll-list';
 import styles from './styles.module.scss';
-import getH1 from '../../utils/data/getH1';
 import SplitText from '../../components/content/split-text';
 import { BaseTemplateData } from '../../types/page';
 import VideoPopupButton from '../../components/media/video-popup-button';
+import H1Text from '../../components/layout/text/H1Text';
 
 
 
@@ -41,7 +41,9 @@ const TextPageTemplate: FC<BaseTemplateData> = (
                 <div className="page-content">
                     <div className="wrap v-view_b">
 
-                        <h1>{getH1(props)}</h1>
+                        <h1>
+                            <H1Text />
+                        </h1>
                         <br />
                         <br />
 

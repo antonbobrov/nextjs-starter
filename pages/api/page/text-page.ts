@@ -30,7 +30,7 @@ export default async function handler (
             template: 'text',
 
             document: {
-                pagetitle: 'Home',
+                pagetitle: 'Text page',
                 longtitle: 'This is the text page',
                 description: '',
                 introtext: '',

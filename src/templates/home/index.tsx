@@ -1,10 +1,10 @@
 import { FC, useEffect } from 'react';
 import PageDesc from '../../components/layout/page-desc';
-import getH1 from '../../utils/data/getH1';
 import styles from './styles.module.scss';
 import AppPage from '../../app/AppPage';
 import LayoutSmoothScroll from '../../components/layout/smooth-scroll';
 import { BaseTemplateData } from '../../types/page';
+import H1Text from '../../components/layout/text/H1Text';
 
 
 
@@ -38,9 +38,9 @@ const HomeTemplate: FC<HomeTemplateData> = (
 
                     <div className="wrap">
                         <h1 className="v-view_b">
-                            {getH1(props)}
+                            <H1Text />
                         </h1>
-                        <PageDesc {...props} />
+                        <PageDesc />
                     </div>
 
                 </div>

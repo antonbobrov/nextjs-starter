@@ -9,6 +9,7 @@ import Header from '../src/components/layout/header';
 import CustomCursor from '../src/components/layout/custom-cursor';
 import { APIResponse } from '../src/types/types';
 import { BaseTemplateData } from '../src/types/page';
+import PageContext from '../src/store/pageContext';
 
 function MyApp ({ Component, pageProps }: AppProps) {
     const props = pageProps as APIResponse<
@@ -16,15 +17,15 @@ function MyApp ({ Component, pageProps }: AppProps) {
     >;
     if (props.success && !!props.data) {
         return (
-            <>
-                <LayoutHead {...props.data} />
+            <PageContext.Provider value={{ ...props.data }}>
+                <LayoutHead />
                 <Preloader />
                 <CustomCursor />
                 <div className="app" id="app">
-                    <Header {...props.data} />
-                    <Component {...props.data as any} />
+                    <Header />
+                    <Component />
                 </div>
-            </>
+            </PageContext.Provider>
         );
     }
     return <div>{`Some error at ${JSON.stringify(pageProps)}`}</div>;

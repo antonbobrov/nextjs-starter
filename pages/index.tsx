@@ -4,12 +4,8 @@ import { APIResponse } from '../src/types/types';
 import { getEnvApiPageUrl } from '../src/utils/env';
 import normalizeUrlSlashes from '../src/utils/data/normalizeUrlSlashes';
 
-const Router = (
-    props: Record<string, any>,
-) => (
-    <>
-        <RenderTemplate {...props as any} />
-    </>
+const Router = () => (
+    <RenderTemplate />
 );
 export default Router;
 
