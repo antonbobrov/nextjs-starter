@@ -5,33 +5,36 @@ import styles from './styles.module.scss';
 const Header = () => (
     <PageContext.Consumer>
         {(props) => {
-            const { url, lexicon } = props;
+            const { url, lexicon, headerMenu } = props;
             return (
                 <header
-                    className={styles.container}
+                    className={styles.header}
                 >
                     {/* Logo */}
                     <Link href={url.siteUrl}>
                         <a
                             href={url.siteUrl}
-                            className={styles.container__logo}
+                            className={styles.header__logo}
                         >
                             {lexicon.siteName}
                         </a>
                     </Link>
 
                     {/* Menu Nav */}
-                    <nav className={styles.container__menu}>
+                    <nav className={styles.header__menu}>
                         <ul>
-                            <li>
-                                <Link href="/">Home page</Link>
-                            </li>
-                            <li>
-                                <Link href="/text-page">Text page</Link>
-                            </li>
-                            <li>
-                                <Link href="/examples">Examples</Link>
-                            </li>
+                            {headerMenu.map((link) => (
+                                <li key={link.id}>
+                                    <Link href={link.href}>
+                                        <a
+                                            href={link.href}
+                                            className={link.isActive ? 'active' : ''}
+                                        >
+                                            {link.name}
+                                        </a>
+                                    </Link>
+                                </li>
+                            ))}
                         </ul>
                     </nav>
                 </header>

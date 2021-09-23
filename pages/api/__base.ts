@@ -70,6 +70,18 @@ export default async function handler (
 
             lexicon,
 
+            headerMenu: [
+                {
+                    id: 0, href: '/', name: 'Home', isActive: true, isExternal: false,
+                },
+                {
+                    id: 1, href: '/text-page', name: 'Text Page', isActive: false, isExternal: false,
+                },
+                {
+                    id: 2, href: '/examples', name: 'Examples', isActive: false, isExternal: false,
+                },
+            ],
+
         },
     });
 }

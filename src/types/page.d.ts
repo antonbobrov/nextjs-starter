@@ -29,6 +29,16 @@ export interface SettingsData {
 
 
 
+export interface LinkData {
+    id: number;
+    href: string;
+    name: string;
+    isActive?: boolean;
+    isExternal?: boolean;
+}
+
+
+
 export interface BaseTemplateData {
     time: number;
     template: string;
@@ -41,5 +51,7 @@ export interface BaseTemplateData {
     document: DocumentData;
     settings: SettingsData;
     lexicon: LexiconData;
+
+    headerMenu: LinkData[];
 
 }

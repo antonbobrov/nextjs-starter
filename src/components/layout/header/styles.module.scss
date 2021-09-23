@@ -1,6 +1,6 @@
 @import '../../../styles/base';
 
-.container {
+.header {
     position: absolute;
     z-index: 9;
     top: 0;
@@ -36,6 +36,12 @@
                 }
             }
 
+        }
+
+        a {
+            &:global.active {
+                text-decoration: underline;
+            }
         }
 
     }
