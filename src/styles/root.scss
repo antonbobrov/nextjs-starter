@@ -3,7 +3,15 @@
 :root {
 
     // sizes
-    --wrap: #{px-to-rem(60)};
+    @include viewport-desktop {
+        --wrap: #{px-to-rem(60)};
+    }
+    @include viewport-tablet {
+        --wrap: #{px-to-rem(40)};
+    }
+    @include viewport-phone {
+        --wrap: #{px-to-rem(20)};
+    }
     --vh: 1vh;
     --vw: 1vw;
     --font-size: 16px;
