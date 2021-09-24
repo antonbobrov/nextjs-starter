@@ -5,6 +5,7 @@ import { selectOne } from 'vevet-dom';
 import { getPreloader } from '../components/layout/preloader';
 import { appSettings } from '../app';
 import { hideLoaderCurtain, showLoaderCurtain } from '../components/layout/loader-curtain/states';
+import createFixedHeaderHandler, { IFixedHeaderHandler } from '../components/layout/header/createFixedHeaderHandler';
 
 export default class AppPage extends Page {
     // smooth scrolling
@@ -28,6 +29,9 @@ export default class AppPage extends Page {
         return this._scrollView;
     }
 
+    // fixed header handler
+    protected _fixedHeaderHandler?: IFixedHeaderHandler;
+
 
 
     /**
@@ -38,6 +42,19 @@ export default class AppPage extends Page {
             resolve,
         ) => {
             super._create().then(() => {
+                // create smooth scrolling
+                this._createSmoothScroll();
+
+                // process layout headers
+                this._fixedHeaderHandler = createFixedHeaderHandler();
+                this.addCallback('destroy', () => {
+                    if (this._fixedHeaderHandler) {
+                        this._fixedHeaderHandler.destroy();
+                        this._fixedHeaderHandler = undefined;
+                    }
+                });
+
+                // show the page on preloader hide
                 const preloader = getPreloader();
                 if (preloader) {
                     preloader.onHide(() => {
@@ -60,7 +77,6 @@ export default class AppPage extends Page {
         ) => {
             super._show().then(() => {
                 hideLoaderCurtain().then(() => {
-                    this._createSmoothScroll();
                     this._createScrollBar();
                     this._createScrollView();
                     resolve();

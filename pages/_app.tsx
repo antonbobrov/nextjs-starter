@@ -22,7 +22,7 @@ function MyApp ({ Component, pageProps }: AppProps) {
                 <Preloader />
                 <CustomCursor />
                 <div className="app" id="app">
-                    <Header />
+                    <Header isFixed />
                     <Component />
                 </div>
             </PageContext.Provider>

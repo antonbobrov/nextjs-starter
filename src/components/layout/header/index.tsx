@@ -1,14 +1,26 @@
 import Link from 'next/link';
+import {
+    FC,
+} from 'react';
 import PageContext from '../../../store/pageContext';
 import styles from './styles.module.scss';
 
-const Header = () => (
+interface Data {
+    isFixed: boolean;
+}
+
+const Header: FC<Data> = (
+    props,
+) => (
     <PageContext.Consumer>
-        {(props) => {
-            const { url, lexicon, headerMenu } = props;
+        {(pageProps) => {
+            const { url, lexicon, headerMenu } = pageProps;
             return (
                 <header
-                    className={styles.header}
+                    className={`
+                            ${styles.header} 
+                            ${props.isFixed ? styles.is_fixed : ''}
+                        `}
                 >
                     {/* Logo */}
                     <Link href={url.siteUrl}>

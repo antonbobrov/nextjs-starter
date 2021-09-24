@@ -1,5 +1,7 @@
 @import '../../../styles/base';
 
+$hide-header-duration: 0.5s;
+
 .header {
     position: absolute;
     z-index: 9;
@@ -42,6 +44,27 @@
             &:global.active {
                 text-decoration: underline;
             }
+        }
+
+    }
+    
+    &.is_fixed {
+        position: fixed;
+        
+        @at-root :global(html:not(.v-browser-safari)) & {
+            @include transition(transform $hide-header-duration);
+            transform: translate(0, -100%);
+        } 
+        @at-root :global(html:not(.v-browser-safari).show-fixed-header) & {
+            transform: translate(0, 0);
+        }
+        
+        @at-root :global(html.v-browser-safari) & {
+            @include transition(opacity $hide-header-duration);
+            opacity: 0;
+        } 
+        @at-root :global(html.v-browser-safari.show-fixed-header) & {
+            opacity: 1;
         }
 
     }
