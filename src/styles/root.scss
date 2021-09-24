@@ -23,7 +23,15 @@
     --color-highlight: rgb(113, 172, 221);
     
     // header
-    --header-height: #{px-to-rem(80)};
+    @include viewport-desktop {
+        --header-height: #{px-to-rem(80)};
+    }
+    @include viewport-tablet {
+        --header-height: #{px-to-rem(70)};
+    }
+    @include viewport-phone {
+        --header-height: #{px-to-rem(60)};
+    }
     --header-bg: #000;
     --header-line: #fff;
     --header-link: #fff;
