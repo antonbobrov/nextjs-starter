@@ -77,12 +77,19 @@ export default class AppPage extends Page {
         ) => {
             super._show().then(() => {
                 hideLoaderCurtain().then(() => {
-                    this._createScrollBar();
-                    this._createScrollView();
+                    this._showInner();
                     resolve();
                 });
             });
         });
+    }
+
+    /**
+     * Show the page
+     */
+    protected _showInner () {
+        this._createScrollBar();
+        this._createScrollView();
     }
 
     /**
