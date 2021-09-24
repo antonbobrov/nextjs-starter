@@ -9,6 +9,6 @@ export default function handler (
     >,
 ) {
     res.status(200).json({
-        siteName: 'Website',
+        siteName: 'Next.JS Vevet Starter',
     });
 }
