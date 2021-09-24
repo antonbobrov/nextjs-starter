@@ -170,6 +170,9 @@ export default class AppPage extends Page {
      * Create page scrollbar
      */
     protected _createScrollBar () {
+        if (!this.smoothScroll) {
+            return;
+        }
         const container = this.smoothScroll || window;
         // add scrollbar
         this._scrollBar = new ScrollBar({
