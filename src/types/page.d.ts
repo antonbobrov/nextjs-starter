@@ -33,8 +33,8 @@ export interface LinkData {
     id: number;
     href: string;
     name: string;
-    isActive?: boolean;
-    isExternal?: boolean;
+    isActive: boolean;
+    isExternal: boolean;
 }
 
 
