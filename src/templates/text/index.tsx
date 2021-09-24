@@ -4,6 +4,7 @@ import LayoutSmoothScroll from '../../components/layout/smooth-scroll';
 import TextContent from '../../components/layout/text/text-content';
 import styles from './styles.module.scss';
 import { BaseTemplateData } from '../../types/page';
+import Header from '../../components/layout/header';
 
 
 
@@ -35,6 +36,7 @@ const TextPageTemplate: FC<TextPageTemplateData> = (
     return (
         <LayoutSmoothScroll>
             <div className={styles.page}>
+                <Header isFixed={false} />
                 <div className="page-content">
                     <div className="wrap v-view_b">
                         <div className={styles.page__content}>

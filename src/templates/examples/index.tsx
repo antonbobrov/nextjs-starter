@@ -7,6 +7,7 @@ import SplitText from '../../components/content/split-text';
 import { BaseTemplateData } from '../../types/page';
 import VideoPopupButton from '../../components/media/video-popup-button';
 import H1Text from '../../components/layout/text/H1Text';
+import Header from '../../components/layout/header';
 
 
 
@@ -38,6 +39,7 @@ const TextPageTemplate: FC<BaseTemplateData> = (
     return (
         <LayoutSmoothScroll>
             <div className={styles.page}>
+                <Header isFixed={false} />
                 <div className="page-content">
                     <div className="wrap v-view_b">
 

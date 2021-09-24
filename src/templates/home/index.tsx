@@ -5,6 +5,7 @@ import AppPage from '../../app/AppPage';
 import LayoutSmoothScroll from '../../components/layout/smooth-scroll';
 import { BaseTemplateData } from '../../types/page';
 import H1Text from '../../components/layout/text/H1Text';
+import Header from '../../components/layout/header';
 
 
 
@@ -34,6 +35,7 @@ const HomeTemplate: FC<HomeTemplateData> = (
     return (
         <LayoutSmoothScroll>
             <div className={styles.page}>
+                <Header isFixed={false} />
                 <div className="page-content">
 
                     <div className="wrap">
