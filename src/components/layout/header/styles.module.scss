@@ -23,6 +23,10 @@ $hide-header-duration: 0.5s;
     &__menu {
         display: flex;
 
+        @include viewport-phone {
+            display: none;
+        }
+
         ul {
             list-style: none;
             margin: 0;
