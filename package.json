@@ -21,7 +21,7 @@
     "redux": "^4.1.1",
     "sass": "^1.32.13",
     "ts-essentials": "^7.0.2",
-    "vevet": "file:../vevet",
+    "vevet": "^2.0.1-dev.0",
     "vevet-dom": "0.0.15",
     "youtube-player": "^5.5.2"
   },
