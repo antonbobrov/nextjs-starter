@@ -1,5 +1,6 @@
 import Router from 'next/router';
 import { getAppPage } from './app';
+import pageIsLoading from './store/pageIsLoading';
 
 override();
 
@@ -83,6 +84,7 @@ function readyToReload () {
         if (page) {
             // hide the page if it is shown
             if (page.shown) {
+                pageIsLoading.start();
                 page.hide().then(() => {
                     // destroy the page
                     page.destroy().then(() => {
@@ -100,6 +102,7 @@ function readyToReload () {
             return;
         }
         // change the route if no page
+        pageIsLoading.start();
         resolve();
     });
 }

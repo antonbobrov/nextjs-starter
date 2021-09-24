@@ -6,6 +6,7 @@ import { getPreloader } from '../components/layout/preloader';
 import { appSettings } from '../app';
 import { hideLoaderCurtain, showLoaderCurtain } from '../components/layout/loader-curtain/states';
 import createFixedHeaderHandler, { IFixedHeaderHandler } from '../components/layout/header/createFixedHeaderHandler';
+import pageIsLoading from '../store/pageIsLoading';
 
 export default class AppPage extends Page {
     // smooth scrolling
@@ -88,6 +89,8 @@ export default class AppPage extends Page {
      * Show the page
      */
     protected _showInner () {
+        pageIsLoading.end();
+
         this._createScrollBar();
         this._createScrollView();
     }

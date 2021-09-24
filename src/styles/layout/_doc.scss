@@ -10,6 +10,11 @@ html {
         }
     }
 
+    @include loading-indicator;
+    &:before {
+        position: fixed;
+    }
+
     background-color: var(--color-bg);
     color: var(--color-text);
     
