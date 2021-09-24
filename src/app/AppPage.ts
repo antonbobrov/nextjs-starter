@@ -1,5 +1,5 @@
 import {
-    Page, ScrollBar, ScrollView, SmoothScroll, SmoothScrollKeyboardPlugin,
+    Page, ProgressPreloader, ScrollBar, ScrollView, SmoothScroll, SmoothScrollKeyboardPlugin,
 } from 'vevet';
 import { selectOne } from 'vevet-dom';
 import { getPreloader } from '../components/layout/preloader';
@@ -9,6 +9,9 @@ import createFixedHeaderHandler, { IFixedHeaderHandler } from '../components/lay
 import pageIsLoading from '../store/pageIsLoading';
 
 export default class AppPage extends Page {
+    // page preloader
+    protected _pagePreloader?: ProgressPreloader;
+
     // smooth scrolling
     protected _smoothScroll?: SmoothScroll;
     get smoothScroll () {
@@ -84,10 +87,21 @@ export default class AppPage extends Page {
             resolve,
         ) => {
             super._show().then(() => {
-                hideLoaderCurtain().then(() => {
-                    this._showInner();
-                    resolve();
-                });
+                const layoutPreloader = getPreloader();
+                const hasInnerPreloader = !!layoutPreloader && layoutPreloader.isHidden;
+                if (hasInnerPreloader) {
+                    this._onPageLoaded().then(() => {
+                        hideLoaderCurtain().then(() => {
+                            this._showInner();
+                            resolve();
+                        });
+                    });
+                } else {
+                    hideLoaderCurtain().then(() => {
+                        this._showInner();
+                        resolve();
+                    });
+                }
             });
         });
     }
@@ -100,6 +114,32 @@ export default class AppPage extends Page {
 
         this._createScrollBar();
         this._createScrollView();
+    }
+
+    /**
+     * Create a page preloader
+     */
+    protected _onPageLoaded () {
+        return new Promise<void>((
+            resolve,
+        ) => {
+            this._pagePreloader = new ProgressPreloader({
+                parent: this,
+                container: false,
+                hide: false,
+                loaders: {
+                    img: false,
+                    video: false,
+                    custom: '.js-preload-inner',
+                },
+                calc: {
+                    lerp: false,
+                },
+            });
+            this._pagePreloader.addCallback('loaded', () => {
+                resolve();
+            });
+        });
     }
 
     /**

@@ -19,7 +19,9 @@ const Preloader: FC = () => {
                 container: ref.current,
                 hide: 350,
                 loaders: {
-                    video: false,
+                    img: true,
+                    video: true,
+                    custom: '.js-preload-global',
                 },
                 calc: {
                     lerp: 0.5,
