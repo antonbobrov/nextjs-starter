@@ -43,28 +43,35 @@ export default class AppPage extends Page {
             resolve,
         ) => {
             super._create().then(() => {
-                // create smooth scrolling
-                this._createSmoothScroll();
-
-                // process layout headers
-                this._fixedHeaderHandler = createFixedHeaderHandler();
-                this.addCallback('destroy', () => {
-                    if (this._fixedHeaderHandler) {
-                        this._fixedHeaderHandler.destroy();
-                        this._fixedHeaderHandler = undefined;
-                    }
-                });
-
-                // show the page on preloader hide
-                const preloader = getPreloader();
-                if (preloader) {
-                    preloader.onHide(() => {
-                        this.show();
-                    });
-                }
+                this._createInner();
                 resolve();
             });
         });
+    }
+
+    /**
+     * Create the page
+     */
+    protected _createInner () {
+        // create smooth scrolling
+        this._createSmoothScroll();
+
+        // process layout headers
+        this._fixedHeaderHandler = createFixedHeaderHandler();
+        this.addCallback('destroy', () => {
+            if (this._fixedHeaderHandler) {
+                this._fixedHeaderHandler.destroy();
+                this._fixedHeaderHandler = undefined;
+            }
+        });
+
+        // show the page on preloader hide
+        const preloader = getPreloader();
+        if (preloader) {
+            preloader.onHide(() => {
+                this.show();
+            });
+        }
     }
 
 
