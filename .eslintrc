@@ -1,5 +1,8 @@
 {
   "extends": ["eslint:recommended", "airbnb", "next", "next/core-web-vitals"],
+  "plugins": [
+      "@typescript-eslint"
+  ],
   "rules": {
     "linebreak-style": "off",
     "import/extensions": [
@@ -54,7 +57,11 @@
             "props": false
         }
     ],
-    "import/no-cycle": "off"
+    "import/no-cycle": "off",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": [
+        "error"
+    ]
   },
   "overrides": [
       {
