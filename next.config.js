@@ -9,4 +9,7 @@ module.exports = withTM({
         PROJECT_ROOT: __dirname,
     },
     trailingSlash: true,
+    experimental: {
+        esmExternals: 'loose',
+    },
 });
