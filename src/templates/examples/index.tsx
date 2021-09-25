@@ -27,11 +27,6 @@ const TextPageTemplate: FC<BaseTemplateData> = (
             name: props.template,
         });
         page.create();
-        page.onShow().then(() => {
-            setTimeout(() => {
-                // setAllowImg(false);
-            }, 2500);
-        });
         return () => {
             page.hide().then(() => {
                 page.destroy();
