@@ -1,6 +1,9 @@
 import { Application } from 'vevet';
 import AppPage from './app/AppPage';
+import registerServiceWorker from './service-worker';
 import { isBrowser } from './utils/browser/isBrowser';
+
+registerServiceWorker();
 
 const app = (isBrowser ? new Application<AppPage>() : undefined) as Application<AppPage>;
 export default app;
