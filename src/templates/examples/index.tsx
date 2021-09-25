@@ -8,6 +8,7 @@ import { BaseTemplateData } from '../../types/page';
 import VideoPopupButton from '../../components/media/video-popup-button';
 import H1Text from '../../components/layout/text/H1Text';
 import Header from '../../components/layout/header';
+import LazyImage from '../../components/layout/lazy-image';
 
 
 
@@ -26,6 +27,11 @@ const TextPageTemplate: FC<BaseTemplateData> = (
             name: props.template,
         });
         page.create();
+        page.onShow().then(() => {
+            setTimeout(() => {
+                // setAllowImg(false);
+            }, 2500);
+        });
         return () => {
             page.hide().then(() => {
                 page.destroy();
@@ -77,6 +83,20 @@ const TextPageTemplate: FC<BaseTemplateData> = (
                         >
                             <span>Play MP4 video</span>
                         </VideoPopupButton>
+
+                        <br />
+                        <br />
+                        <h2>Responive lazy image</h2>
+                        <br />
+                        <LazyImage
+                            fullsize={false}
+                            src="https://picsum.photos/id/240/500"
+                            srcSet="
+                                https://picsum.photos/id/240/500 500w,
+                                https://picsum.photos/id/241/1280 1280w,
+                                https://picsum.photos/id/242/1680
+                            "
+                        />
 
                         <br />
                         <br />
