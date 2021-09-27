@@ -5,7 +5,7 @@ import app from '../../../app';
 
 interface Data {
     trigger: JSX.Element;
-    contentSelector: string | Element;
+    contentSelector?: string | Element;
 }
 
 const SimplePopup: FC<Data> = ({
