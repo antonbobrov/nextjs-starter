@@ -9,6 +9,7 @@ import VideoPopupButton from '../../components/media/video-popup-button';
 import H1Text from '../../components/layout/text/H1Text';
 import Header from '../../components/layout/header';
 import LazyImage from '../../components/layout/lazy-image';
+import SimplePopup from '../../components/popup/simple-popup';
 
 
 
@@ -78,6 +79,20 @@ const TextPageTemplate: FC<BaseTemplateData> = (
                         >
                             <span>Play MP4 video</span>
                         </VideoPopupButton>
+
+                        <br />
+                        <br />
+                        <h2>Simple Popup</h2>
+                        <br />
+                        <SimplePopup
+                            trigger={
+                                <button type="button" className="plain-button">Show the popup</button>
+                            }
+                        >
+                            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
+                            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
+                            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
+                        </SimplePopup>
 
                         <br />
                         <br />
