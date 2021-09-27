@@ -1,0 +1,15 @@
+.plain-button {
+    @include reset-button;
+    display: inline-block;
+    padding: px-to-rem(10);
+    border-radius: 3px;
+    background-color: #3f3f3f;
+    color: #fff;
+
+    @include transition(opacity .25s);
+
+    &:disabled {
+        opacity: .5;
+    }
+    
+}
