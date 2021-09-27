@@ -1,0 +1,13 @@
+@import '../../../styles/base.scss';
+
+.footer {
+    margin-top: px-to-rem(40);
+    padding: px-to-rem(40) var(--wrap);
+    border-top: 1px solid var(--color-text);
+    background-color: var(--footer-bg);
+
+    &__copyright {
+        text-align: center;
+    }
+
+}

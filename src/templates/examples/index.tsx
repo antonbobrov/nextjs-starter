@@ -10,6 +10,7 @@ import H1Text from '../../components/layout/text/H1Text';
 import Header from '../../components/layout/header';
 import LazyImage from '../../components/layout/lazy-image';
 import SimplePopup from '../../components/popup/simple-popup';
+import Footer from '../../components/layout/footer';
 
 
 
@@ -123,6 +124,7 @@ const TextPageTemplate: FC<BaseTemplateData> = (
                     </div>
                 </div>
             </div>
+            <Footer />
         </LayoutSmoothScroll>
     );
 };

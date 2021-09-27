@@ -5,6 +5,7 @@ import TextContent from '../../components/layout/text/text-content';
 import styles from './styles.module.scss';
 import { BaseTemplateData } from '../../types/page';
 import Header from '../../components/layout/header';
+import Footer from '../../components/layout/footer';
 
 
 
@@ -46,6 +47,7 @@ const TextPageTemplate: FC<TextPageTemplateData> = (
                     </div>
                 </div>
             </div>
+            <Footer />
         </LayoutSmoothScroll>
     );
 };

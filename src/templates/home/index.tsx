@@ -6,6 +6,7 @@ import LayoutSmoothScroll from '../../components/layout/smooth-scroll';
 import { BaseTemplateData } from '../../types/page';
 import H1Text from '../../components/layout/text/H1Text';
 import Header from '../../components/layout/header';
+import Footer from '../../components/layout/footer';
 
 
 
@@ -47,6 +48,7 @@ const HomeTemplate: FC<HomeTemplateData> = (
 
                 </div>
             </div>
+            <Footer />
         </LayoutSmoothScroll>
     );
 };
