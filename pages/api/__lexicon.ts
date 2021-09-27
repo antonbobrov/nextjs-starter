@@ -13,5 +13,6 @@ export default function handler (
         nav: {
             close: 'Close',
         },
+        copyright: 'Copyright © {year}',
     });
 }
