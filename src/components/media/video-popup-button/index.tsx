@@ -1,6 +1,5 @@
 import { FC, useState } from 'react';
 import type { VideoPopupSource } from '../video-popup';
-import styles from './styles.module.scss';
 
 interface Data {
     source: VideoPopupSource;
@@ -19,7 +18,7 @@ const VideoPopupButton: FC<Data> = ({
     return (
         <button
             type="button"
-            className={styles.button}
+            className="plain-button"
             disabled={disabled}
             onClick={() => {
                 setDisabled(true);
