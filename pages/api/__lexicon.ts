@@ -10,5 +10,8 @@ export default function handler (
 ) {
     res.status(200).json({
         siteName: 'Next.JS Vevet Starter',
+        nav: {
+            close: 'Close',
+        },
     });
 }
