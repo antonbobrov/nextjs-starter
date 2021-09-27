@@ -60,6 +60,7 @@
     ],
     "import/no-cycle": "off",
     "no-unused-vars": "off",
+    "jsx-a11y/media-has-caption": "off",
     "@typescript-eslint/no-unused-vars": [
         "error"
     ]
