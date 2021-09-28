@@ -29,14 +29,19 @@ const VideoPlayer: FC<Data> = ({
         if (!videoRef.current || !usePlayer) {
             return () => {};
         }
+        let destroyed = false;
         let player: VideoJsPlayerType | undefined;
         import('video.js').then((module) => {
+            if (destroyed) {
+                return;
+            }
             if (videoRef.current) {
                 player = module.default(videoRef.current, {});
                 setPlayerIsReady(true);
             }
         });
         return () => {
+            destroyed = true;
             if (player) {
                 player.dispose();
             }
