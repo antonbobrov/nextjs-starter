@@ -8,7 +8,7 @@ interface Data {
     onLoaded?: () => void;
 }
 
-const YouTubePlater: FC<Data> = ({
+const YouTubePlayer: FC<Data> = ({
     id,
     onLoaded = () => {},
 }) => {
@@ -54,4 +54,4 @@ const YouTubePlater: FC<Data> = ({
     );
 };
 
-export default YouTubePlater;
+export default YouTubePlayer;
