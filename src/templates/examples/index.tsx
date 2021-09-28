@@ -5,7 +5,7 @@ import ItemsScrollList from '../../components/content/item-scroll-list';
 import styles from './styles.module.scss';
 import SplitText from '../../components/content/split-text';
 import { BaseTemplateData } from '../../types/page';
-import VideoPopupButton from '../../components/media/video-popup-button';
+import VideoPopupButton from '../../components/video/video-popup-button';
 import H1Text from '../../components/layout/text/H1Text';
 import Header from '../../components/layout/header';
 import LazyImage from '../../components/layout/lazy-image';
