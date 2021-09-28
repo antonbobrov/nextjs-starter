@@ -13,7 +13,7 @@ interface Data {
     onLoaded?: () => void;
 }
 
-const VideoPlayer: FC<Data> = ({
+const VideoMp4Player: FC<Data> = ({
     src,
     autoplay = false,
     controls = true,
@@ -86,4 +86,4 @@ const VideoPlayer: FC<Data> = ({
     );
 };
 
-export default VideoPlayer;
+export default VideoMp4Player;
