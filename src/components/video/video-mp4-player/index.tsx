@@ -23,7 +23,7 @@ const VideoMp4Player: FC<Data> = ({
     const videoRef = useRef<HTMLVideoElement>(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [playerIsReady, setPlayerIsReady] = useState(false);
-    const [usePlayer] = useState(!app.isMobile);
+    const [usePlayer] = useState(!!((app && !app.isMobile)));
 
     useEffect(() => {
         if (!videoRef.current || !usePlayer) {
