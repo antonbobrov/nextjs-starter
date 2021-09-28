@@ -1,0 +1,11 @@
+@import '../../../styles/base.scss';
+
+.youtube_player {
+    @include absolute-fullsize;
+
+    iframe {
+        @include reset-button;
+        @include absolute-fullsize;
+    }
+
+}
