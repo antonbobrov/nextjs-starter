@@ -15,10 +15,10 @@ interface Data {
 
 const VideoPlayer: FC<Data> = ({
     src,
-    autoplay,
+    autoplay = false,
     controls = true,
     playsInline = true,
-    onLoaded,
+    onLoaded = () => {},
 }) => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [isLoaded, setIsLoaded] = useState(false);
