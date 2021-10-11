@@ -12,4 +12,8 @@ module.exports = withTM({
     experimental: {
         esmExternals: 'loose',
     },
+    env: {
+        API_URL: process.env.API_URL,
+        URL: process.env.URL,
+    },
 });
