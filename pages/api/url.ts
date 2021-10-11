@@ -11,7 +11,7 @@ export default function handler (
 ) {
     const arr: any[] = [];
     for (let index = 0; index < 1000; index += 1) {
-        arr.push({ name: process.env.URL! });
+        arr.push({ name: req.query });
     }
     res.status(200).json({
         name: arr,
