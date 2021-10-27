@@ -12,6 +12,7 @@ import BreadCrumbs from '../../components/layout/breadcrumbs';
 import ExampleScrollList from './components/scroll-list';
 import LazyImage from '../../components/image/lazy-image';
 import ExamplesSplitText from './components/split-text';
+import VideoPopupFullsizeButton from '../../components/video/video-popup-fullsize-button';
 
 
 
@@ -88,6 +89,18 @@ const TextPageTemplate: FC<BaseTemplateData> = (
                                 >
                                     <button type="button">Play MP4 video</button>
                                 </VideoPopupButton>
+                                <br />
+                                <br />
+                                <div className={styles.examples_page__mini_placeholder}>
+                                    <LazyImage
+                                        usePlaceholder
+                                        src="https://picsum.photos/400/600"
+                                    />
+                                    <VideoPopupFullsizeButton
+                                        source="yt"
+                                        id="BHACKCNDMW8"
+                                    />
+                                </div>
                             </div>
                         </div>
 
