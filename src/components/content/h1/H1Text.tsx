@@ -14,6 +14,6 @@ const H1Text = () => {
     if (pagetitle) {
         return <span dangerouslySetInnerHTML={{ __html: pagetitle }} />;
     }
-    return '';
+    return <></>;
 };
 export default H1Text;
