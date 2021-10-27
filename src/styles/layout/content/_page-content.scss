@@ -1,4 +1,4 @@
 .page-content {
-    padding-top: calc(var(--header-height) + #{px-to-rem(40)});
+    padding-top: var(--header-height);
     min-height: calc(100 * var(--vh));
 }

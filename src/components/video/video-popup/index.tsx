@@ -8,6 +8,8 @@ import styles from './styles.module.scss';
 import app from '../../../app';
 import CustomLitElement from '../../../app/CustomLitElement';
 import type { VideoPlayerSource } from '../video-player';
+import { store } from '../../../store/store';
+import routerCallbacks from '../../../router';
 
 const tagName = 'video-popup';
 
@@ -46,6 +48,17 @@ export default class VideoPopup extends CustomLitElement {
     }
 
     /**
+     * Previous active element
+     */
+    protected _activeElement?: Element | null;
+    get activeElement () {
+        return this._activeElement;
+    }
+    set activeElement (val) {
+        this._activeElement = val;
+    }
+
+    /**
      * Close button
      */
     protected _closeButton?: HTMLButtonElement;
@@ -61,13 +74,14 @@ export default class VideoPopup extends CustomLitElement {
     // events
     protected _timeline?: Timeline;
     protected _viewportEvent?: NCallbacks.AddedCallback;
+    protected _pageChangeEvent?: NCallbacks.AddedCallback;
 
 
 
     protected _connectedCallback () {
         super._connectedCallback();
         this.classList.add(tagName);
-        this.classList.add(styles.component);
+        this.classList.add(styles.video_popup);
         this._listeners = [];
 
         // create close button
@@ -76,7 +90,7 @@ export default class VideoPopup extends CustomLitElement {
                 ['type', 'button'],
             ],
             class: styles.close,
-            html: `<span>${'Close'}</span>`,
+            html: `<span>${store.getState().pageData.lexicon.navClose}</span>`,
             parent: this,
         });
         this._elementsToRemove.push(this._closeButton);
@@ -114,8 +128,16 @@ export default class VideoPopup extends CustomLitElement {
             }
         }));
 
+        // hide the element on page change
+        this._pageChangeEvent = routerCallbacks.add('before', () => {
+            this.hide();
+        });
+
         // show the popup
         this.show();
+
+        // set focus on the close button
+        this._closeButton.focus();
 
         // set resize events
         if (app) {
@@ -142,6 +164,10 @@ export default class VideoPopup extends CustomLitElement {
         if (this._viewportEvent) {
             this._viewportEvent.remove();
             this._viewportEvent = undefined;
+        }
+        if (this._pageChangeEvent) {
+            this._pageChangeEvent.remove();
+            this._pageChangeEvent = undefined;
         }
     }
 
@@ -195,6 +221,10 @@ export default class VideoPopup extends CustomLitElement {
             this.remove();
         });
         this._timeline.play();
+        // restore focus
+        if (this._activeElement instanceof HTMLElement) {
+            this._activeElement.focus();
+        }
     }
 
 

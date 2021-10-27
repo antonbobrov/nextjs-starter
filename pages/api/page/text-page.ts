@@ -1,33 +1,20 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type {
+    NextApiRequest, NextApiResponse,
+} from 'next';
 import { DeepRequired } from 'ts-essentials';
-import fetch from 'node-fetch';
-import { BaseTemplateData } from '../../../src/types/page';
-import { APIResponse } from '../../../src/types/types';
-import normalizeUrlSlashes from '../../../src/utils/data/normalizeUrlSlashes';
-import { TextPageTemplateData } from '../../../src/templates/text';
-import { getEnvApiUrl } from '../../../src/utils/env';
+import nextConnect from 'next-connect';
+import fetchPageAPI from '../../../src/utils/server/fetchPage';
+import { HomeTemplateData } from '../../../src/templates/home';
 
-export default async function handler (
+const handler = nextConnect().all((
     req: NextApiRequest,
-    res: NextApiResponse<
-        APIResponse<
-            DeepRequired<TextPageTemplateData>
-        >
-    >,
-) {
-    // get base data
-    const baseDataUrl = new URL(normalizeUrlSlashes(`${getEnvApiUrl()}/__base`));
-    baseDataUrl.searchParams.set('requestUrl', req.url || '/');
-    const baseData: APIResponse<BaseTemplateData> = await (await fetch(baseDataUrl.href)).json();
+    res: NextApiResponse<DeepRequired<HomeTemplateData>>,
+) => {
+    fetchPageAPI<HomeTemplateData>(req, res, (baseData) => {
+        res.json({
+            ...baseData,
 
-    res.status(baseData.code).json({
-        success: baseData.success,
-        code: baseData.code,
-        message: baseData.message,
-        data: {
-            ...baseData.data,
-
-            template: 'text',
+            template: 'tex',
 
             document: {
                 pagetitle: 'Text page',
@@ -81,6 +68,10 @@ export default async function handler (
                 `,
             },
 
-        },
+            data: { },
+
+        });
     });
-}
+});
+
+export default handler;

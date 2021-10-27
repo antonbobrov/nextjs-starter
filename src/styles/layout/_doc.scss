@@ -4,6 +4,7 @@ html {
     
     &:not(.use-native-scroll) {
         overflow: hidden;
+
         body {
             position: fixed;
             width: 100%;
@@ -11,7 +12,8 @@ html {
     }
 
     @include loading-indicator;
-    &:before {
+
+    &::before {
         position: fixed;
     }
 

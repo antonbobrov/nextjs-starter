@@ -1,0 +1,68 @@
+@import '../../../styles/base';
+
+.video_popup_fullsize_button {
+    @include absolute-fullsize;
+    @include reset-button;
+    outline: none;
+    z-index: 1;
+
+    @include transition((
+        background-color 0.25s,
+        opacity 0.125s
+    ));
+
+    &:focus-visible {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    &:disabled {
+        opacity: 0.75;
+    }
+
+    > span {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+    }
+
+    &::before,
+    &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: px-to-rem(-30);
+        margin-left: px-to-rem(-30);
+        width: px-to-rem(60);
+        height: px-to-rem(60);
+        border-radius: 50%;
+    }
+
+    &::before {
+        @include transition(transform 0.75s);
+        background-color: var(--color-bg);
+    }
+
+    &::after {
+        transform: translateX(2px);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 12px auto;
+        background-image: url('./play.svg');
+    }
+
+    @include hover {
+        &::before {
+            transform: scale(1.1);
+        }
+    }
+
+    &:active {
+        &::before {
+            transform: scale(0.95);
+        }
+    }
+
+}

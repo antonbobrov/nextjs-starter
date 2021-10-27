@@ -1,6 +1,24 @@
 import Router from 'next/router';
+import { Callbacks, NCallbacks } from 'vevet';
 import { getAppPage } from './app';
 import pageIsLoading from './store/pageIsLoading';
+import { store } from './store/store';
+import { isBrowser } from './utils/browser/isBrowser';
+
+interface CallbackTypes extends NCallbacks.CallbacksTypes {
+    before: false;
+    after: false;
+}
+
+/**
+ * Callback on router change
+ */
+const routerCallbacks = (
+    isBrowser ? new Callbacks<CallbackTypes>() : undefined
+) as Callbacks<CallbackTypes>;
+export default routerCallbacks;
+
+
 
 override();
 
@@ -22,10 +40,8 @@ function override () {
      * Override .onPopState() listener
      */
     window.removeEventListener('popstate', router.onPopState);
-    window.addEventListener('popstate', (e) => {
-        readyToReload().then(() => {
-            router.onPopState(e);
-        }).catch(() => {});
+    window.addEventListener('popstate', () => {
+        router.push(window.location.href, window.location.href);
     });
 
     /**
@@ -38,8 +54,10 @@ function override () {
         resolve, reject,
     ) => {
         readyToReload().then(() => {
+            routerCallbacks.tbt('before', false);
             pushFunc(...arg).then((param) => {
                 resolve(param);
+                routerCallbacks.tbt('after', false);
             }).catch((param) => {
                 reject(param);
             });
@@ -85,6 +103,9 @@ function readyToReload () {
             // hide the page if it is shown
             if (page.shown) {
                 pageIsLoading.start();
+                store.dispatch({
+                    type: 'firstPageLoadDone',
+                });
                 page.hide().then(() => {
                     // destroy the page
                     page.destroy().then(() => {
@@ -103,6 +124,9 @@ function readyToReload () {
         }
         // change the route if no page
         pageIsLoading.start();
+        store.dispatch({
+            type: 'firstPageLoadDone',
+        });
         resolve();
     });
 }

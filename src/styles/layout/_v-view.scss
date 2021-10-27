@@ -1,7 +1,6 @@
 $view-duration: 1s;
 
 .v-view {
-
     &_b {
         opacity: 0;
 
@@ -15,6 +14,7 @@ $view-duration: 1s;
                     transform: translate3d(0, #{px-to-rem(32)}, 0);
                     opacity: 0;
                 }
+
                 to {
                     transform: none;
                     opacity: 1;
@@ -37,6 +37,7 @@ $view-duration: 1s;
                 from {
                     opacity: 0;
                 }
+
                 to {
                     opacity: 1;
                 }

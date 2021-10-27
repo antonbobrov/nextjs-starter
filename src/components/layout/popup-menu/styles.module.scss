@@ -1,0 +1,112 @@
+@import '../../../styles/base';
+
+.popup_menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    visibility: hidden;
+
+    @include viewport-tablet-min {
+        display: none;
+    }
+
+    &__overlay {
+        @include absolute-fullsize;
+        z-index: 0;
+        background-color: var(--color-text);
+        opacity: 0;
+    }
+
+    &__container {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: calc(100% - var(--wrap));
+        height: 100%;
+        z-index: 1;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        background-color: var(--color-bg);
+        transform: translate(100%, 0);
+    }
+
+    &__close {
+        @include reset-button;
+        position: absolute;
+        z-index: 1;
+        right: var(--wrap);
+        top: calc(var(--header-height) / 2 - #{px-to-rem(20)});
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        height: px-to-rem(40);
+        padding: 0 px-to-rem(14);
+        background-color: var(--color-placeholder);
+        color: var(--color-text);
+        border-radius: 5px;
+        font-size: px-to-rem(14);
+    }
+
+    &__wrap {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding-top: var(--header-height);
+        padding-bottom: px-to-rem(40);
+        min-height: 100%;
+
+        > * {
+            width: 100%;
+        }
+
+    }
+
+    &__site_menu {
+        @include reset-ul;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        
+        margin: px-to-rem(40) 0;
+
+        li {
+            font-size: px-to-rem(18);
+            line-height: 200%;
+
+            + li {
+                margin-top: px-to-rem(10);
+            }
+        }
+
+        a {
+            &.active {
+                text-decoration: underline;
+            }
+        }
+
+    }
+
+    &__languages {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+
+}
+
+.prevent_scroll {
+    overflow: hidden;
+
+    body {
+        overflow: hidden;
+    }
+}
+

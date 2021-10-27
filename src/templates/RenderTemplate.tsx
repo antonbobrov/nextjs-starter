@@ -1,7 +1,11 @@
 import dynamic from 'next/dynamic';
-import PageContext from '../store/pageContext';
+import { manuallyUpdateTemplateKey } from '../app';
+import PageContext from '../store/PageContext';
 
 const Empty = dynamic(import('./Empty'), {
+    ssr: true,
+});
+const NotFound = dynamic(import('./not-found'), {
     ssr: true,
 });
 const Home = dynamic(import('./home'), {
@@ -18,7 +22,10 @@ const RenderTemplate = () => (
     <PageContext.Consumer>
         {(props) => {
             const { template } = props;
+            const time = manuallyUpdateTemplateKey ? +new Date() : props.time;
             switch (template) {
+                case 'not-found':
+                    return <NotFound key={time} />;
                 case 'home':
                     return <Home {...props as any} key={props.time} />;
                 case 'text':
@@ -26,7 +33,7 @@ const RenderTemplate = () => (
                 case 'examples':
                     return <Examples {...props as any} key={props.time} />;
                 default:
-                    return <Empty key={props.time} />;
+                    return <Empty key={time} />;
             }
         }}
     </PageContext.Consumer>

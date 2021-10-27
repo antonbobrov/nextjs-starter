@@ -3,85 +3,81 @@ import fetch from 'node-fetch';
 import { DeepRequired } from 'ts-essentials';
 import { LexiconData } from '../../src/types/lexicon';
 import { BaseTemplateData } from '../../src/types/page';
-import { APIResponse } from '../../src/types/types';
-import normalizeUrlSlashes from '../../src/utils/data/normalizeUrlSlashes';
+import { getEnvUrlBase } from '../../src/utils/env';
 
 export default async function handler (
     req: NextApiRequest,
     res: NextApiResponse<
-        APIResponse<
-            DeepRequired<BaseTemplateData>
+        DeepRequired<
+            Omit<BaseTemplateData, 'url'>
         >
     >,
 ) {
-    // get request url
-    let pageUrl = new URL(process.env.URL!);
-    const { requestUrl: requestAPIUrl } = req.query;
-    if (typeof requestAPIUrl === 'string') {
-        const requestUrl = requestAPIUrl.replace('/api/page/', '');
-        const currentUrl = normalizeUrlSlashes(`${process.env.URL!}/${requestUrl}`);
-        pageUrl = new URL(currentUrl);
-    }
-
     // get lexicon
-    const lexicon: LexiconData = await (await fetch(`${process.env.API_URL!}__lexicon/`)).json();
+    const lexicon: LexiconData = await (await fetch(getEnvUrlBase('/api/__lexicon'))).json();
 
     // return data
-    res.status(200).json({
+    res.json({
         success: true,
-        code: 200,
-        message: 'ok',
-        data: {
 
-            time: +new Date(),
-            template: '',
+        time: +new Date(),
 
-            lang: 'en',
-            dir: 'ltr',
+        template: '',
 
-            document: {
-                pagetitle: lexicon.siteName,
-                longtitle: lexicon.siteName,
-                description: '',
-                introtext: '',
-                content: '',
-            },
+        lang: 'en',
+        dir: 'ltr',
 
-            url: {
-                url: pageUrl.href,
-                siteUrl: `${pageUrl.origin}/`,
-                canonicalUrl: new URL(pageUrl.origin + pageUrl.pathname).href,
-                staticUrl: `${pageUrl.origin}/`,
-            },
-
-            meta: [{
-                attrType: 'name',
-                attrVal: 'description',
-                content: 'Page Description',
-            }, {
-                attrType: 'name',
-                attrVal: 'keywords',
-                content: '',
-            }],
-
-            settings: {
-                searchable: true,
-            },
-
-            lexicon,
-
-            headerMenu: [
-                {
-                    id: 0, href: '/', name: 'Home', isActive: true, isExternal: false,
-                },
-                {
-                    id: 1, href: '/text-page', name: 'Text Page', isActive: false, isExternal: false,
-                },
-                {
-                    id: 2, href: '/examples', name: 'Examples', isActive: false, isExternal: false,
-                },
-            ],
-
+        document: {
+            pagetitle: lexicon.siteName,
+            longtitle: '',
+            description: '',
+            introtext: '',
+            content: '',
         },
+
+        meta: {
+            description: '',
+            keywords: '',
+            image: '',
+        },
+
+        settings: {
+            searchable: true,
+        },
+
+        lexicon,
+
+        globalLinks: {
+            home: '/',
+        },
+
+        siteMenu: [
+            {
+                id: 0, href: '/text-page/', name: 'Text Page', isActive: false, isExternal: false,
+            },
+            {
+                id: 1, href: '/examples/', name: 'Examples', isActive: false, isExternal: false,
+            },
+        ],
+
+        languages: [
+            {
+                key: 'en', href: '/?lang=en', name: 'En', fullName: 'English', isActive: true,
+            },
+            {
+                key: 'de', href: '/?lang=de', name: 'De', fullName: 'Deutsch', isActive: false,
+            },
+            {
+                key: 'es', href: '/?lang=es', name: 'Es', fullName: 'Español', isActive: false,
+            },
+        ],
+
+        breadcrumbs: [
+            { id: 0, href: '/', name: 'Home' },
+            { id: 1, href: '/', name: 'Page name' },
+        ],
+
+        data: {},
+
     });
 }

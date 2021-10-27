@@ -32,6 +32,8 @@ export default function createFixedHeaderHandler (): IFixedHeaderHandler {
         }
         // update previous scroll value
         prevTop = scrollTop;
+    }, {
+        passive: true,
     });
 
     /**

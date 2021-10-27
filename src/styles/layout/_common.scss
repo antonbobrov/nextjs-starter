@@ -4,8 +4,8 @@ body {
 }
 
 *,
-*:before,
-*:after {
+*::before,
+*::after {
     box-sizing: border-box;
 }
 
@@ -14,4 +14,11 @@ textarea,
 button,
 select {
     font-family: $font-family;
+}
+
+* {
+    text-size-adjust: 100%;
+    @include mobile-device {
+        outline: none;
+    }
 }

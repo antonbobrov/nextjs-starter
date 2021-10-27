@@ -1,0 +1,96 @@
+@import '../../../../styles/base';
+
+.languages_select {
+    position: relative;
+    --size: #{px-to-rem(48)};
+    --space: #{px-to-rem(6)};
+
+    font-size: px-to-rem(14);
+    line-height: 200%;
+    user-select: none;
+
+    text-transform: capitalize;
+
+    &__thumb {
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        width: var(--size);
+        height: var(--size);
+        
+        background-color: var(--color-placeholder);
+        border-radius: 50%;
+        color: var(--color-text);
+
+    }
+
+    &__ul {
+        @include reset-ul;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        margin-top: var(--space);
+
+        @include transition((
+            opacity 0.35s,
+            visibility 0.35s
+        ));
+        visibility: hidden;
+        opacity: 0;
+
+        &.expanded {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        @at-root :global(html:not(.show-fixed-header) .fixed_header) & {
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        > * {
+            &:not(.active) {
+                + * {
+                    margin-top: var(--space);
+                }
+            }
+        }
+
+    }
+
+    &__li {
+        opacity: 0;
+        transform: translate(0, 1rem);
+        @include transition((
+            opacity 0.35s,
+            transform 0.35s
+        ));
+
+        &.show {
+            opacity: 1;
+            transform: none;
+        }
+
+        &.active {
+            display: none;
+        }
+
+        a {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            width: var(--size);
+            height: var(--size);
+
+            border-radius: 50%;
+            background-color: var(--color-placeholder);
+            color: var(--color-text);
+
+        }
+
+    }
+
+}

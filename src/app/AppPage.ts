@@ -1,9 +1,10 @@
 import {
-    Page, ProgressPreloader, ScrollBar, ScrollView, SmoothScroll, SmoothScrollKeyboardPlugin,
+    Page, ProgressPreloader, ScrollBar, ScrollView,
+    SmoothScroll, SmoothScrollDragPlugin, SmoothScrollKeyboardPlugin,
 } from 'vevet';
 import { selectOne } from 'vevet-dom';
 import { getPreloader } from '../components/layout/preloader';
-import { appSettings } from '../app';
+import app, { useSmoothScroll } from '../app';
 import { hideLoaderCurtain, showLoaderCurtain } from '../components/layout/loader-curtain/states';
 import createFixedHeaderHandler, { IFixedHeaderHandler } from '../components/layout/header/createFixedHeaderHandler';
 import pageIsLoading from '../store/pageIsLoading';
@@ -146,7 +147,7 @@ export default class AppPage extends Page {
      * Create SmoothScroll
      */
     protected _createSmoothScroll () {
-        if (!appSettings.useSmoothScroll) {
+        if (!useSmoothScroll) {
             return;
         }
         const container = selectOne('#smooth-scroll') as HTMLElement;
@@ -164,6 +165,13 @@ export default class AppPage extends Page {
         });
         // add keyboard controls
         this._smoothScroll.addPlugin(new SmoothScrollKeyboardPlugin());
+
+        // add drag
+        if (app.isMobile) {
+            this._smoothScroll.addPlugin(new SmoothScrollDragPlugin({
+                lerp: 0.35,
+            }));
+        }
     }
 
     /**

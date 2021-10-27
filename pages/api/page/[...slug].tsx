@@ -2,42 +2,29 @@ import type {
     NextApiRequest, NextApiResponse,
 } from 'next';
 import { DeepRequired } from 'ts-essentials';
-import fetch from 'node-fetch';
-import { HomeTemplateData } from '../../../src/templates/home';
+import nextConnect from 'next-connect';
 import { BaseTemplateData } from '../../../src/types/page';
-import { APIResponse } from '../../../src/types/types';
-import normalizeUrlSlashes from '../../../src/utils/data/normalizeUrlSlashes';
-import { getEnvApiUrl } from '../../../src/utils/env';
+import fetchPageAPI from '../../../src/utils/server/fetchPage';
 
-export default async function handler (
+const handler = nextConnect().all((
     req: NextApiRequest,
-    res: NextApiResponse<
-        APIResponse<
-            DeepRequired<HomeTemplateData>
-        >
-    >,
-) {
-    // get base data
-    const baseDataUrl = new URL(normalizeUrlSlashes(`${getEnvApiUrl()}/__base`));
-    baseDataUrl.searchParams.set('requestUrl', req.url || '/');
-    const baseData: APIResponse<BaseTemplateData> = await (await fetch(baseDataUrl.href)).json();
+    res: NextApiResponse<DeepRequired<BaseTemplateData>>,
+) => {
+    fetchPageAPI<BaseTemplateData>(req, res, (baseData) => {
+        res.json({
+            ...baseData,
 
-    res.status(baseData.code).json({
-        success: baseData.success,
-        code: 404,
-        message: 'Page Not Founnd',
-        data: {
-            ...baseData.data,
-
-            template: 'home',
+            template: 'not-found',
 
             document: {
-                ...baseData.data.document,
-                pagetitle: '404',
-                longtitle: '404. Page Not Found',
-                content: 'Hii',
+                ...baseData.document,
+                pagetitle: '404. Page Not Found',
             },
 
-        },
+            data: {},
+
+        });
     });
-}
+});
+
+export default handler;

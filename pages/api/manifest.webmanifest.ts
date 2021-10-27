@@ -1,21 +1,28 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { BaseTemplateData } from '../../src/types/page';
-import { APIResponse } from '../../src/types/types';
-import { getEnvApiPageUrl } from '../../src/utils/env';
+import { HomeTemplateData } from '../../src/templates/home';
+import { getEnvUrlApiPage, getEnvUrlBase } from '../../src/utils/env';
 
 export default async function handler (
     req: NextApiRequest,
     res: NextApiResponse,
 ) {
     // get home page data
-    const data: APIResponse<BaseTemplateData> = await (await fetch(getEnvApiPageUrl())).json();
+    const data: HomeTemplateData = await (await fetch(getEnvUrlApiPage(), {
+        headers: {
+            APIKEY: process.env.API_KEY || '',
+        },
+    })).json();
 
-    if (data && data.data) {
-        const info = data.data;
-        res.status(200).json({
-            name: info.lexicon.siteName,
-            short_name: info.lexicon.siteName,
-            start_url: info.url.siteUrl,
+    res.setHeader(
+        'Cache-Control',
+        'public, max-age=31536000, immutable',
+    );
+
+    if (!!data && data.success) {
+        res.json({
+            name: data.lexicon.siteName,
+            short_name: data.lexicon.siteName,
+            start_url: getEnvUrlBase(),
             display: 'fullscreen',
             background_color: '#000000',
             theme_color: '#000000',

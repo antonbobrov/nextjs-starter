@@ -68,9 +68,9 @@ const VideoMp4Player: FC<Data> = ({
                     ref={videoRef}
                     disablePictureInPicture
                     preload="auto"
-                    crossOrigin="anonymous"
                     autoPlay={autoplay}
                     controls={controls}
+                    controlsList="nodownload"
                     playsInline={playsInline}
                     onLoadedMetadata={() => {
                         setIsLoaded(true);

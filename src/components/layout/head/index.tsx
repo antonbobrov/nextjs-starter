@@ -1,11 +1,12 @@
 import Head from 'next/head';
-import PageContext from '../../../store/pageContext';
+import PageContext from '../../../store/PageContext';
+import { getEnvUrlBase } from '../../../utils/env';
 
 const LayoutHead = () => (
     <PageContext.Consumer>
         {(props) => {
             const {
-                document, url, settings, meta,
+                document, url, settings, meta, lang, lexicon, languages,
             } = props;
             return (
                 <Head>
@@ -14,7 +15,7 @@ const LayoutHead = () => (
                     <meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
                     <meta httpEquiv="X-UA-Compatible" content="IE=Edge" />
                     <meta name="format-detection" content="telephone=no" />
-                    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=5" />
+                    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1" />
 
                     <title>{document.longtitle || document.pagetitle}</title>
 
@@ -24,42 +25,43 @@ const LayoutHead = () => (
                             key={size}
                             rel="icon"
                             type="image/png"
-                            href={`${url.staticUrl}image/favicon-${size}x${size}.png`}
+                            href={`/image/favicon-${size}x${size}.png`}
                             sizes={`${size}x${size}`}
                         />
                     ))}
-                    <link rel="apple-touch-icon" href={`${url.staticUrl}image/192x192.png`} />
+                    <link rel="apple-touch-icon" href="/image/192x192.png" />
 
                     {/* web */}
                     <meta name="apple-mobile-web-app-capable" content="yes" />
                     <meta name="theme-color" content="#000000" />
-                    <link rel="manifest" href={`${url.staticUrl}api/manifest.webmanifest`} />
+                    <link rel="manifest" href="/api/manifest.webmanifest" />
 
                     {!settings.searchable ? <meta name="robots" content="noindex" /> : ''}
 
                     {/* meta */}
-                    {meta.map((metaData) => {
-                        if (metaData.attrType === 'name') {
-                            return (
-                                <meta
-                                    key={metaData.attrVal}
-                                    name={metaData.attrVal}
-                                    content={metaData.content}
-                                />
-                            );
-                        }
-                        return (
-                            <meta
-                                key={metaData.attrVal}
-                                property={metaData.attrVal}
-                                content={metaData.content}
-                            />
-                        );
-                    })}
+                    {meta.description ? <meta name="description" content={meta.description} /> : ''}
+                    {meta.keywords ? <meta name="keywords" content={meta.keywords} /> : ''}
+                    {meta.keywords ? <meta name="lang" content={lang} /> : ''}
+                    {meta.description ? <meta name="abstract" content={meta.description} /> : ''}
+
+                    <meta property="og:site_name" content={lexicon.siteName} />
+                    <meta property="og:type" content="article" />
+                    <meta property="og:title" content={document.pagetitle} />
+                    {meta.description ? <meta property="og:description" content={meta.description} /> : ''}
+                    <meta property="og:url" content={url.url} />
+                    {meta.image ? <meta property="og:image" content={meta.image} /> : ''}
+
+                    <meta name="twitter:card" content="summary" />
+                    <meta name="twitter:title" content={document.pagetitle} />
+                    {meta.description ? <meta name="twitter:description" content={meta.description} /> : ''}
+                    {meta.image ? <meta property="twitter:image" content={meta.image} /> : ''}
 
                     {/* links */}
-                    <base href={url.siteUrl} />
-                    <link rel="canonical" href={url.canonicalUrl} />
+                    <base href={getEnvUrlBase()} />
+                    <link rel="canonical" href={url.canonical} />
+
+                    {/* languages */}
+                    {languages.map((item) => <link key={item.key} rel="alternate" hrefLang={item.key} href={getEnvUrlBase(item.href)} />)}
 
                 </Head>
             );

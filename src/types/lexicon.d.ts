@@ -1,7 +1,11 @@
 export interface LexiconData {
     siteName: string;
-    nav: {
-        close: string;
-    };
+
+    navClose: string;
+    playVideo: string;
+    showMenu: string;
+    hideMenu: string;
+
     copyright: string;
+
 }

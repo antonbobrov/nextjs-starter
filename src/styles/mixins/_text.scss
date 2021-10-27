@@ -36,7 +36,7 @@
         font-style: italic;
         font-weight: normal;
 
-        &:before {
+        &::before {
             content: '';
             position: absolute;
             top: 0;
@@ -64,7 +64,7 @@
         li {
             list-style-position: inside;
 
-            & + li {
+            + li {
                 margin-top: px-to-rem(20);
             }
 
@@ -74,7 +74,7 @@
 
     ul {
         li {            
-            &:before {
+            &::before {
                 content: '\2022';
                 color: currentColor;
                 font-weight: bold;
@@ -86,9 +86,11 @@
 
     ol {
         counter-reset: ol-counter;
+
         li {
             counter-increment: ol-counter;
-            &:before {
+
+            &::before {
                 content: counter(ol-counter) '. ';
                 color: currentColor;
                 display: inline-block;
@@ -100,6 +102,7 @@
     :global .justifyleft {
         text-align: left;
     }
+
     .justifyleft {
         text-align: left;
     }
@@ -107,6 +110,7 @@
     :global .justifycenter {
         text-align: center;
     }
+
     .justifycenter {
         text-align: center;
     }
@@ -114,6 +118,7 @@
     :global .justifyright {
         text-align: right;
     }
+
     .justifyright {
         text-align: right;
     }
@@ -121,6 +126,7 @@
     :global .justifyfull {
         text-align: justify;
     }
+
     .justifyfull {
         text-align: justify;
     }
@@ -128,7 +134,6 @@
 }
 
 @mixin text-spacings-styles {
-
     p {
         margin: px-to-rem(20) 0;
     }

@@ -1,4 +1,4 @@
-@import '../../../styles/base.scss';
+@import '../../../styles/base';
 
 .simple_popup {
     position: fixed;
@@ -16,7 +16,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0,0, .95);
+        background-color: rgba(0, 0, 0, 0.95);
         opacity: 0;
     }
 
@@ -82,15 +82,15 @@
         height: px-to-rem(40);
         transform: rotate(45deg);
 
-        & > span {
+        > span {
             position: absolute;
             top: 0;
             left: 0;
             opacity: 0;
         }
 
-        &:before,
-        &:after {
+        &::before,
+        &::after {
             content: '';
             display: block;
             position: absolute;
@@ -99,14 +99,14 @@
             background-color: currentColor;;
         }
 
-        &:before {
+        &::before {
             margin-top: -1px;
             margin-left: -50%;
             width: 100%;
             height: 2px;
         }
 
-        &:after {
+        &::after {
             margin-left: -1px;
             margin-top: -50%;
             height: 100%;

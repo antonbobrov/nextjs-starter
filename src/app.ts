@@ -13,14 +13,16 @@ export function getAppPage () {
     return app ? app.page : false;
 }
 
+// template settings
+export const manuallyUpdateTemplateKey = true;
+
 // Scroll Settings
-const useSmoothScroll = !(!!app && app.isMobile);
-const useWindowScroll = !useSmoothScroll;
-export const appSettings = {
-    useSmoothScroll,
-    useWindowScroll,
-    useAdaptiveFontSize: true,
-};
+export const useSmoothScroll = !(!!app && app.isMobile);
+export const useWindowScroll = !useSmoothScroll;
+
+// font size settings
+export const useAdaptiveFontSize = true;
+
 // set scroll classes
 if (app) {
     app.html.classList.toggle('use-native-scroll', useWindowScroll);
@@ -42,5 +44,5 @@ if (!!app && !useWindowScroll) {
     });
 }
 
-// custom cursor
+// custom curor
 export const useCustomCursor = !!app && !app.isMobile;

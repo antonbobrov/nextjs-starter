@@ -3,7 +3,6 @@ import Document, {
     DocumentContext,
 } from 'next/document';
 import { BaseTemplateData } from '../src/types/page';
-import { APIResponse } from '../src/types/types';
 
 class MyDocument extends Document {
     static async getInitialProps (ctx: DocumentContext) {
@@ -14,18 +13,17 @@ class MyDocument extends Document {
     render () {
         // eslint-disable-next-line no-underscore-dangle
         const { pageProps } = this.props.__NEXT_DATA__.props;
-        const props = pageProps as APIResponse<BaseTemplateData>;
+        const props = pageProps as BaseTemplateData;
 
         // get data
         let lang = 'en';
         let dir = 'ltr';
         let pageClassName = '';
-        if (props.data) {
-            const { data } = props;
-            lang = data.lang;
-            dir = data.dir;
-            if (data.template) {
-                pageClassName = `v-page-${data.template}`;
+        if (props) {
+            lang = props.lang;
+            dir = props.dir;
+            if (props.template) {
+                pageClassName = `v-page-${props.template}`;
             }
         }
 

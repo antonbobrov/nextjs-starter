@@ -1,5 +1,5 @@
 import { utils } from 'vevet';
-import app, { appSettings } from '../../app';
+import app, { useAdaptiveFontSize } from '../../app';
 
 const adaptiveFontSize = (function func () {
     let prevValue = 16;
@@ -18,7 +18,7 @@ const adaptiveFontSize = (function func () {
      * Get font size multiplier
      */
     function getMultiplier () {
-        if (!app || !appSettings.useAdaptiveFontSize) {
+        if (!app || !useAdaptiveFontSize) {
             return 1;
         }
         const { viewport } = app;

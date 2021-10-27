@@ -1,4 +1,4 @@
-import PageContext from '../../../store/pageContext';
+import PageContext from '../../../store/PageContext';
 import styles from './styles.module.scss';
 
 const Footer = () => (

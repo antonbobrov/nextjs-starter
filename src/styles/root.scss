@@ -18,6 +18,7 @@
 
     // colors
     --color-bg: #1d1d1d;
+    --color-contrast-bg: #000;
     --color-text: #fff;
     --color-link: #fff;
     --color-highlight: rgb(113, 172, 221);
@@ -31,11 +32,8 @@
         --header-height: #{px-to-rem(70)};
     }
     @include viewport-phone {
-        --header-height: #{px-to-rem(60)};
+        --header-height: #{px-to-rem(70)};
     }
-    --header-bg: #000;
-    --header-line: #fff;
-    --header-link: #fff;
     
     // footer
     --footer-bg: #000;

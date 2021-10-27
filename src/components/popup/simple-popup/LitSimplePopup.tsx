@@ -1,13 +1,15 @@
 import {
     createElement, addEventListener, selectOne, childOf,
 } from 'vevet-dom';
-import { Timeline, utils } from 'vevet';
+import { NCallbacks, Timeline, utils } from 'vevet';
 import { ReactNode } from 'react';
 import ReactDOM from 'react-dom';
 import easingProgress from 'easing-progress';
 import settings from './settings';
 import styles from './styles.module.scss';
 import CustomLitElement from '../../../app/CustomLitElement';
+import { store } from '../../../store/store';
+import routerCallbacks from '../../../router';
 
 const { tagName } = settings;
 
@@ -55,6 +57,7 @@ export default class LitSimplePopup extends CustomLitElement {
 
     // events
     protected _timeline?: Timeline;
+    protected _pageChangeEvent?: NCallbacks.AddedCallback;
 
     // states
     protected _inAction?: boolean;
@@ -100,7 +103,7 @@ export default class LitSimplePopup extends CustomLitElement {
                 ['type', 'button'],
             ],
             class: styles.simple_popup__close,
-            html: `<span>${'Close'}</span>`,
+            html: `<span>${store.getState().pageData.lexicon.navClose}</span>`,
             parent: this._wrapper,
         });
         this._elementsToRemove.push(this._closeButton);
@@ -133,6 +136,11 @@ export default class LitSimplePopup extends CustomLitElement {
             }
         }));
 
+        // hide the element on page change
+        this._pageChangeEvent = routerCallbacks.add('before', () => {
+            this.hide();
+        });
+
         // append contents
         this._appendChildren().then(() => {
             this.show();
@@ -156,6 +164,10 @@ export default class LitSimplePopup extends CustomLitElement {
         if (this._timeline) {
             this._timeline.destroy();
             this._timeline = undefined;
+        }
+        if (this._pageChangeEvent) {
+            this._pageChangeEvent.remove();
+            this._pageChangeEvent = undefined;
         }
     }
 
