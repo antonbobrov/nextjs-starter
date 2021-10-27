@@ -14,7 +14,7 @@ const handler = nextConnect().all((
         res.json({
             ...baseData,
 
-            template: 'tex',
+            template: 'text',
 
             document: {
                 pagetitle: 'Text page',
