@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { DeepRequired } from 'ts-essentials';
-import { getEnvUrlApi, getEnvUrlApiPage } from '../env';
+import env from '../env';
 
 async function fetchPageAPI<TemplateType> (
     req: NextApiRequest,
@@ -11,9 +11,9 @@ async function fetchPageAPI<TemplateType> (
     ) => void,
 ) {
     const currentUrl = (req.url || '').replace('api/page', '');
-    const apiPageUrl = getEnvUrlApiPage(currentUrl);
+    const apiPageUrl = env.getUrlApiPage(currentUrl);
     // LOAD DATA
-    if (process.env.IS_REAL_API === 'true' || !getPlaceholder) {
+    if (process.env.API_IS_REAL === 'true' || !getPlaceholder) {
         // FROM BACKEND
         const response = await fetch(apiPageUrl, {
             headers: {
@@ -32,7 +32,7 @@ async function fetchPageAPI<TemplateType> (
     } else {
         // TEMPORAL DATA
         // get base data
-        const baseDataUrl = getEnvUrlApi('/__base/');
+        const baseDataUrl = env.getUrlApi('/__base/');
         const baseData = await (await fetch(baseDataUrl)).json();
         // load placeholder
         getPlaceholder(baseData, res);

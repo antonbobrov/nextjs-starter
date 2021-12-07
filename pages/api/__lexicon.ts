@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { DeepRequired } from 'ts-essentials';
-import { LexiconData } from '../../src/types/lexicon';
+import { LexiconData } from '@/types/lexicon';
 
 export default function handler (
     req: NextApiRequest,
@@ -53,7 +53,7 @@ export default function handler (
                 `).join('');
                 }
             });
-            res.setHeader('Content-Type', 'text/html');
+            res.setHeader('Content-Type', 'text/html; charset=utf-8');
             res.send(sqlString as any);
             res.end();
             return;

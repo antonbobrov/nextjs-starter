@@ -1,102 +1,88 @@
-import { FC, useEffect } from 'react';
-import AppPage from '../../app/AppPage';
-import LayoutSmoothScroll from '../../components/layout/smooth-scroll';
+import { useEffect } from 'react';
+import { TemplateProps } from '@/types/page';
+import store from '@/store/store';
+import LayoutSmoothScroll from '@/components/layout/smooth-scroll';
+import LayoutHeader from '@/components/layout/header';
+import LayoutWrapper from '@/components/layout/wrapper';
+import LayoutFooter from '@/components/layout/footer';
+import LayoutBreadCrumbs from '@/components/layout/breadcrumbs';
+import TextH1 from '@/components/text/h1';
+import VideoPopupTrigger from '@/components/video/popup/trigger';
+import LazyImage from '@/components/image/lazy';
+import VideoPopupFullsizeTrigger from '@/components/video/popup/fullsize-trigger';
+import PopupSimpleTrigger from '@/components/popup/simple/Trigger';
 import styles from './styles.module.scss';
-import { BaseTemplateData } from '../../types/page';
-import VideoPopupButton from '../../components/video/video-popup-button';
-import Header from '../../components/layout/header';
-import SimplePopup from '../../components/popup/simple-popup';
-import Footer from '../../components/layout/footer';
-import H1Text from '../../components/content/h1/H1Text';
-import BreadCrumbs from '../../components/layout/breadcrumbs';
 import ExampleScrollList from './components/scroll-list';
-import LazyImage from '../../components/image/lazy-image';
 import ExamplesSplitText from './components/split-text';
-import VideoPopupFullsizeButton from '../../components/video/video-popup-fullsize-button';
 
-
-
-export interface ExamplesTemplateData extends BaseTemplateData {
+export interface TemplateExamplesProps extends TemplateProps {
     template: 'examples';
 }
 
-
-
-const TextPageTemplate: FC<BaseTemplateData> = (
-    props,
-) => {
-    // create page instance
+const TemplateExamples = () => {
     useEffect(() => {
-        const page = new AppPage({
-            name: props.template,
+        store.dispatch({
+            type: 'SET_TEMPLATE_IS_READY',
+            data: true,
         });
-        page.create();
-        return () => {
-            page.hide().then(() => {
-                page.destroy();
-            }).catch(() => {});
-        };
     }, []);
-
-
 
     // render the template
     return (
         <LayoutSmoothScroll>
-            <div className={styles.examples_page}>
-                <Header isFixed={false} />
-                <div className="page-content">
-                    <BreadCrumbs />
-                    <div className="wrap v-view_b">
+            <LayoutHeader isFixed={false} />
+            <LayoutWrapper>
+                <LayoutBreadCrumbs />
+                <div className={styles.examples_page}>
+                    <div className="wrap">
 
-                        <h1>
-                            <H1Text />
-                        </h1>
+                        <h1><TextH1 /></h1>
 
                         {/* scroll list */}
-                        <div className={styles.examples_page_section}>
-                            <h2 className={styles.examples_page_section__header}>
+                        <div className={styles.section}>
+                            <h2 className={styles.section__header}>
                                 Horizontal scroll list
                             </h2>
-                            <div className={styles.examples_page_section__content}>
+                            <div className={styles.section__content}>
                                 <ExampleScrollList />
                             </div>
                         </div>
 
                         {/* video popup */}
-                        <div className={styles.examples_page_section}>
-                            <h2 className={styles.examples_page_section__header}>
+                        <div className={styles.section}>
+                            <h2 className={styles.section__header}>
                                 Video Popup
                             </h2>
-                            <div className={styles.examples_page_section__content}>
-                                <VideoPopupButton
+                            <div className={styles.section__content}>
+                                <VideoPopupTrigger
                                     source="yt"
                                     id="BHACKCNDMW8"
                                 >
                                     <button type="button">Play YouTube video</button>
-                                </VideoPopupButton>
+                                </VideoPopupTrigger>
                                 <span>&nbsp;</span>
-                                <VideoPopupButton
+                                <VideoPopupTrigger
                                     source="vm"
                                     id="601518684"
                                 >
                                     <button type="button">Play Vimeo video</button>
-                                </VideoPopupButton>
+                                </VideoPopupTrigger>
                                 <span>&nbsp;</span>
-                                <VideoPopupButton
+                                <VideoPopupTrigger
                                     source="mp4"
                                     src="/lorem/video.mp4"
                                 >
                                     <button type="button">Play MP4 video</button>
-                                </VideoPopupButton>
+                                </VideoPopupTrigger>
                                 <br />
                                 <br />
-                                <div className={styles.examples_page__mini_placeholder}>
+                                <div className={styles.mini_placeholder}>
                                     <LazyImage
                                         usePlaceholder
                                         src="https://picsum.photos/400/600"
+                                        alt="test image"
                                     />
-                                    <VideoPopupFullsizeButton
+                                    <VideoPopupFullsizeTrigger
                                         source="yt"
                                         id="BHACKCNDMW8"
                                     />
@@ -105,30 +91,28 @@ const TextPageTemplate: FC<BaseTemplateData> = (
                         </div>
 
                         {/* simple popup */}
-                        <div className={styles.examples_page_section}>
-                            <h2 className={styles.examples_page_section__header}>
+                        <div className={styles.section}>
+                            <h2 className={styles.section__header}>
                                 Simple Popup
                             </h2>
-                            <div className={styles.examples_page_section__content}>
-                                <SimplePopup
+                            <div className={styles.section__content}>
+                                <PopupSimpleTrigger
                                     trigger={
                                         <button type="button">Show the popup</button>
                                     }
                                 >
                                     <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                                </SimplePopup>
+                                </PopupSimpleTrigger>
                             </div>
                         </div>
 
                         {/* lazy image */}
-                        <div className={styles.examples_page_section}>
-                            <h2 className={styles.examples_page_section__header}>
+                        <div className={styles.section}>
+                            <h2 className={styles.section__header}>
                                 Responive lazy image
                             </h2>
-                            <div className={styles.examples_page_section__content}>
-                                <div className={styles.examples_page__mini_placeholder}>
+                            <div className={styles.section__content}>
+                                <div className={styles.mini_placeholder}>
                                     <LazyImage
                                         usePlaceholder
                                         src="https://picsum.photos/id/240/500"
@@ -137,17 +121,18 @@ const TextPageTemplate: FC<BaseTemplateData> = (
                                             https://picsum.photos/id/241/1280 1280w,
                                             https://picsum.photos/id/242/1680
                                         "
+                                        alt="test image"
                                     />
                                 </div>
                             </div>
                         </div>
 
                         {/* split text */}
-                        <div className={styles.examples_page_section}>
-                            <h2 className={styles.examples_page_section__header}>
+                        <div className={styles.section}>
+                            <h2 className={styles.section__header}>
                                 Split text
                             </h2>
-                            <div className={styles.examples_page_section__content}>
+                            <div className={styles.section__content}>
                                 <h6>
                                     <ExamplesSplitText>
                                         Lorem ipsum
@@ -160,10 +145,10 @@ const TextPageTemplate: FC<BaseTemplateData> = (
 
                     </div>
                 </div>
-            </div>
-            <Footer />
+            </LayoutWrapper>
+            <LayoutFooter />
         </LayoutSmoothScroll>
     );
 };
 
-export default TextPageTemplate;
+export default TemplateExamples;

@@ -1,55 +1,39 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
+import store from '@/store/store';
+import { TemplateProps } from '@/types/page';
+import LayoutSmoothScroll from '@/components/layout/smooth-scroll';
+import LayoutHeader from '@/components/layout/header';
+import TextH1 from '@/components/text/h1';
+import LayoutWrapper from '@/components/layout/wrapper';
+import LayoutFooter from '@/components/layout/footer';
 import styles from './styles.module.scss';
-import AppPage from '../../app/AppPage';
-import { BaseTemplateData } from '../../types/page';
-import PageContext from '../../store/PageContext';
-import LayoutSmoothScroll from '../../components/layout/smooth-scroll';
-import Header from '../../components/layout/header';
-import Footer from '../../components/layout/footer';
-import H1Text from '../../components/content/h1/H1Text';
 
-
-
-export interface NotFoundTemplateData extends BaseTemplateData {
+export interface TemplateNotFoundProps extends TemplateProps {
     data: {};
 }
 
-
-
-const NotFoundTemplate = () => {
-    const props = useContext<NotFoundTemplateData>(PageContext);
-
-    // create page instance
+const TemplateNotFound = () => {
     useEffect(() => {
-        const page = new AppPage({
-            name: props.template,
+        store.dispatch({
+            type: 'SET_TEMPLATE_IS_READY',
+            data: true,
         });
-        page.create();
-        return () => {
-            page.hide().then(() => {
-                page.destroy();
-            }).catch(() => {});
-        };
     }, []);
 
     // render the template
     return (
         <LayoutSmoothScroll>
-            <div className={styles.not_found_page}>
-                <Header isFixed={false} />
-                <div className="page-content">
-
+            <LayoutHeader isFixed={false} />
+            <LayoutWrapper>
+                <div className={styles.not_found_page}>
                     <div className="wrap">
-                        <h1 className="v-view_b">
-                            <H1Text />
-                        </h1>
+                        <h1><TextH1 /></h1>
                     </div>
-
                 </div>
-            </div>
-            <Footer />
+            </LayoutWrapper>
+            <LayoutFooter />
         </LayoutSmoothScroll>
     );
 };
 
-export default NotFoundTemplate;
+export default TemplateNotFound;

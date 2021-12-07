@@ -1,12 +1,11 @@
-@import '../../../styles/base';
+@import '@/styles/base';
 
-.footer {
-    margin-top: px-to-rem(40);
+.layout_footer {
     padding: px-to-rem(40) var(--wrap);
     border-top: 1px solid var(--color-text);
-    background-color: var(--footer-bg);
+    background-color: var(--color-contrast-bg);
 
-    &__copyright {
+    .copyright {
         text-align: center;
     }
 

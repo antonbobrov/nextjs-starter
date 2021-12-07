@@ -1,0 +1,11 @@
+@import '@/styles/base';
+
+.video_player_youtube {
+    @include absolute-fullsize;
+
+    iframe {
+        @include reset-button;
+        @include absolute-fullsize;
+    }
+
+}

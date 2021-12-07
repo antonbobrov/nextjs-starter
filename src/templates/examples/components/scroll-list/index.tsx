@@ -1,5 +1,5 @@
+import SliderHScrollList from '@/components/sliders/h-scroll-list';
 import { FC } from 'react';
-import HorizontalScrollList from '../../../../components/sliders/horizontal-scroll-list';
 import styles from './styles.module.scss';
 
 const ExampleScrollList: FC = () => {
@@ -36,7 +36,7 @@ const ExampleScrollList: FC = () => {
     }];
 
     return (
-        <HorizontalScrollList>
+        <SliderHScrollList>
             <div className={styles.example_scroll_list}>
                 {items.map((item) => (
                     <div key={item.id}>
@@ -44,7 +44,7 @@ const ExampleScrollList: FC = () => {
                     </div>
                 ))}
             </div>
-        </HorizontalScrollList>
+        </SliderHScrollList>
     );
 };
 

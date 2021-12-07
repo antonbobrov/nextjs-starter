@@ -1,57 +1,43 @@
-import { useContext, useEffect } from 'react';
-import PageDesc from '../../components/content/page-desc';
+import { useEffect } from 'react';
+import { TemplateProps } from '@/types/page';
+import store from '@/store/store';
+import LayoutSmoothScroll from '@/components/layout/smooth-scroll';
+import LayoutHeader from '@/components/layout/header';
+import TextH1 from '@/components/text/h1';
+import TextPageDesc from '@/components/text/page-desc';
+import LayoutFooter from '@/components/layout/footer';
+import LayoutWrapper from '@/components/layout/wrapper';
 import styles from './styles.module.scss';
-import AppPage from '../../app/AppPage';
-import LayoutSmoothScroll from '../../components/layout/smooth-scroll';
-import { BaseTemplateData } from '../../types/page';
-import Header from '../../components/layout/header';
-import Footer from '../../components/layout/footer';
-import PageContext from '../../store/PageContext';
-import H1Text from '../../components/content/h1/H1Text';
 
-
-
-export interface HomeTemplateData extends BaseTemplateData {
+export interface TemplateHomeProps extends TemplateProps {
     data: {};
 }
 
-
-
-const HomeTemplate = () => {
-    const props = useContext(PageContext);
-
-    // create page instance
+const TemplateHome = () => {
     useEffect(() => {
-        const page = new AppPage({
-            name: props.template,
+        store.dispatch({
+            type: 'SET_TEMPLATE_IS_READY',
+            data: true,
         });
-        page.create();
-        return () => {
-            page.hide().then(() => {
-                page.destroy();
-            }).catch(() => {});
-        };
     }, []);
 
     // render the template
     return (
         <LayoutSmoothScroll>
-            <div className={styles.home_page}>
-                <Header isFixed={false} />
-                <div className="page-content">
-
+            <LayoutHeader isFixed={false} />
+            <LayoutWrapper>
+                <div className={styles.home_page}>
                     <div className="wrap">
                         <h1 className="v-view_b">
-                            <H1Text />
+                            <TextH1 />
                         </h1>
-                        <PageDesc />
+                        <TextPageDesc />
                     </div>
-
                 </div>
-            </div>
-            <Footer />
+            </LayoutWrapper>
+            <LayoutFooter />
         </LayoutSmoothScroll>
     );
 };
 
-export default HomeTemplate;
+export default TemplateHome;

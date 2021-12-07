@@ -1,26 +1,24 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import fetch from 'node-fetch';
 import { DeepRequired } from 'ts-essentials';
-import { LexiconData } from '../../src/types/lexicon';
-import { BaseTemplateData } from '../../src/types/page';
-import { getEnvUrlBase } from '../../src/utils/env';
+import { LexiconData } from '@/types/lexicon';
+import { TemplateProps, TemplateDynamicProps } from '@/types/page';
+import env from '@/utils/env';
 
 export default async function handler (
     req: NextApiRequest,
     res: NextApiResponse<
         DeepRequired<
-            Omit<BaseTemplateData, 'url'>
+            Omit<TemplateProps, keyof TemplateDynamicProps>
         >
     >,
 ) {
     // get lexicon
-    const lexicon: LexiconData = await (await fetch(getEnvUrlBase('/api/__lexicon'))).json();
+    const lexicon: LexiconData = await (await fetch(env.getUrlBase('/api/__lexicon'))).json();
 
     // return data
     res.json({
         success: true,
-
-        time: +new Date(),
 
         template: '',
 
@@ -46,6 +44,12 @@ export default async function handler (
         },
 
         lexicon,
+
+        inject: {
+            headJS: '',
+            prependBody: '',
+            appendBody: '',
+        },
 
         globalLinks: {
             home: '/',

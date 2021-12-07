@@ -1,11 +1,29 @@
-@mixin mobile-device {
-    @at-root html.v-mobile & {
-        @content;
+@mixin mobile-device (
+    $useGlobal: false
+) {
+    @if $useGlobal == true {
+        @at-root :global(html.v-mobile) & {
+            @content;
+        }
+    }
+    @else {
+        @at-root html.v-mobile & {
+            @content;
+        }
     }
 }
 
-@mixin non-mobile-device {
-    @at-root html:not(.v-mobile) & {
-        @content;
+@mixin non-mobile-device (
+    $useGlobal: false
+) {
+    @if $useGlobal == true {
+        @at-root :global(html:not(.v-mobile)) & {
+            @content;
+        }
+    }
+    @else {
+        @at-root html:not(.v-mobile) & {
+            @content;
+        }
     }
 }

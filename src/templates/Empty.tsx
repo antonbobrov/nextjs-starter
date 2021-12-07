@@ -1,45 +1,38 @@
-import { useContext, useEffect } from 'react';
-import AppPage from '../app/AppPage';
-import H1Text from '../components/content/h1/H1Text';
-import Footer from '../components/layout/footer';
-import Header from '../components/layout/header';
-import LayoutSmoothScroll from '../components/layout/smooth-scroll';
-import PageContext from '../store/PageContext';
+import { useEffect } from 'react';
+import TextH1 from '@/components/text/h1';
+import LayoutHeader from '@/components/layout/header';
+import LayoutSmoothScroll from '@/components/layout/smooth-scroll';
+import store from '@/store/store';
+import LayoutFooter from '@/components/layout/footer';
+import LayoutWrapper from '@/components/layout/wrapper';
 
-const EmptyTemplate = () => {
-    const props = useContext(PageContext);
-
-    // create page instance
+const TemplateEmpty = () => {
     useEffect(() => {
-        const page = new AppPage({
-            name: props.template,
+        store.dispatch({
+            type: 'SET_TEMPLATE_IS_READY',
+            data: true,
         });
-        page.create();
-        return () => {
-            page.hide().then(() => {
-                page.destroy();
-            }).catch(() => {});
-        };
     }, []);
 
     return (
         <>
             <LayoutSmoothScroll>
-                <Header isFixed={false} />
-                <div className="page-content">
+                <LayoutHeader isFixed={false} />
+                <LayoutWrapper>
                     <div className="wrap">
                         <br />
-                        <h1><H1Text /></h1>
+                        <br />
+                        <h1><TextH1 /></h1>
                         <br />
                         <br />
                         <h2>No template for this page</h2>
                         <br />
                     </div>
-                </div>
-                <Footer />
+                </LayoutWrapper>
+                <LayoutFooter />
             </LayoutSmoothScroll>
         </>
     );
 };
 
-export default EmptyTemplate;
+export default TemplateEmpty;

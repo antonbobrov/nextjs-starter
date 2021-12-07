@@ -2,7 +2,7 @@ import Router from 'next/router';
 import { Callbacks, NCallbacks } from 'vevet';
 import { getAppPage } from './app';
 import pageIsLoading from './store/pageIsLoading';
-import { store } from './store/store';
+import store from './store/store';
 import { isBrowser } from './utils/browser/isBrowser';
 
 interface CallbackTypes extends NCallbacks.CallbacksTypes {
@@ -98,13 +98,17 @@ function readyToReload () {
         resolve, reject,
     ) => {
         const page = getAppPage();
+        store.dispatch({
+            type: 'SET_TEMPLATE_IS_READY',
+            data: false,
+        });
         // some actions if page exists
         if (page) {
             // hide the page if it is shown
             if (page.shown) {
-                pageIsLoading.start();
+                pageIsLoading.dispatch({ type: 'start' });
                 store.dispatch({
-                    type: 'firstPageLoadDone',
+                    type: 'FIRST_PAGE_LOAD_DONE',
                 });
                 page.hide().then(() => {
                     // destroy the page
@@ -123,9 +127,9 @@ function readyToReload () {
             return;
         }
         // change the route if no page
-        pageIsLoading.start();
+        pageIsLoading.dispatch({ type: 'start' });
         store.dispatch({
-            type: 'firstPageLoadDone',
+            type: 'FIRST_PAGE_LOAD_DONE',
         });
         resolve();
     });

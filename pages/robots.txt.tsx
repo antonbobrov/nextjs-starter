@@ -1,5 +1,5 @@
+import env from '@/utils/env';
 import { GetServerSideProps } from 'next';
-import { getEnvUrlBase } from '../src/utils/env';
 
 const Robots = () => {};
 export default Robots;
@@ -9,11 +9,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const content: string[] = [];
     content.push('User-agent: *');
-    if (typeof process.env.NEXT_PUBLIC_NOINDEX === 'undefined' || process.env.NEXT_PUBLIC_NOINDEX === 'true') {
+    if (typeof process.env.NOINDEX === 'undefined' || process.env.NOINDEX === 'true') {
         content.push('Disallow: /');
     } else {
         content.push('Disallow: *?*');
-        content.push(`Sitemap: ${getEnvUrlBase('/sitemap.xml')}`);
+        content.push(`Sitemap: ${env.getUrlBase('/sitemap.xml')}`);
     }
 
     res.setHeader('Content-Type', 'text/plain');

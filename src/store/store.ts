@@ -1,17 +1,15 @@
 import { combineReducers, createStore } from 'redux';
-import { firstPageLoadReducer } from './reducers/firstPageLoad';
-import { pageDataReducer } from './reducers/pageData';
-import { popupMenuReducer } from './reducers/popupMenu';
+import template from './reducers/template';
+import firstPageLoad from './reducers/firstPageLoad';
+import popupMenu from './reducers/popupMenu';
 
-export const store = createStore(
+const store = createStore(
     combineReducers({
-        pageData: pageDataReducer,
-        firstPageLoad: firstPageLoadReducer,
-        popupMenu: popupMenuReducer,
+        template,
+        firstPageLoad,
+        popupMenu,
     }),
 );
-
-export type AppDispatch = typeof store.dispatch;
-export type RootState = ReturnType<typeof store.getState>;
+export default store;
 
 export const isFirstPageLoad = () => store.getState().firstPageLoad.yes;

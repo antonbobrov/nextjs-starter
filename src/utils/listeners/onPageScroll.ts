@@ -1,7 +1,7 @@
 import { GeneralTypes, utils } from 'vevet';
-import { getAppPage } from '../../app';
+import { getAppPage } from 'src/app';
 
-interface Data {
+interface CallbackData {
     scrollTop: number;
     scrollLeft: number;
 }
@@ -12,7 +12,7 @@ interface Props {
 
 export default function onPageScroll (
     callback: (
-        data: Data
+        data: CallbackData
     ) => void,
     props?: Props,
 ): GeneralTypes.IRemovable {
@@ -24,11 +24,11 @@ export default function onPageScroll (
         } else {
             selector = window;
         }
-        return utils.listeners.onScroll(selector, (data) => {
-            callback(data);
-        }, props ? {
-            passive: props.passive,
-        } : undefined);
+        return utils.listeners.onScroll({
+            container: selector,
+            callback,
+            isPassive: props?.passive,
+        });
     }
     throw new Error('The page is not created yet');
 }

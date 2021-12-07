@@ -1,25 +1,22 @@
-import { RootState } from '../store';
-
-export const popupMenuReducer = (
+const popupMenuReducer = (
     state = {
         shown: false,
     },
     action: {
-        type: 'showPopupMenu';
+        type: 'SHOW_POPUP_MENU';
     } | {
-        type: 'hidePopupMenu';
+        type: 'HIDE_POPUP_MENU';
     },
 ) => {
     switch (action.type) {
-        case 'showPopupMenu':
+        case 'SHOW_POPUP_MENU':
             state.shown = true;
             return state;
-        case 'hidePopupMenu':
+        case 'HIDE_POPUP_MENU':
             state.shown = false;
             return state;
         default:
             return state;
     }
 };
-
-export const selectPopupMenu = (state: RootState) => state.popupMenu;
+export default popupMenuReducer;

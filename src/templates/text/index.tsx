@@ -1,56 +1,47 @@
 import { useContext, useEffect } from 'react';
-import AppPage from '../../app/AppPage';
-import LayoutSmoothScroll from '../../components/layout/smooth-scroll';
+import { TemplateProps } from '@/types/page';
+import store from '@/store/store';
+import PageContext from '@/store/PageContext';
+import LayoutSmoothScroll from '@/components/layout/smooth-scroll';
+import LayoutHeader from '@/components/layout/header';
+import TextContent from '@/components/text/content';
+import LayoutBreadCrumbs from '@/components/layout/breadcrumbs';
+import LayoutFooter from '@/components/layout/footer';
+import LayoutWrapper from '@/components/layout/wrapper';
 import styles from './styles.module.scss';
-import { BaseTemplateData } from '../../types/page';
-import Header from '../../components/layout/header';
-import Footer from '../../components/layout/footer';
-import PageContext from '../../store/PageContext';
-import BreadCrumbs from '../../components/layout/breadcrumbs';
-import TextContent from '../../components/content/text-content';
 
-
-
-export interface TextPageTemplateData extends BaseTemplateData {
+export interface TemplateTextProps extends TemplateProps {
     data: {};
 }
 
+const TemplateText = () => {
+    const pageProps = useContext(PageContext);
 
-
-const TextPageTemplate = () => {
-    const props = useContext(PageContext);
-
-    // create page instance
     useEffect(() => {
-        const page = new AppPage({
-            name: props.template,
+        store.dispatch({
+            type: 'SET_TEMPLATE_IS_READY',
+            data: true,
         });
-        page.create();
-        return () => {
-            page.hide().then(() => {
-                page.destroy();
-            }).catch(() => {});
-        };
     }, []);
 
     // render the template
     return (
         <LayoutSmoothScroll>
-            <div className={styles.text_page}>
-                <Header isFixed={false} />
-                <div className="page-content">
-                    <BreadCrumbs />
-                    <div className="wrap v-view_b">
+            <LayoutHeader isFixed={false} />
+            <LayoutWrapper>
+                <LayoutBreadCrumbs />
+                <div className={styles.text_page}>
+                    <div className="wrap">
                         <div className={styles.text_page__content}>
-                            <TextContent html={props.document.content} />
+                            <TextContent html={pageProps.document.content} />
                             <div className="clear" />
                         </div>
                     </div>
                 </div>
-            </div>
-            <Footer />
+            </LayoutWrapper>
+            <LayoutFooter />
         </LayoutSmoothScroll>
     );
 };
 
-export default TextPageTemplate;
+export default TemplateText;

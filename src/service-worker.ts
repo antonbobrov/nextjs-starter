@@ -1,6 +1,6 @@
 import { isBrowser } from './utils/browser/isBrowser';
 
-const registerServiceWorker = function () {
+const registerServiceWorker = () => {
     if (process.env.NODE_ENV === 'development' || !isBrowser) {
         return;
     }

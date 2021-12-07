@@ -1,8 +1,8 @@
-@import '../../../styles/base';
+@import '@/styles/base';
 
 $hide-header-duration: 0.5s;
 
-.header {
+.layout_header {
     position: absolute;
     z-index: 9;
     top: 0;
@@ -19,8 +19,29 @@ $hide-header-duration: 0.5s;
 
     background-color: var(--color-contrast-bg);
     border-bottom: 1px solid var(--color-text);
+    
+    &.is_fixed {
+        position: fixed;
+        
+        @at-root :global(html:not(.v-browser-safari)) & {
+            @include transition(transform $hide-header-duration);
+            transform: translate(0, -100%);
+        } 
+        @at-root :global(html:not(.v-browser-safari).show-fixed-header) & {
+            transform: translate(0, 0);
+        }
+        
+        @at-root :global(html.v-browser-safari) & {
+            @include transition(opacity $hide-header-duration);
+            opacity: 0;
+        } 
+        @at-root :global(html.v-browser-safari.show-fixed-header) & {
+            opacity: 1;
+        }
 
-    &__menu {
+    }
+
+    .menu {
         display: flex;
 
         @include viewport-phone {
@@ -52,49 +73,16 @@ $hide-header-duration: 0.5s;
 
     }
 
-    &__languages {
+    .languages {
         @include viewport-phone {
             display: none;
         }
     }
 
-    &__popup_menu {
-        @include reset-button;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        height: px-to-rem(40);
-        padding: 0 px-to-rem(14);
-        background-color: var(--color-placeholder);
-        color: var(--color-text);
-        border-radius: 5px;
-        font-size: px-to-rem(14);
-        
+    .menu_button {
         @include viewport-tablet-min {
             display: none;
         }
-    }
-    
-    &.is_fixed {
-        position: fixed;
-        
-        @at-root :global(html:not(.v-browser-safari)) & {
-            @include transition(transform $hide-header-duration);
-            transform: translate(0, -100%);
-        } 
-        @at-root :global(html:not(.v-browser-safari).show-fixed-header) & {
-            transform: translate(0, 0);
-        }
-        
-        @at-root :global(html.v-browser-safari) & {
-            @include transition(opacity $hide-header-duration);
-            opacity: 0;
-        } 
-        @at-root :global(html.v-browser-safari.show-fixed-header) & {
-            opacity: 1;
-        }
-
     }
 
 }

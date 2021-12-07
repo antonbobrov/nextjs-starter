@@ -1,5 +1,5 @@
 import { utils } from 'vevet';
-import app, { useAdaptiveFontSize } from '../../app';
+import app, { useAdaptiveFontSize } from 'src/app';
 
 const adaptiveFontSize = (function func () {
     let prevValue = 16;

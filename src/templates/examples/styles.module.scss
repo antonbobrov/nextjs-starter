@@ -1,9 +1,9 @@
-@import '../../styles/base';
+@import '@/styles/base';
 
 .examples_page {
-    width: 100%;
+    padding-top: px-to-rem(30);
 
-    &_section {
+    .section {
 
         @at-root * + & {
             margin-top: px-to-rem(40);
@@ -19,7 +19,7 @@
 
     }
 
-    &__mini_placeholder {
+    .mini_placeholder {
         position: relative;
         width: 300px;
         max-width: 100%;

@@ -13,8 +13,8 @@ export function getAppPage () {
     return app ? app.page : false;
 }
 
-// template settings
-export const manuallyUpdateTemplateKey = true;
+// testing state
+export const isTesting = process.env.NODE_ENV === 'development';
 
 // Scroll Settings
 export const useSmoothScroll = !(!!app && app.isMobile);

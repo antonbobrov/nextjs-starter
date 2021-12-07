@@ -1,27 +1,40 @@
-import app from '../app';
+import { createStore } from 'redux';
+import app from 'src/app';
 
-const pageIsLoading = (function func () {
-    let count = 0;
+interface StateData {
+    count: number;
+}
 
-    function start () {
-        count += 1;
-        handler();
-    }
-    function end () {
-        count -= 1;
-        if (count < 0) {
-            count = 0;
-        }
-        handler();
-    }
-
+const reducer = (
+    state: StateData = {
+        count: 0,
+    },
+    action: {
+        type: 'start' | 'end'
+    },
+) => {
     function handler () {
-        app.html.classList.toggle('is-loading', count > 0);
+        if (app) {
+            app.html.classList.toggle('is-loading', state.count > 0);
+        }
     }
 
-    return {
-        start,
-        end,
-    };
-}());
+    switch (action.type) {
+        case 'start':
+            state.count += 1;
+            handler();
+            return state;
+        case 'end':
+            state.count -= 1;
+            if (state.count < 0) {
+                state.count = 0;
+            }
+            handler();
+            return state;
+        default:
+            return state;
+    }
+};
+
+const pageIsLoading = createStore(reducer);
 export default pageIsLoading;

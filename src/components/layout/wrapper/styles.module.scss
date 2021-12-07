@@ -1,0 +1,8 @@
+@import '@/styles/base';
+
+.layout_wrapper {
+    padding-top: var(--header-height);
+    padding-bottom: px-to-rem(30);
+    min-height: calc(100 * var(--vh));
+}
+

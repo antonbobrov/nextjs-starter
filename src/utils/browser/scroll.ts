@@ -1,6 +1,6 @@
-import { SmoothScroll, Timeline } from 'vevet';
+import { SmoothScroll, Timeline, utils } from 'vevet';
 import { selectOne } from 'vevet-dom';
-import { getAppPage } from '../../app';
+import { getAppPage } from 'src/app';
 
 
 
@@ -116,8 +116,14 @@ export function scrollToElement ({
             const element = selectOne(el);
             if (element) {
                 const bounding = element.getBoundingClientRect();
-                const toTop = bounding.top + startValues.scrollTop - top;
-                const toLeft = bounding.left + startValues.scrollLeft - left;
+                const toTop = utils.math.boundVal(
+                    bounding.top + startValues.scrollTop - top,
+                    [0, Infinity],
+                );
+                const toLeft = utils.math.boundVal(
+                    bounding.left + startValues.scrollLeft - left,
+                    [0, Infinity],
+                );
                 scrollTo({
                     container,
                     top: toTop,

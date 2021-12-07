@@ -3,26 +3,30 @@ import {
 } from 'react';
 import Link from 'next/link';
 import { addEventListener, childOf } from 'vevet-dom';
-import { LanguagesData } from '../../../../types/page';
+import { LanguagesData } from '@/types/page';
 import styles from './styles.module.scss';
 
 interface Data {
     languages: LanguagesData[];
 }
 
-const LanguagesSelect: FC<Data> = (props) => {
-    const [languages, setLanguages] = useState(props.languages.filter((item) => !item.isActive));
+const LayoutLanguagesSelect: FC<Data> = ({
+    languages,
+}) => {
+    const [languagesList, setLanguagesList] = useState(
+        languages.filter((item) => !item.isActive),
+    );
     const [selectedLanguage, setSelectedLanguage] = useState(
-        props.languages.find((item) => item.isActive),
+        languages.find((item) => item.isActive),
     );
     const [isExpanded, setIsExpanded] = useState(false);
 
     const outerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        setLanguages(props.languages.filter((item) => !item.isActive));
-        setSelectedLanguage(props.languages.find((item) => item.isActive));
-    }, [props]);
+        setLanguagesList(languages.filter((item) => !item.isActive));
+        setSelectedLanguage(languages.find((item) => item.isActive));
+    }, [languages]);
 
     useEffect(() => {
         const outsideClick = addEventListener(window, 'click', (e) => {
@@ -40,11 +44,14 @@ const LanguagesSelect: FC<Data> = (props) => {
 
     return (
         <div
-            className={styles.languages_select}
+            className={styles.layout_languages_select}
             ref={outerRef}
         >
             <div
-                className={`${styles.languages_select__thumb} ${(isExpanded ? styles.expanded : '')}`}
+                className={[
+                    styles.thumb,
+                    isExpanded ? styles.expanded : '',
+                ].join(' ')}
                 onClick={() => {
                     setIsExpanded(!isExpanded);
                 }}
@@ -65,13 +72,16 @@ const LanguagesSelect: FC<Data> = (props) => {
             <ul
                 role="listbox"
                 aria-expanded={isExpanded}
-                className={`${styles.languages_select__ul} ${(isExpanded ? styles.expanded : '')}`}
+                className={[
+                    styles.ul,
+                    isExpanded ? styles.expanded : '',
+                ].join(' ')}
             >
-                {languages.map((item, index) => (
+                {languagesList.map((item, index) => (
                     <li
                         key={item.key}
                         className={[
-                            styles.languages_select__li,
+                            styles.li,
                             selectedLanguage === item ? styles.active : '',
                             isExpanded ? styles.show : '',
                         ].join(' ')}
@@ -97,4 +107,4 @@ const LanguagesSelect: FC<Data> = (props) => {
         </div>
     );
 };
-export default LanguagesSelect;
+export default LayoutLanguagesSelect;

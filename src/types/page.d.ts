@@ -1,3 +1,4 @@
+import { LayoutBreadCrumbsProps } from '@/components/layout/breadcrumbs';
 import { LexiconData } from './lexicon';
 
 
@@ -39,12 +40,6 @@ export interface MenuLinkData {
     isExternal: boolean;
 }
 
-export interface BreadcrumbData {
-    id: number | string;
-    href: string;
-    name: string;
-}
-
 export interface LanguagesData {
     key: string;
     href: string;
@@ -55,25 +50,41 @@ export interface LanguagesData {
 
 
 
-export interface BaseTemplateData {
-    success: boolean,
+export interface TemplateDynamicProps {
+    key: number;
+    url: UrlData;
+    userConfig: UserConfig;
+    warning?: string;
+    errorMessage?: string;
+}
 
-    time: number;
+interface UserConfig {
+    supportsWebP: boolean;
+}
+
+export interface TemplateProps extends TemplateDynamicProps {
+    success: boolean;
+
     template: string;
 
     lang: string;
     dir: 'ltr' | 'rtl';
 
-    url: UrlData;
     meta: MetaData;
     document: DocumentData;
     settings: SettingsData;
     lexicon: LexiconData;
 
+    inject?: {
+        headJS?: string;
+        prependBody?: string;
+        appendBody?: string;
+    };
+
     globalLinks: GlobalLinksData;
     siteMenu: MenuLinkData[];
     languages: LanguagesData[];
-    breadcrumbs: BreadcrumbData[];
+    breadcrumbs: LayoutBreadCrumbsProps[];
 
     data: any;
 

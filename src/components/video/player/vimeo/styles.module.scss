@@ -1,0 +1,11 @@
+@import '@/styles/base';
+
+.video_player_vimeo {
+    @include absolute-fullsize;
+
+    iframe {
+        @include reset-button;
+        @include absolute-fullsize;
+    }
+
+}

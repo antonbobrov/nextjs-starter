@@ -1,9 +1,0 @@
-@import '../../../styles/base';
-
-.video_player {
-    @include absolute-fullsize;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-}

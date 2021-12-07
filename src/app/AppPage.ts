@@ -3,11 +3,12 @@ import {
     SmoothScroll, SmoothScrollDragPlugin, SmoothScrollKeyboardPlugin,
 } from 'vevet';
 import { selectOne } from 'vevet-dom';
-import { getPreloader } from '../components/layout/preloader';
-import app, { useSmoothScroll } from '../app';
-import { hideLoaderCurtain, showLoaderCurtain } from '../components/layout/loader-curtain/states';
-import createFixedHeaderHandler, { IFixedHeaderHandler } from '../components/layout/header/createFixedHeaderHandler';
-import pageIsLoading from '../store/pageIsLoading';
+import app, { useSmoothScroll } from 'src/app';
+import { getPreloader } from '@/components/layout/preloader';
+import pageIsLoading from '@/store/pageIsLoading';
+import store from '@/store/store';
+import { hideLoaderCurtain, showLoaderCurtain } from '@/components/layout/loader-curtain';
+import createFixedHeaderHandler, { IFixedHeaderHandler } from '@/components/layout/header/createFixedHeaderHandler';
 
 export default class AppPage extends Page {
     // page preloader
@@ -70,12 +71,36 @@ export default class AppPage extends Page {
         });
 
         // show the page on preloader hide
-        const preloader = getPreloader();
-        if (preloader) {
-            preloader.onHide(() => {
-                this.show();
+        this._catchPreloaderHide().then(() => {
+            this.onCreate().then(() => {
+                this.show().catch(() => {
+                    throw new Error('cant');
+                });
             });
-        }
+        });
+    }
+
+    protected _catchPreloaderHide () {
+        return new Promise<void>((
+            resolve,
+        ) => {
+            const preloader = getPreloader();
+            if (preloader) {
+                if (preloader.loadProgress === 1) {
+                    resolve();
+                } else {
+                    preloader.addCallback('loaded', () => {
+                        resolve();
+                    });
+                }
+            } else {
+                setTimeout(() => {
+                    this._catchPreloaderHide().then(() => {
+                        resolve();
+                    });
+                }, 30);
+            }
+        });
     }
 
 
@@ -92,16 +117,18 @@ export default class AppPage extends Page {
                 const hasInnerPreloader = !!layoutPreloader && layoutPreloader.isHidden;
                 if (hasInnerPreloader) {
                     this._onPageLoaded().then(() => {
-                        hideLoaderCurtain().then(() => {
-                            this._showInner();
-                            resolve();
-                        });
-                    });
-                } else {
-                    hideLoaderCurtain().then(() => {
                         this._showInner();
                         resolve();
+                        if (!store.getState().firstPageLoad.yes) {
+                            hideLoaderCurtain();
+                        }
                     });
+                } else {
+                    this._showInner();
+                    resolve();
+                    if (!store.getState().firstPageLoad.yes) {
+                        hideLoaderCurtain();
+                    }
                 }
             });
         });
@@ -111,7 +138,7 @@ export default class AppPage extends Page {
      * Show the page
      */
     protected _showInner () {
-        pageIsLoading.end();
+        pageIsLoading.dispatch({ type: 'end' });
 
         this._createScrollBar();
         this._createScrollView();
@@ -162,6 +189,7 @@ export default class AppPage extends Page {
                 outer: container,
             },
             overscroll: false,
+            useWillChange: !app.browserName.includes('firefox'),
         });
         // add keyboard controls
         this._smoothScroll.addPlugin(new SmoothScrollKeyboardPlugin());
@@ -225,6 +253,9 @@ export default class AppPage extends Page {
                 super._hide().then(() => {
                     resolve();
                 });
+            });
+            store.dispatch({
+                type: 'HIDE_POPUP_MENU',
             });
         });
     }

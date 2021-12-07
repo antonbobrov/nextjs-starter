@@ -1,16 +1,16 @@
-import Head from 'next/head';
+import NextHead from 'next/head';
 import { useContext } from 'react';
-import PageContext from '../../../store/PageContext';
-import { getEnvUrlBase } from '../../../utils/env';
+import PageContext from '@/store/PageContext';
+import env from '@/utils/env';
 
 const LayoutHead = () => {
     const props = useContext(PageContext);
     const {
-        document, url, settings, meta, lang, lexicon, languages,
+        document, url, settings, meta, lang, lexicon, languages, template, inject,
     } = props;
 
     return (
-        <Head>
+        <NextHead>
 
             {/* meta */}
             <meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -58,13 +58,30 @@ const LayoutHead = () => {
             {meta.image ? <meta property="twitter:image" content={meta.image} /> : ''}
 
             {/* links */}
-            <base href={getEnvUrlBase()} />
+            <base href={env.getUrlBase()} />
             <link rel="canonical" href={url.canonical} />
 
             {/* languages */}
-            {languages.map((item) => <link key={item.key} rel="alternate" hrefLang={item.key} href={getEnvUrlBase(item.href)} />)}
+            {languages.map((item) => <link key={item.key} rel="alternate" hrefLang={item.key} href={env.getUrlBase(item.href)} />)}
 
-        </Head>
+            {/* logo microdata */}
+            {template === 'home' ? (
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                        __html: JSON.stringify({
+                            '@context': 'https://schema.org',
+                            '@type': 'Organization',
+                            url: env.getUrlBase(),
+                            logo: env.getUrlBase('/image/512x512.png'),
+                        }),
+                    }}
+                />
+            ) : ''}
+
+            {!!inject && !!inject.headJS ? <script dangerouslySetInnerHTML={{ __html: inject.headJS }} /> : ''}
+
+        </NextHead>
     );
 };
 

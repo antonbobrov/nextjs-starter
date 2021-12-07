@@ -1,6 +1,6 @@
+import onPageScroll from '@/utils/listeners/onPageScroll';
+import app from 'src/app';
 import { GeneralTypes } from 'vevet';
-import app from '../../../app';
-import onPageScroll from '../../../utils/listeners/onPageScroll';
 
 const classNames = {
     show: 'show-fixed-header',

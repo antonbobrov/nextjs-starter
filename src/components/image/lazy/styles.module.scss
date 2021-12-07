@@ -1,0 +1,42 @@
+@import '@/styles/base';
+
+.lazy_image {
+    &.use_placeholder {
+        transition: background-color 0.35s;
+        background-color: var(--color-placeholder);
+
+        &.loaded {
+            background-color: transparent;
+        }
+    }
+
+    &.cover,
+    &.contain {
+        @include absolute-fullsize;
+    }
+
+}
+
+.img {
+    display: block;
+    transition: opacity 0.35s;
+    opacity: 0;
+
+    &.loaded {
+        opacity: 1;
+    }
+
+    &.cover,
+    &.contain {
+        @include absolute-fullsize;
+    }
+
+    &.cover {
+        object-fit: cover;
+    }
+
+    &.contain {
+        object-fit: contain;
+    }
+
+}

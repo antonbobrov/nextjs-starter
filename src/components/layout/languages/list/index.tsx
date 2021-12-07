@@ -2,29 +2,31 @@ import {
     FC, useEffect, useState,
 } from 'react';
 import Link from 'next/link';
-import { LanguagesData } from '../../../../types/page';
+import { LanguagesData } from '@/types/page';
 import styles from './styles.module.scss';
 
 interface Data {
     languages: LanguagesData[];
 }
 
-const LanguagesList: FC<Data> = (props) => {
-    const [languages, setLanguages] = useState(props.languages);
+const LayoutLanguagesList: FC<Data> = ({
+    languages,
+}) => {
+    const [languagesList, setLanguagesList] = useState(languages);
     useEffect(() => {
-        setLanguages(props.languages);
-    }, [props]);
+        setLanguagesList(languages);
+    }, [languages]);
 
 
     return (
         <ul
-            className={styles.languages_list}
+            className={styles.layout_languages_list}
         >
-            {languages.map((item) => (
+            {languagesList.map((item) => (
                 <li
                     key={item.key}
                     className={[
-                        styles.languages_list__li,
+                        styles.li,
                         item.isActive ? styles.active : '',
                     ].join(' ')}
                 >
@@ -43,4 +45,4 @@ const LanguagesList: FC<Data> = (props) => {
         </ul>
     );
 };
-export default LanguagesList;
+export default LayoutLanguagesList;

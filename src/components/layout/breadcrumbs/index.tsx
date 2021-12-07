@@ -1,9 +1,15 @@
 import { FC, useContext } from 'react';
 import Link from 'next/link';
-import PageContext from '../../../store/PageContext';
+import PageContext from '@/store/PageContext';
 import styles from './styles.module.scss';
 
-const BreadCrumbs: FC = () => {
+export interface LayoutBreadCrumbsProps {
+    id: number | string;
+    href: string;
+    name: string;
+}
+
+const LayoutBreadCrumbs: FC = () => {
     const props = useContext(PageContext);
     const { breadcrumbs } = props;
 
@@ -13,7 +19,7 @@ const BreadCrumbs: FC = () => {
 
     return (
         <nav
-            className={styles.breadcrumbs}
+            className={styles.layout_breadcrumbs}
             aria-label="Breadcrumb"
         >
             <ul
@@ -51,4 +57,4 @@ const BreadCrumbs: FC = () => {
     );
 };
 
-export default BreadCrumbs;
+export default LayoutBreadCrumbs;

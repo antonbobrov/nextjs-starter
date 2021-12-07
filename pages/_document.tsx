@@ -2,7 +2,7 @@ import Document, {
     Html, Head, Main, NextScript,
     DocumentContext,
 } from 'next/document';
-import { BaseTemplateData } from '../src/types/page';
+import { TemplateProps } from '@/types/page';
 
 class MyDocument extends Document {
     static async getInitialProps (ctx: DocumentContext) {
@@ -13,7 +13,7 @@ class MyDocument extends Document {
     render () {
         // eslint-disable-next-line no-underscore-dangle
         const { pageProps } = this.props.__NEXT_DATA__.props;
-        const props = pageProps as BaseTemplateData;
+        const props = pageProps as TemplateProps;
 
         // get data
         let lang = 'en';
@@ -27,6 +27,9 @@ class MyDocument extends Document {
             }
         }
 
+        // get injections
+        const { inject } = props;
+
         return (
             <Html
                 lang={lang}
@@ -35,8 +38,20 @@ class MyDocument extends Document {
             >
                 <Head />
                 <body>
+                    {!!inject && inject.prependBody ? (
+                        <div
+                            className="inject"
+                            dangerouslySetInnerHTML={{ __html: inject.prependBody }}
+                        />
+                    ) : ''}
                     <Main />
                     <NextScript />
+                    {!!inject && inject.appendBody ? (
+                        <div
+                            className="inject"
+                            dangerouslySetInnerHTML={{ __html: inject.appendBody }}
+                        />
+                    ) : ''}
                 </body>
             </Html>
         );

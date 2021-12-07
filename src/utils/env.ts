@@ -1,22 +1,32 @@
-import normalizeUrlSlashes from './data/normalizeUrlSlashes';
+import normalizers from '@/utils/normalizers';
 
-export function getEnvUrlBase (
+function getUrlBase (
     postfix = '',
 ) {
     const url = process.env.NEXT_PUBLIC_URL_BASE || 'http://localhost:3000/';
-    return normalizeUrlSlashes(`${url}/${postfix}`);
+    return normalizers.urlSlashes(`${url}/${postfix}`);
 }
 
-export function getEnvUrlApi (
+function getUrlApi (
     postfix = '',
 ) {
     const url = process.env.NEXT_PUBLIC_URL_API || 'http://localhost:3000/api/';
-    return normalizeUrlSlashes(`${url}/${postfix}`);
+    return normalizers.urlSlashes(`${url}/${postfix}`);
 }
 
-export function getEnvUrlApiPage (
+function getUrlApiPage (
     postfix = '',
 ) {
     const url = process.env.NEXT_PUBLIC_URL_API_PAGE || 'http://localhost:3000/api/page/';
-    return normalizeUrlSlashes(`${url}/${postfix}`);
+    return normalizers.urlSlashes(`${url}/${postfix}`);
 }
+
+
+
+const env = {
+    getUrlBase,
+    getUrlApi,
+    getUrlApiPage,
+};
+
+export default env;

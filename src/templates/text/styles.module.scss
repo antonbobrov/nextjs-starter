@@ -1,7 +1,7 @@
-@import '../../styles/base';
+@import '@/styles/base';
 
 .text_page {
-    width: 100%;
+    padding-top: px-to-rem(30);
 
     &__content {
         @include text-styles;

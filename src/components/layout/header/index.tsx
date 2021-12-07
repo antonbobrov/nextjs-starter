@@ -2,20 +2,20 @@ import Link from 'next/link';
 import {
     FC, useContext, useEffect, useRef,
 } from 'react';
+import app from 'src/app';
 import { selectAll } from 'vevet-dom';
-import app from '../../../app';
-import PageContext from '../../../store/PageContext';
-import { store } from '../../../store/store';
-import LanguagesSelect from '../languages/select';
+import PageContext from '@/store/PageContext';
 import styles from './styles.module.scss';
+import LayoutLanguagesSelect from '../languages/select';
+import LayoutMenuButton from '../menu/button';
 
-interface Data {
+interface Props {
     isFixed: boolean;
 }
 
-const Header: FC<Data> = (
-    props,
-) => {
+const LayoutHeader: FC<Props> = ({
+    isFixed,
+}) => {
     const pageProps = useContext(PageContext);
     const {
         lexicon, globalLinks, siteMenu, languages,
@@ -24,7 +24,7 @@ const Header: FC<Data> = (
 
     useEffect(() => {
         const parent = parentRef.current;
-        if (!!parent && props.isFixed) {
+        if (!!parent && isFixed) {
             app.onPageLoaded().then(() => {
                 const children = selectAll('*', parent);
                 children.forEach((child) => {
@@ -33,15 +33,15 @@ const Header: FC<Data> = (
                 });
             });
         }
-    }, [parentRef]);
+    }, [parentRef, isFixed]);
 
     return (
 
         <header
             ref={parentRef}
             className={[
-                styles.header,
-                props.isFixed ? `${styles.is_fixed} fixed_header` : 'static_header',
+                styles.layout_header,
+                isFixed ? `${styles.is_fixed} fixed_header` : 'static_header',
             ].join(' ')}
         >
 
@@ -49,14 +49,14 @@ const Header: FC<Data> = (
             <Link href={globalLinks.home}>
                 <a
                     href={globalLinks.home}
-                    className={styles.header__logo}
+                    className={styles.logo}
                 >
                     {lexicon.siteName}
                 </a>
             </Link>
 
             {/* menu nav */}
-            <nav className={styles.header__menu}>
+            <nav className={styles.menu}>
                 <ul>
                     {siteMenu.map((link) => (
                         <li key={link.id}>
@@ -74,27 +74,19 @@ const Header: FC<Data> = (
             </nav>
 
             {/* languages */}
-            <nav className={styles.header__languages}>
-                <LanguagesSelect
+            <nav className={styles.languages}>
+                <LayoutLanguagesSelect
                     languages={languages}
                 />
             </nav>
 
             {/* popup menu */}
-            <button
-                type="button"
-                className={styles.header__popup_menu}
-                onClick={() => {
-                    store.dispatch({
-                        type: 'showPopupMenu',
-                    });
-                }}
-            >
-                <span>{lexicon.showMenu}</span>
-            </button>
+            <div className={styles.menu_button}>
+                <LayoutMenuButton isActive={false} />
+            </div>
 
         </header>
     );
 };
 
-export default Header;
+export default LayoutHeader;

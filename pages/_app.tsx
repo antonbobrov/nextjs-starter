@@ -1,40 +1,43 @@
-import '../src/styles/index.scss';
+import 'src/styles/index.scss';
 import type { AppProps } from 'next/app';
-import '../src/utils/browser/adaptiveFontSize';
-import '../src/router';
+import 'src/utils/browser/adaptiveFontSize';
+import 'src/router';
 
-import LayoutHead from '../src/components/layout/head';
-import Preloader from '../src/components/layout/preloader';
-import Header from '../src/components/layout/header';
-import { BaseTemplateData } from '../src/types/page';
-import PageContext from '../src/store/PageContext';
-import PopupMenu from '../src/components/layout/popup-menu';
-import { store } from '../src/store/store';
+import Head from '@/components/layout/head';
+import LayoutPreloader from '@/components/layout/preloader';
+import LayoutHeader from '@/components/layout/header';
+import { TemplateProps } from '@/types/page';
+import PageContext from '@/store/PageContext';
+import LayoutPopupMenu from '@/components/layout/menu/popup';
+import LoaderCurtain from '@/components/layout/loader-curtain';
 
 function MyApp ({ Component, pageProps }: AppProps) {
-    const props = pageProps as BaseTemplateData;
+    const props = pageProps as TemplateProps;
 
     if (!!props && props.success) {
-        // update page data
-        store.dispatch({
-            type: 'updatePageData',
-            data: props,
-        });
-
-        // render the page
         return (
             <PageContext.Provider value={{ ...props }}>
-                <LayoutHead />
-                <Preloader />
+                <Head />
                 <div className="app" id="app">
-                    <Header isFixed />
+                    <LayoutHeader isFixed />
                     <Component />
                 </div>
-                <PopupMenu />
+                <LayoutPopupMenu />
+                <LoaderCurtain />
+                <LayoutPreloader />
             </PageContext.Provider>
         );
     }
-    return <div>{`Some error at ${JSON.stringify(pageProps)}`}</div>;
+    return (
+        <div className="wrap">
+            <br />
+            <h1>Error</h1>
+            <br />
+            {!!pageProps && !!pageProps.errorMessage ? <h2>{pageProps.errorMessage}</h2> : ''}
+            <br />
+            {!!pageProps && !!pageProps.response ? <pre>{pageProps.response}</pre> : ''}
+        </div>
+    );
 }
 
 export default MyApp;

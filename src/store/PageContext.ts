@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { BaseTemplateData } from '../types/page';
+import { TemplateProps } from '@/types/page';
 
-const PageContext = createContext<BaseTemplateData>(undefined as any);
+const PageContext = createContext<TemplateProps>(undefined as any);
 export default PageContext;

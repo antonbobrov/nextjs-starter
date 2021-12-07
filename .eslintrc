@@ -1,75 +1,91 @@
 {
-    "extends": ["eslint:recommended", "airbnb", "next", "next/core-web-vitals"],
+    "extends": [
+        "eslint:recommended",
+        "airbnb",
+        "next",
+        "next/core-web-vitals"
+    ],
     "plugins": [
         "@typescript-eslint"
     ],
     "rules": {
-      "linebreak-style": "off",
-      "import/extensions": [
-          "error",
-          "ignorePackages",
-          {
-              "js": "never",
-              "ts": "never",
-              "jsx": "never",
-              "tsx": "never"
-          }
-      ],
-      "react/jsx-filename-extension": [
-          1, 
-          { 
-              "extensions": [".tsx"] 
-          }
-      ],
-      "indent": [
-          "error",
-          4,
-          {
-              "SwitchCase": 1
-          }
-      ],
-      "no-multiple-empty-lines": [
-          "error",
-          {
-              "max": 3,
-              "maxEOF": 1,
-              "maxBOF": 1
-          }
-      ],
-      "func-names": ["error", "as-needed"],
-      "no-use-before-define": "off",
-      "no-case-declarations": "off",
-      "react/jsx-indent-props": ["error", 4],
-      "react/jsx-indent": ["error", 4],
-      "react/jsx-props-no-spreading": "off",
-      "react/no-danger": "off",
-      "react-hooks/exhaustive-deps": "off",
-      "space-before-function-paren": ["error", "always"],
-      "@next/next/no-html-link-for-pages": "off",
-      "@next/next/no-img-element": "off",
-      "lines-between-class-members": "off",
-      "no-underscore-dangle": [
-          "error",
-          { "allowAfterThis": true, "allowAfterSuper": true }
-      ],
-      "no-param-reassign": [
-          "error",
-          {
-              "props": false
-          }
-      ],
-      "import/no-cycle": "off",
-      "no-unused-vars": "off",
-      "jsx-a11y/media-has-caption": "off",
-      "react/destructuring-assignment": "off",
-      "@typescript-eslint/no-unused-vars": [
-          "error"
-      ],
-      "global-require": "off"
+        "linebreak-style": "off",
+        "import/extensions": [
+            "error",
+            "ignorePackages",
+            {
+                "js": "never",
+                "ts": "never",
+                "jsx": "never",
+                "tsx": "never"
+            }
+        ],
+        "react/jsx-filename-extension": [
+            1,
+            {
+                "extensions": [
+                    ".tsx"
+                ]
+            }
+        ],
+        "indent": [
+            "error",
+            4,
+            {
+                "SwitchCase": 1
+            }
+        ],
+        "no-multiple-empty-lines": [
+            "error",
+            {
+                "max": 3,
+                "maxEOF": 1,
+                "maxBOF": 1
+            }
+        ],
+        "no-use-before-define": "off",
+        "react/jsx-indent-props": [
+            "error",
+            4
+        ],
+        "react/jsx-indent": [
+            "error",
+            4
+        ],
+        "react/jsx-props-no-spreading": "off",
+        "react/no-danger": "off",
+        "space-before-function-paren": [
+            "error",
+            "always"
+        ],
+        "@next/next/no-img-element": "off",
+        "lines-between-class-members": "off",
+        "no-underscore-dangle": [
+            "error",
+            {
+                "allowAfterThis": true,
+                "allowAfterSuper": true
+            }
+        ],
+        "no-param-reassign": [
+            "error",
+            {
+                "props": false
+            }
+        ],
+        "import/no-cycle": "off",
+        "jsx-a11y/media-has-caption": "off",
+        "@typescript-eslint/no-unused-vars": [
+            "error"
+        ],
+        "class-methods-use-this": "off"
     },
     "overrides": [
         {
-            "files": ["*.ts", "*.tsx"],
+            "files": [
+                "*.ts",
+                "*.tsx"
+            ],
             "rules": {
                 "no-undef": "off"
             }
@@ -88,5 +104,4 @@
             }
         }
     }
-  }
-  
+}

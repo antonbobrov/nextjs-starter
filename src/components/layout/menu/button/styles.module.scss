@@ -1,0 +1,16 @@
+@import '@/styles/base';
+
+.layout_menu_button {
+    @include reset-button;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: px-to-rem(40);
+    padding: 0 px-to-rem(14);
+    background-color: var(--color-placeholder);
+    color: var(--color-text);
+    border-radius: 5px;
+    font-size: px-to-rem(14);
+}

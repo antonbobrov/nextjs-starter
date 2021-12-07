@@ -1,6 +1,6 @@
+import env from '@/utils/env';
 import { GetServerSideProps } from 'next';
 import fetch from 'node-fetch';
-import { getEnvUrlApiPage, getEnvUrlBase } from '../src/utils/env';
 
 const Sitemap = () => {};
 export default Sitemap;
@@ -14,15 +14,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const { res } = context;
 
     let resources = '';
-    if (process.env.IS_REAL_API === 'true') {
-        const apiUrl = new URL(getEnvUrlApiPage());
+    if (process.env.API_IS_REAL === 'true') {
+        const apiUrl = new URL(env.getUrlApiPage());
         apiUrl.searchParams.set('requireSiteMap', 'true');
         const results = await fetch(apiUrl);
         const json = await results.json() as URLItem[];
         if (Array.isArray(json)) {
             resources += json.map((item) => `
                 <url>
-                    <loc>${getEnvUrlBase(item.loc)}</loc>
+                    <loc>${env.getUrlBase(item.loc)}</loc>
                     <lastmod>${item.lastmod}</lastmod>
                 </url>
             `).join('');

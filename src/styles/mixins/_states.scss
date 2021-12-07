@@ -27,8 +27,8 @@
     }
 }
 
-@mixin non-mobile-hover {
-    @include non-mobile-device {
+@mixin non-mobile-hover ($useGlobal: false) {
+    @include non-mobile-device ($useGlobal) {
         @include hover {
             @content;
         }

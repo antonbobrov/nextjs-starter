@@ -1,13 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { HomeTemplateData } from '../../src/templates/home';
-import { getEnvUrlApiPage, getEnvUrlBase } from '../../src/utils/env';
+import { TemplateHomeProps } from '@/templates/home';
+import env from '@/utils/env';
 
 export default async function handler (
     req: NextApiRequest,
     res: NextApiResponse,
 ) {
     // get home page data
-    const data: HomeTemplateData = await (await fetch(getEnvUrlApiPage(), {
+    const data: TemplateHomeProps = await (await fetch(env.getUrlApiPage(), {
         headers: {
             APIKEY: process.env.API_KEY || '',
         },
@@ -22,7 +22,7 @@ export default async function handler (
         res.json({
             name: data.lexicon.siteName,
             short_name: data.lexicon.siteName,
-            start_url: getEnvUrlBase(),
+            start_url: env.getUrlBase(),
             display: 'fullscreen',
             background_color: '#000000',
             theme_color: '#000000',

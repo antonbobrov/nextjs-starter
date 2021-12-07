@@ -34,8 +34,5 @@
     @include viewport-phone {
         --header-height: #{px-to-rem(70)};
     }
-    
-    // footer
-    --footer-bg: #000;
 
 }

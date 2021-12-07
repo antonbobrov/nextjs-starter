@@ -3,14 +3,14 @@ import type {
 } from 'next';
 import { DeepRequired } from 'ts-essentials';
 import nextConnect from 'next-connect';
-import fetchPageAPI from '../../../src/utils/server/fetchPage';
-import { HomeTemplateData } from '../../../src/templates/home';
+import { TemplateTextProps } from '@/templates/text';
+import fetchPageAPI from '@/utils/server/fetchPage';
 
 const handler = nextConnect().all((
     req: NextApiRequest,
-    res: NextApiResponse<DeepRequired<HomeTemplateData>>,
+    res: NextApiResponse<DeepRequired<TemplateTextProps>>,
 ) => {
-    fetchPageAPI<HomeTemplateData>(req, res, (baseData) => {
+    fetchPageAPI<TemplateTextProps>(req, res, (baseData) => {
         res.json({
             ...baseData,
 
@@ -68,7 +68,7 @@ const handler = nextConnect().all((
                 `,
             },
 
-            data: { },
+            data: {},
 
         });
     });

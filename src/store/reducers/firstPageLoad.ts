@@ -1,20 +1,17 @@
-import { RootState } from '../store';
-
-export const firstPageLoadReducer = (
+const firstPageLoadReducer = (
     state = {
         yes: true,
     },
     action: {
-        type: 'firstPageLoadDone';
+        type: 'FIRST_PAGE_LOAD_DONE';
     },
 ) => {
     switch (action.type) {
-        case 'firstPageLoadDone':
+        case 'FIRST_PAGE_LOAD_DONE':
             state.yes = false;
             return state;
         default:
             return state;
     }
 };
-
-export const selectFirstPageLoadReducer = (state: RootState) => state.firstPageLoad;
+export default firstPageLoadReducer;

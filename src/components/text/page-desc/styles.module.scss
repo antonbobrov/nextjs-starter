@@ -1,0 +1,29 @@
+@import '@/styles/base';
+
+.text_page_desc {
+
+    @at-root * + & {
+        margin-top: px-to-rem(30);
+    }
+
+    .header {
+        @include text-header-2;
+    }
+
+    .desc {
+        @include text-styles;
+
+        @include viewport-tablet-min {
+            width: 80%;
+        }
+        @include viewport-phone {
+            max-width: px-to-rem(400);
+        }
+
+        @at-root * + & {
+            margin-top: px-to-rem(20);
+        }
+
+    }
+
+}
