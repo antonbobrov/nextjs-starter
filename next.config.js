@@ -1,6 +1,6 @@
 const { withSentryConfig } = require('@sentry/nextjs');
 
-const withTM = require('next-transpile-modules')(['vevet', 'vevet-dom'], {
+const withTM = require('next-transpile-modules')(['vevet', 'vevet-dom', 'easing-progress'], {
     resolveSymlinks: true,
     debug: false,
 });
@@ -41,28 +41,6 @@ const conf = {
                 headers,
             },
         ];
-    },
-    webpack: (config) => {
-        if (process.env.NODE_ENV !== 'development') {
-            config.module.rules.forEach(({ oneOf }) => {
-                if (oneOf) {
-                    oneOf.forEach(({ use }) => {
-                        if (!!use && use.forEach) {
-                            use.forEach(({ options: { modules } }) => {
-                                if (modules) {
-                                    if (modules.getLocalIdent) {
-                                        delete modules.getLocalIdent;
-                                        modules.localIdentName = '[hash:base64:4]';
-                                    }
-                                }
-                            });
-                        }
-                    });
-                }
-            });
-        }
-
-        return config;
     },
 };
 
