@@ -1,6 +1,4 @@
-import { useEffect } from 'react';
 import { TemplateProps } from '@/types/page';
-import store from '@/store/store';
 import LayoutSmoothScroll from '@/components/layout/smooth-scroll';
 import LayoutHeader from '@/components/layout/header';
 import LayoutWrapper from '@/components/layout/wrapper';
@@ -14,18 +12,14 @@ import PopupSimpleTrigger from '@/components/popup/simple/Trigger';
 import styles from './styles.module.scss';
 import ExampleScrollList from './components/scroll-list';
 import ExamplesSplitText from './components/split-text';
+import useTemplatePage from '../useTemplatePage';
 
 export interface TemplateExamplesProps extends TemplateProps {
     template: 'examples';
 }
 
 const TemplateExamples = () => {
-    useEffect(() => {
-        store.dispatch({
-            type: 'SET_TEMPLATE_IS_READY',
-            data: true,
-        });
-    }, []);
+    useTemplatePage();
 
     // render the template
     return (

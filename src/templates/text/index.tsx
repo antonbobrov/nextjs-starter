@@ -1,28 +1,23 @@
-import { useContext, useEffect } from 'react';
 import { TemplateProps } from '@/types/page';
-import store from '@/store/store';
-import PageContext from '@/store/PageContext';
 import LayoutSmoothScroll from '@/components/layout/smooth-scroll';
 import LayoutHeader from '@/components/layout/header';
 import TextContent from '@/components/text/content';
 import LayoutBreadCrumbs from '@/components/layout/breadcrumbs';
 import LayoutFooter from '@/components/layout/footer';
 import LayoutWrapper from '@/components/layout/wrapper';
+import { useSelector } from 'react-redux';
+import { selectStorePageProps } from '@/store/reducers/page';
 import styles from './styles.module.scss';
+import useTemplatePage from '../useTemplatePage';
 
 export interface TemplateTextProps extends TemplateProps {
     data: {};
 }
 
 const TemplateText = () => {
-    const pageProps = useContext(PageContext);
+    useTemplatePage();
 
-    useEffect(() => {
-        store.dispatch({
-            type: 'SET_TEMPLATE_IS_READY',
-            data: true,
-        });
-    }, []);
+    const pageProps = useSelector(selectStorePageProps);
 
     // render the template
     return (

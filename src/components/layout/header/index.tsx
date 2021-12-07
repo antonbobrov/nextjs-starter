@@ -1,10 +1,11 @@
 import Link from 'next/link';
 import {
-    FC, useContext, useEffect, useRef,
+    FC, useEffect, useRef,
 } from 'react';
 import app from 'src/app';
 import { selectAll } from 'vevet-dom';
-import PageContext from '@/store/PageContext';
+import { useSelector } from 'react-redux';
+import { selectStorePageProps } from '@/store/reducers/page';
 import styles from './styles.module.scss';
 import LayoutLanguagesSelect from '../languages/select';
 import LayoutMenuButton from '../menu/button';
@@ -16,7 +17,7 @@ interface Props {
 const LayoutHeader: FC<Props> = ({
     isFixed,
 }) => {
-    const pageProps = useContext(PageContext);
+    const pageProps = useSelector(selectStorePageProps);
     const {
         lexicon, globalLinks, siteMenu, languages,
     } = pageProps;

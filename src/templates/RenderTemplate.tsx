@@ -1,8 +1,6 @@
 import dynamic from 'next/dynamic';
-import { useContext, useEffect, useState } from 'react';
-import AppPage from 'src/app/AppPage';
-import PageContext from '@/store/PageContext';
-import store from '@/store/store';
+import { useSelector } from 'react-redux';
+import { selectStorePage } from '@/store/reducers/page';
 
 const Empty = dynamic(import('./Empty'), {
     ssr: true,
@@ -21,30 +19,8 @@ const Examples = dynamic(import('./examples'), {
 });
 
 const RenderTemplate = () => {
-    const pageProps = useContext(PageContext);
-    const { key, template } = pageProps;
-
-    const [isReadyKey, setIsReadyKey] = useState(-1);
-
-    useEffect(() => {
-        if (store.getState().template.isReady) {
-            setIsReadyKey(key);
-        }
-        return store.subscribe(() => {
-            if (store.getState().template.isReady) {
-                setIsReadyKey(key);
-            }
-        });
-    }, [key]);
-
-    useEffect(() => {
-        if (key === isReadyKey) {
-            const page = new AppPage({
-                name: template,
-            });
-            page.create();
-        }
-    }, [key, isReadyKey, template]);
+    const pageState = useSelector(selectStorePage);
+    const { key, template } = pageState.props;
 
     switch (template) {
         case 'not-found':

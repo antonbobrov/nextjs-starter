@@ -1,7 +1,6 @@
 import Router from 'next/router';
 import { Callbacks, NCallbacks } from 'vevet';
 import { getAppPage } from './app';
-import pageIsLoading from './store/pageIsLoading';
 import store from './store/store';
 import { isBrowser } from './utils/browser/isBrowser';
 
@@ -98,15 +97,13 @@ function readyToReload () {
         resolve, reject,
     ) => {
         const page = getAppPage();
-        store.dispatch({
-            type: 'SET_TEMPLATE_IS_READY',
-            data: false,
-        });
         // some actions if page exists
         if (page) {
             // hide the page if it is shown
             if (page.shown) {
-                pageIsLoading.dispatch({ type: 'start' });
+                store.dispatch({
+                    type: 'START_LOADING',
+                });
                 store.dispatch({
                     type: 'FIRST_PAGE_LOAD_DONE',
                 });
@@ -127,7 +124,9 @@ function readyToReload () {
             return;
         }
         // change the route if no page
-        pageIsLoading.dispatch({ type: 'start' });
+        store.dispatch({
+            type: 'START_LOADING',
+        });
         store.dispatch({
             type: 'FIRST_PAGE_LOAD_DONE',
         });

@@ -3,29 +3,45 @@ import type { AppProps } from 'next/app';
 import 'src/utils/browser/adaptiveFontSize';
 import 'src/router';
 
+import store from '@/store/store';
+import { Provider } from 'react-redux';
 import LayoutHead from '@/components/layout/head';
 import LayoutPreloader from '@/components/layout/preloader';
 import LayoutHeader from '@/components/layout/header';
 import { TemplateProps } from '@/types/page';
-import PageContext from '@/store/PageContext';
 import LayoutPopupMenu from '@/components/layout/menu/popup';
-import LayoutLoaderCurtain from '@/components/layout/loader-curtain';
+import { useEffect } from 'react';
+
+let init = false;
 
 function MyApp ({ Component, pageProps }: AppProps) {
     const props = pageProps as TemplateProps;
 
+    if (!init) {
+        store.dispatch({
+            type: 'SET_PAGE_PROPS',
+            data: props,
+        });
+        init = true;
+    }
+    useEffect(() => {
+        store.dispatch({
+            type: 'SET_PAGE_PROPS',
+            data: props,
+        });
+    }, [props]);
+
     if (!!props && props.success) {
         return (
-            <PageContext.Provider value={{ ...props }}>
+            <Provider store={store}>
                 <LayoutHead />
                 <div className="app" id="app">
                     <LayoutHeader isFixed />
                     <Component />
                 </div>
                 <LayoutPopupMenu />
-                <LayoutLoaderCurtain />
                 <LayoutPreloader />
-            </PageContext.Provider>
+            </Provider>
         );
     }
     return (

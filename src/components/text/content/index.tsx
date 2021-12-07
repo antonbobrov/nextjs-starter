@@ -19,8 +19,6 @@ const TextContent = ({
         }
     }, [parentRef]);
 
-
-
     /**
      * Wrap iframes into a div
      */
@@ -93,8 +91,6 @@ const TextContent = ({
             }
         });
     }
-
-
 
     return (
         <div

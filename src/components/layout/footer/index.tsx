@@ -1,10 +1,10 @@
-import { useContext } from 'react';
-import PageContext from '@/store/PageContext';
+import { selectStorePageProps } from '@/store/reducers/page';
+import { useSelector } from 'react-redux';
 import styles from './styles.module.scss';
 
 const LayoutFooter = () => {
-    const props = useContext(PageContext);
-    const copyrightText = props.lexicon.copyright.replace('{year}', `${new Date().getFullYear()}`);
+    const pageProps = useSelector(selectStorePageProps);
+    const copyrightText = pageProps.lexicon.copyright.replace('{year}', `${new Date().getFullYear()}`);
 
     return (
         <footer className={styles.layout_footer}>

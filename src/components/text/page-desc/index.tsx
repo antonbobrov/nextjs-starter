@@ -1,11 +1,11 @@
-import { useContext } from 'react';
-import PageContext from '@/store/PageContext';
 import normalizers from '@/utils/normalizers';
+import { useSelector } from 'react-redux';
+import { selectStorePageProps } from '@/store/reducers/page';
 import TextContent from '../content';
 import styles from './styles.module.scss';
 
 const TextPageDesc = () => {
-    const props = useContext(PageContext);
+    const props = useSelector(selectStorePageProps);
     const { introtext, content } = props.document;
     const headerEmpty = normalizers.emptyWYSIWYGString(introtext);
     const contentEmpty = normalizers.emptyWYSIWYGString(content);

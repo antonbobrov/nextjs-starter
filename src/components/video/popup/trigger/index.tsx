@@ -1,7 +1,7 @@
+import store from '@/store/store';
 import {
     FC, useState, cloneElement, Children,
 } from 'react';
-import pageIsLoading from '@/store/pageIsLoading';
 import type { VideoPlayerSource } from '../../player';
 
 
@@ -22,7 +22,9 @@ const VideoPopupTrigger: FC<Props> = ({
     const newChildren = children ? Children.map(children, (child) => cloneElement(child as any, {
         disabled,
         onClick: () => {
-            pageIsLoading.dispatch({ type: 'start' });
+            store.dispatch({
+                type: 'START_LOADING',
+            });
             const { activeElement } = document;
             setDisabled(true);
             import('../index').then((module) => {
@@ -35,7 +37,9 @@ const VideoPopupTrigger: FC<Props> = ({
                 document.body.appendChild(popup);
                 setDisabled(false);
             }).finally(() => {
-                pageIsLoading.dispatch({ type: 'end' });
+                store.dispatch({
+                    type: 'END_LOADING',
+                });
             });
         },
     })) : [];

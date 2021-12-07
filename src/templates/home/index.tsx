@@ -1,6 +1,4 @@
-import { useEffect } from 'react';
 import { TemplateProps } from '@/types/page';
-import store from '@/store/store';
 import LayoutSmoothScroll from '@/components/layout/smooth-scroll';
 import LayoutHeader from '@/components/layout/header';
 import TextH1 from '@/components/text/h1';
@@ -8,18 +6,14 @@ import TextPageDesc from '@/components/text/page-desc';
 import LayoutFooter from '@/components/layout/footer';
 import LayoutWrapper from '@/components/layout/wrapper';
 import styles from './styles.module.scss';
+import useTemplatePage from '../useTemplatePage';
 
 export interface TemplateHomeProps extends TemplateProps {
     data: {};
 }
 
 const TemplateHome = () => {
-    useEffect(() => {
-        store.dispatch({
-            type: 'SET_TEMPLATE_IS_READY',
-            data: true,
-        });
-    }, []);
+    useTemplatePage();
 
     // render the template
     return (

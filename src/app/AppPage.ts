@@ -4,8 +4,6 @@ import {
 } from 'vevet';
 import { selectOne } from 'vevet-dom';
 import app, { useSmoothScroll } from 'src/app';
-import { getPreloader } from '@/components/layout/preloader';
-import pageIsLoading from '@/store/pageIsLoading';
 import store from '@/store/store';
 import { hideLoaderCurtain, showLoaderCurtain } from '@/components/layout/loader-curtain';
 import createFixedHeaderHandler, { IFixedHeaderHandler } from '@/components/layout/header/createFixedHeaderHandler';
@@ -71,7 +69,7 @@ export default class AppPage extends Page {
         });
 
         // show the page on preloader hide
-        this._catchPreloaderHide().then(() => {
+        this._catchPreloaderDone().then(() => {
             this.onCreate().then(() => {
                 this.show().catch(() => {
                     throw new Error('cant');
@@ -80,25 +78,19 @@ export default class AppPage extends Page {
         });
     }
 
-    protected _catchPreloaderHide () {
+    protected _catchPreloaderDone () {
         return new Promise<void>((
             resolve,
         ) => {
-            const preloader = getPreloader();
-            if (preloader) {
-                if (preloader.loadProgress === 1) {
-                    resolve();
-                } else {
-                    preloader.addCallback('loaded', () => {
-                        resolve();
-                    });
-                }
+            if (store.getState().layout.preloaderDone) {
+                resolve();
             } else {
-                setTimeout(() => {
-                    this._catchPreloaderHide().then(() => {
+                const event = store.subscribe(() => {
+                    if (store.getState().layout.preloaderDone) {
                         resolve();
-                    });
-                }, 30);
+                        event();
+                    }
+                });
             }
         });
     }
@@ -113,20 +105,19 @@ export default class AppPage extends Page {
             resolve,
         ) => {
             super._show().then(() => {
-                const layoutPreloader = getPreloader();
-                const hasInnerPreloader = !!layoutPreloader && layoutPreloader.isHidden;
+                const hasInnerPreloader = store.getState().layout.preloaderDone;
                 if (hasInnerPreloader) {
                     this._onPageLoaded().then(() => {
                         this._showInner();
                         resolve();
-                        if (!store.getState().firstPageLoad.yes) {
+                        if (!store.getState().page.firstLoad) {
                             hideLoaderCurtain();
                         }
                     });
                 } else {
                     this._showInner();
                     resolve();
-                    if (!store.getState().firstPageLoad.yes) {
+                    if (!store.getState().page.firstLoad) {
                         hideLoaderCurtain();
                     }
                 }
@@ -138,7 +129,9 @@ export default class AppPage extends Page {
      * Show the page
      */
     protected _showInner () {
-        pageIsLoading.dispatch({ type: 'end' });
+        store.dispatch({
+            type: 'END_LOADING',
+        });
 
         this._createScrollBar();
         this._createScrollView();

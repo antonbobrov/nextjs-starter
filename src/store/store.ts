@@ -1,15 +1,14 @@
 import { combineReducers, createStore } from 'redux';
-import template from './reducers/template';
-import firstPageLoad from './reducers/firstPageLoad';
-import popupMenu from './reducers/popupMenu';
+import page from './reducers/page';
+import layout from './reducers/layout';
 
 const store = createStore(
     combineReducers({
-        template,
-        firstPageLoad,
-        popupMenu,
+        page,
+        layout,
     }),
 );
 export default store;
 
-export const isFirstPageLoad = () => store.getState().firstPageLoad.yes;
+export type AppState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch;

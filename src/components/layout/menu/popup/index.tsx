@@ -1,13 +1,12 @@
 import { Timeline } from 'vevet';
-import {
-    useContext, useEffect, useRef,
-} from 'react';
+import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import routerCallbacks from 'src/router';
 import { addEventListener } from 'vevet-dom';
 import app from 'src/app';
-import PageContext from '@/store/PageContext';
 import store from '@/store/store';
+import { useSelector } from 'react-redux';
+import { selectStorePageProps } from '@/store/reducers/page';
 import styles from './styles.module.scss';
 import LayoutMenuButton from '../button';
 import LayoutLanguagesList from '../../languages/list';
@@ -15,7 +14,7 @@ import LayoutLanguagesList from '../../languages/list';
 const duration = 450;
 
 const LayoutPopupMenu = () => {
-    const pageProps = useContext(PageContext);
+    const pageProps = useSelector(selectStorePageProps);
     let focusElement: Element | null = null;
     const { siteMenu, languages } = pageProps;
     const parentRef = useRef<HTMLDivElement>(null);
@@ -33,7 +32,7 @@ const LayoutPopupMenu = () => {
         });
         // hide menu on escape
         const escapeListener = addEventListener(window, 'keydown', (e) => {
-            if (e.keyCode === 27 && store.getState().popupMenu.shown) {
+            if (e.keyCode === 27 && store.getState().layout.popupMenuShown) {
                 store.dispatch({
                     type: 'HIDE_POPUP_MENU',
                 });
@@ -74,18 +73,17 @@ const LayoutPopupMenu = () => {
 
         // subscribe to store
         const storeListener = store.subscribe(() => {
-            const state = store.getState().popupMenu;
-            const toShow = state.shown;
+            const state = store.getState().layout.popupMenuShown;
             // prevent underneath scrolling
-            app.html.classList.toggle(styles.prevent_scroll, toShow);
+            app.html.classList.toggle(styles.prevent_scroll, state);
             // animate the parent element
-            if (toShow) {
+            if (state) {
                 timeline.play();
             } else {
                 timeline.reverse();
             }
             // set focus
-            if (state.shown) {
+            if (state) {
                 // eslint-disable-next-line react-hooks/exhaustive-deps
                 focusElement = document.activeElement;
                 setTimeout(() => {
@@ -93,7 +91,7 @@ const LayoutPopupMenu = () => {
                         closeButtonRef.current.focus();
                     }
                 }, 250);
-            } else if (!state.shown) {
+            } else if (!state) {
                 if (focusElement instanceof HTMLElement) {
                     focusElement.focus();
                 }

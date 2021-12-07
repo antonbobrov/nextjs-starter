@@ -1,13 +1,13 @@
 import NextHead from 'next/head';
-import { useContext } from 'react';
-import PageContext from '@/store/PageContext';
 import env from '@/utils/env';
+import { useSelector } from 'react-redux';
+import { selectStorePageProps } from '@/store/reducers/page';
 
 const LayoutHead = () => {
-    const props = useContext(PageContext);
+    const pageProps = useSelector(selectStorePageProps);
     const {
         document, url, settings, meta, lang, lexicon, languages, template, inject,
-    } = props;
+    } = pageProps;
 
     return (
         <NextHead>

@@ -1,45 +1,18 @@
-import PCancelable from 'p-cancelable';
+import store from '@/store/store';
 import {
     FC, useEffect, useRef, useState,
 } from 'react';
 import { ProgressPreloader, utils } from 'vevet';
 import styles from './styles.module.scss';
 
-
-
-let preloader: ProgressPreloader | undefined;
-export function getPreloader () {
-    return preloader;
-}
-
-export function onPreloaderReady () {
-    return new PCancelable<void>((
-        resolve, reject,
-    ) => {
-        if (preloader) {
-            setTimeout(() => {
-                resolve();
-            }, 200);
-        } else {
-            setTimeout(() => {
-                onPreloaderReady().then(() => {
-                    resolve();
-                }).catch(() => {
-                    reject();
-                });
-            }, 100);
-        }
-    });
-}
-
-
-
 const LayoutPreloader: FC = () => {
+    const [isDone, setIsDone] = useState(false);
+
     const ref = useRef<HTMLDivElement>(null);
     const [progress, setProgress] = useState('00');
 
     useEffect(() => {
-        if (!ref.current) {
+        if (isDone || !ref.current) {
             return () => {};
         }
         const container = ref.current;
@@ -51,7 +24,7 @@ const LayoutPreloader: FC = () => {
         container.style.visibility = '';
         container.style.display = '';
 
-        const mod = new ProgressPreloader({
+        const preloader = new ProgressPreloader({
             container,
             hide: 350,
             loaders: {
@@ -64,17 +37,21 @@ const LayoutPreloader: FC = () => {
                 forceEnd: 250,
             },
         });
-        mod.addCallback('progress', (data) => {
+        preloader.addCallback('progress', (data) => {
             const percent = utils.math.boundVal(data.progress * 100, [0, 99]);
             setProgress((percent).toFixed(0));
         });
-
-        preloader = mod;
+        preloader.addCallback('loaded', () => {
+            store.dispatch({
+                type: 'SET_PRELOADER_DONE',
+            });
+            setIsDone(true);
+        });
 
         return () => {
-            mod.destroy();
+            preloader.destroy();
         };
-    }, [ref]);
+    }, [ref, isDone]);
 
     return (
         <div className={`${styles.container} v-preloader`} ref={ref}>

@@ -1,5 +1,6 @@
-import { FC, useContext, useState } from 'react';
-import PageContext from '@/store/PageContext';
+import { FC, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { selectStorePageProps } from '@/store/reducers/page';
 import styles from './styles.module.scss';
 import { VideoPlayerSource } from '../../player';
 
@@ -15,7 +16,7 @@ const VideoPopupFullsizeTrigger: FC<Props> = ({
     id,
     children,
 }) => {
-    const pageProps = useContext(PageContext);
+    const pageProps = useSelector(selectStorePageProps);
     const [disabled, setDisabled] = useState(false);
 
     return (

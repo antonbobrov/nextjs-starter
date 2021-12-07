@@ -1,6 +1,7 @@
-import { FC, useContext } from 'react';
+import { FC } from 'react';
 import Link from 'next/link';
-import PageContext from '@/store/PageContext';
+import { useSelector } from 'react-redux';
+import { selectStorePageProps } from '@/store/reducers/page';
 import styles from './styles.module.scss';
 
 export interface LayoutBreadCrumbsProps {
@@ -10,8 +11,8 @@ export interface LayoutBreadCrumbsProps {
 }
 
 const LayoutBreadCrumbs: FC = () => {
-    const props = useContext(PageContext);
-    const { breadcrumbs } = props;
+    const pageProps = useSelector(selectStorePageProps);
+    const { breadcrumbs } = pageProps;
 
     if (breadcrumbs.length === 0) {
         return <></>;

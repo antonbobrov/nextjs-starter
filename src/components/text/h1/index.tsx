@@ -1,8 +1,8 @@
-import { useContext } from 'react';
-import PageContext from '@/store/PageContext';
+import { useSelector } from 'react-redux';
+import { selectStorePageProps } from '@/store/reducers/page';
 
 const TextH1 = () => {
-    const props = useContext(PageContext);
+    const props = useSelector(selectStorePageProps);
     const { description, longtitle, pagetitle } = props.document;
 
     if (description) {

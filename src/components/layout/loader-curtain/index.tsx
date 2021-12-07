@@ -1,26 +1,27 @@
-import { useEffect } from 'react';
-import app from 'src/app';
-import { selectOne } from 'vevet-dom';
-import Portal from '@/components/Portal';
 import LayoutLoaderCurtainHandler from './Handler';
 import styles from './styles.module.scss';
 
 let handler: LayoutLoaderCurtainHandler | undefined;
+function create () {
+    if (!handler) {
+        const wrapper = document.createElement('div');
+        wrapper.classList.add(styles.layout_loader_curtain);
+        document.body.appendChild(wrapper);
+        handler = new LayoutLoaderCurtainHandler(wrapper);
+    }
+    return handler;
+}
 
 /**
  * Show the loader curtain
  */
 export function showLoaderCurtain () {
     return new Promise<void>((
-        resolve, reject,
+        resolve,
     ) => {
-        if (handler) {
-            handler.show().then(() => {
-                resolve();
-            });
-        } else {
-            reject();
-        }
+        create().show().then(() => {
+            resolve();
+        });
     });
 }
 
@@ -29,44 +30,10 @@ export function showLoaderCurtain () {
  */
 export function hideLoaderCurtain () {
     return new Promise<void>((
-        resolve, reject,
+        resolve,
     ) => {
-        if (handler) {
-            handler.hide().then(() => {
-                resolve();
-            });
-        } else {
-            reject();
-        }
+        create().hide().then(() => {
+            resolve();
+        });
     });
 }
-
-/**
- * Page loader curtain animation
- */
-const LayoutLoaderCurtain = () => {
-    useEffect(() => {
-        const promise = app.onPageLoaded();
-        promise.then(() => {
-            const parent = selectOne('#loader-curtain');
-            if (parent instanceof HTMLElement) {
-                handler = new LayoutLoaderCurtainHandler(parent);
-            }
-            return () => {};
-        });
-        return () => {
-            promise.cancel();
-            handler?.destroy();
-        };
-    }, []);
-
-    return (
-        <Portal>
-            <div
-                id="loader-curtain"
-                className={styles.layout_loader_curtain}
-            />
-        </Portal>
-    );
-};
-export default LayoutLoaderCurtain;

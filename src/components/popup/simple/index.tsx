@@ -1,11 +1,10 @@
-import {
-    FC, useContext, useEffect, useState,
-} from 'react';
+import { FC, useEffect, useState } from 'react';
 import { addEventListener } from 'vevet-dom';
 import routerCallbacks from 'src/router';
 import Portal from '@/components/Portal';
-import PageContext from '@/store/PageContext';
 import app from 'src/app';
+import { useSelector } from 'react-redux';
+import { selectStorePageProps } from '@/store/reducers/page';
 import styles from './styles.module.scss';
 
 interface Props {
@@ -22,7 +21,7 @@ const PopupSimple: FC<Props> = ({
     usePadding = true,
     children,
 }) => {
-    const pageProps = useContext(PageContext);
+    const pageProps = useSelector(selectStorePageProps);
     const { lexicon } = pageProps;
 
     const [isActive, setIsActive] = useState(false);

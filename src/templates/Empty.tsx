@@ -1,18 +1,12 @@
-import { useEffect } from 'react';
 import TextH1 from '@/components/text/h1';
 import LayoutHeader from '@/components/layout/header';
 import LayoutSmoothScroll from '@/components/layout/smooth-scroll';
-import store from '@/store/store';
 import LayoutFooter from '@/components/layout/footer';
 import LayoutWrapper from '@/components/layout/wrapper';
+import useTemplatePage from './useTemplatePage';
 
 const TemplateEmpty = () => {
-    useEffect(() => {
-        store.dispatch({
-            type: 'SET_TEMPLATE_IS_READY',
-            data: true,
-        });
-    }, []);
+    useTemplatePage();
 
     return (
         <>
