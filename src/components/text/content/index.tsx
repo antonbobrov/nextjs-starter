@@ -98,7 +98,7 @@ const TextContent = ({
 
     return (
         <div
-            className={styles.container}
+            className={styles.text_content}
             ref={parentRef}
             dangerouslySetInnerHTML={{ __html: html }}
         />
