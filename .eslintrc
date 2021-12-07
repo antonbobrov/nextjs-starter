@@ -67,12 +67,6 @@
                 "allowAfterSuper": true
             }
         ],
-        "no-param-reassign": [
-            "error",
-            {
-                "props": false
-            }
-        ],
         "import/no-cycle": "off",
         "jsx-a11y/media-has-caption": "off",
         "@typescript-eslint/no-unused-vars": [
