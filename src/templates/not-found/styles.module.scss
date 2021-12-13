@@ -1,5 +1,8 @@
 @import '@/styles/base';
 
-.not_found_page {
-    padding-top: px-to-rem(30);
+.template_not_found {
+    .wrap {
+        padding: px-to-rem(30) var(--wrap) 0;
+    }
+
 }

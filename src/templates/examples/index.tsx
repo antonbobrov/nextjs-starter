@@ -25,10 +25,10 @@ const TemplateExamples = () => {
     return (
         <LayoutSmoothScroll>
             <LayoutHeader isFixed={false} />
-            <LayoutWrapper>
-                <LayoutBreadCrumbs />
-                <div className={styles.examples_page}>
-                    <div className="wrap">
+            <div className={styles.template_examples}>
+                <LayoutWrapper>
+                    <LayoutBreadCrumbs />
+                    <main className={styles.wrap}>
 
                         <h1><TextH1 /></h1>
 
@@ -137,9 +137,9 @@ const TemplateExamples = () => {
                             </div>
                         </div>
 
-                    </div>
-                </div>
-            </LayoutWrapper>
+                    </main>
+                </LayoutWrapper>
+            </div>
             <LayoutFooter />
         </LayoutSmoothScroll>
     );

@@ -1,7 +1,9 @@
 @import '@/styles/base';
 
-.examples_page {
-    padding-top: px-to-rem(30);
+.template_examples {
+    .wrap {
+        padding: px-to-rem(30) var(--wrap) 0;
+    }
 
     .section {
 

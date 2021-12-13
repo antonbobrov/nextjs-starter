@@ -1,9 +1,11 @@
 @import '@/styles/base';
 
-.text_page {
-    padding-top: px-to-rem(30);
+.template_text {
+    .wrap {
+        padding: px-to-rem(30) var(--wrap) 0;
+    }
 
-    &__content {
+    .content {
         @include text-styles;
     }
 

@@ -23,17 +23,17 @@ const TemplateText = () => {
     return (
         <LayoutSmoothScroll>
             <LayoutHeader isFixed={false} />
-            <LayoutWrapper>
-                <LayoutBreadCrumbs />
-                <div className={styles.text_page}>
-                    <div className="wrap">
-                        <div className={styles.text_page__content}>
+            <div className={styles.template_text}>
+                <LayoutWrapper>
+                    <LayoutBreadCrumbs />
+                    <div className={styles.wrap}>
+                        <div className={styles.content}>
                             <TextContent html={pageProps.document.content} />
                             <div className="clear" />
                         </div>
                     </div>
-                </div>
-            </LayoutWrapper>
+                </LayoutWrapper>
+            </div>
             <LayoutFooter />
         </LayoutSmoothScroll>
     );

@@ -18,13 +18,13 @@ const TemplateNotFound = () => {
     return (
         <LayoutSmoothScroll>
             <LayoutHeader isFixed={false} />
-            <LayoutWrapper>
-                <div className={styles.not_found_page}>
-                    <div className="wrap">
+            <div className={styles.template_not_found}>
+                <LayoutWrapper>
+                    <div className={styles.wrap}>
                         <h1><TextH1 /></h1>
                     </div>
-                </div>
-            </LayoutWrapper>
+                </LayoutWrapper>
+            </div>
             <LayoutFooter />
         </LayoutSmoothScroll>
     );
