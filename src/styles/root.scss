@@ -35,4 +35,16 @@
         --header-height: #{px-to-rem(70)};
     }
 
+    // layout wrapper
+    --layout-wrapper-top: var(--header-height);
+    @include viewport-desktop {
+        --layout-wrapper-bottom: #{px-to-rem(120)};
+    }
+    @include viewport-tablet {
+        --layout-wrapper-bottom: #{px-to-rem(100)};
+    }
+    @include viewport-phone {
+        --layout-wrapper-bottom: #{px-to-rem(80)};
+    }
+
 }
