@@ -13,7 +13,6 @@ const LayoutHead = () => {
         <NextHead>
 
             {/* meta */}
-            <meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
             <meta httpEquiv="X-UA-Compatible" content="IE=Edge" />
             <meta name="format-detection" content="telephone=no" />
             <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1" />
