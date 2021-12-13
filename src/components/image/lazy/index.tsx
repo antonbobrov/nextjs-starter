@@ -19,7 +19,7 @@ interface Props extends ImageAttributes {
      * Positionate the image
      * @default 'cover'
      */
-    pos?: false | 'cover' | 'contain';
+    pos?: false | 'cover' | 'contain' | 'fullabs';
     /**
      * Callback on image loaded
      */
@@ -114,6 +114,7 @@ const LazyImage = forwardRef<LazyImageElement, Props>(({
                 isLoaded ? 'loaded' : '',
                 pos === 'cover' ? styles.cover : '',
                 pos === 'contain' ? styles.contain : '',
+                pos === 'fullabs' ? styles.fullabs : '',
             ].join(' ')}
             onLoad={(e) => {
                 if (imageSrcSet !== placeholderSrc) {
@@ -143,6 +144,7 @@ const LazyImage = forwardRef<LazyImageElement, Props>(({
                 isLoaded ? 'loaded' : '',
                 pos === 'cover' ? styles.cover : '',
                 pos === 'contain' ? styles.contain : '',
+                pos === 'fullabs' ? styles.fullabs : '',
                 usePlaceholder ? styles.use_placeholder : '',
             ].join(' ')}
         >

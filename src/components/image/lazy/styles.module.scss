@@ -11,7 +11,8 @@
     }
 
     &.cover,
-    &.contain {
+    &.contain,
+    &.fullabs {
         @include absolute-fullsize;
     }
 
@@ -27,7 +28,8 @@
     }
 
     &.cover,
-    &.contain {
+    &.contain ,
+    &.fullabs {
         @include absolute-fullsize;
     }
 
