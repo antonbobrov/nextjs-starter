@@ -58,6 +58,7 @@ export default class AppPage extends Page {
     protected _createInner () {
         // create smooth scrolling
         this._createSmoothScroll();
+        this._createScrollView();
 
         // process layout headers
         this._fixedHeaderHandler = createFixedHeaderHandler();
@@ -134,7 +135,11 @@ export default class AppPage extends Page {
         });
 
         this._createScrollBar();
-        this._createScrollView();
+        if (this._scrollView) {
+            this._scrollView.changeProp({
+                enabled: true,
+            });
+        }
     }
 
     /**
@@ -196,6 +201,24 @@ export default class AppPage extends Page {
     }
 
     /**
+     * Create ScrollView
+     */
+    protected _createScrollView () {
+        // create ScrollView
+        const container = this.smoothScroll ? this.smoothScroll : window;
+        this._scrollView = new ScrollView({
+            parent: this,
+            enabled: false,
+            container,
+            classToToggle: '',
+            useDelay: {
+                max: 1000,
+                dir: 'y',
+            },
+        });
+    }
+
+    /**
      * Create page scrollbar
      */
     protected _createScrollBar () {
@@ -208,23 +231,6 @@ export default class AppPage extends Page {
             parent: this,
             container,
             optimizeCalculations: true,
-        });
-    }
-
-    /**
-     * Create ScrollView
-     */
-    protected _createScrollView () {
-        // create ScrollView
-        const container = this.smoothScroll ? this.smoothScroll : window;
-        this._scrollView = new ScrollView({
-            parent: this,
-            container,
-            elements: '*[class*="v-view"]',
-            useDelay: {
-                max: 1000,
-                dir: 'y',
-            },
         });
     }
 

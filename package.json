@@ -30,7 +30,7 @@
     "redux": "^4.1.2",
     "sass": "^1.44.0",
     "ts-essentials": "^7.0.3",
-    "vevet": "^2.0.1-dev.17",
+    "vevet": "^2.0.1-dev.19",
     "vevet-dom": "0.0.15",
     "video.js": "^7.17.0",
     "youtube-player": "^5.5.2"
