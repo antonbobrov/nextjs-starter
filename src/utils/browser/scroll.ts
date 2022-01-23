@@ -116,11 +116,11 @@ export function scrollToElement ({
             const element = selectOne(el);
             if (element) {
                 const bounding = element.getBoundingClientRect();
-                const toTop = utils.math.boundVal(
+                const toTop = utils.math.clamp(
                     bounding.top + startValues.scrollTop - top,
                     [0, Infinity],
                 );
-                const toLeft = utils.math.boundVal(
+                const toLeft = utils.math.clamp(
                     bounding.left + startValues.scrollLeft - left,
                     [0, Infinity],
                 );

@@ -3,7 +3,7 @@ import {
     SmoothScroll, SmoothScrollDragPlugin, SmoothScrollKeyboardPlugin,
 } from 'vevet';
 import { selectOne } from 'vevet-dom';
-import app, { useSmoothScroll } from 'src/app';
+import app, { gui, useSmoothScroll } from 'src/app';
 import store from '@/store/store';
 import { hideLoaderCurtain, showLoaderCurtain } from '@/components/layout/loader-curtain';
 import createFixedHeaderHandler, { IFixedHeaderHandler } from '@/components/layout/header/createFixedHeaderHandler';
@@ -48,7 +48,7 @@ export default class AppPage extends Page {
             super._create().then(() => {
                 this._createInner();
                 resolve();
-            });
+            }).catch(() => {});
         });
     }
 
@@ -75,8 +75,8 @@ export default class AppPage extends Page {
                 this.show().catch(() => {
                     throw new Error('cant');
                 });
-            });
-        });
+            }).catch(() => {});
+        }).catch(() => {});
     }
 
     protected _catchPreloaderDone () {
@@ -111,18 +111,18 @@ export default class AppPage extends Page {
                     this._onPageLoaded().then(() => {
                         this._showInner();
                         resolve();
-                        if (!store.getState().page.firstLoad) {
+                        if (!store.getState().layout.firstLoad) {
                             hideLoaderCurtain();
                         }
-                    });
+                    }).catch(() => {});
                 } else {
                     this._showInner();
                     resolve();
-                    if (!store.getState().page.firstLoad) {
+                    if (!store.getState().layout.firstLoad) {
                         hideLoaderCurtain();
                     }
                 }
-            });
+            }).catch(() => {});
         });
     }
 
@@ -198,6 +198,22 @@ export default class AppPage extends Page {
                 lerp: 0.35,
             }));
         }
+
+        // add gui
+        if (gui) {
+            gui.then((data) => {
+                if (!data) {
+                    return;
+                }
+                if (this._smoothScroll) {
+                    const folder = data.addFolder('smooth scroll');
+                    folder.add(this._smoothScroll.prop.render, 'lerp', 0.001, 0.35, 0.001);
+                    this._smoothScroll.addCallback('destroy', () => {
+                        data.removeFolder(folder);
+                    });
+                }
+            }).catch(() => {});
+        }
     }
 
     /**
@@ -251,8 +267,8 @@ export default class AppPage extends Page {
             showLoaderCurtain().then(() => {
                 super._hide().then(() => {
                     resolve();
-                });
-            });
+                }).catch(() => {});
+            }).catch(() => {});
             store.dispatch({
                 type: 'HIDE_POPUP_MENU',
             });

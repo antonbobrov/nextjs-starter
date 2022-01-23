@@ -1,5 +1,5 @@
 import {
-    FC, useEffect, useRef, useState,
+    useEffect, useRef, useState, VFC,
 } from 'react';
 import styles from './styles.module.scss';
 
@@ -8,7 +8,7 @@ interface Props {
     onLoaded?: () => void;
 }
 
-const VideoPlayerVimeo: FC<Props> = ({
+const VideoPlayerVimeo: VFC<Props> = ({
     id,
     onLoaded = () => {},
 }) => {
@@ -31,7 +31,7 @@ const VideoPlayerVimeo: FC<Props> = ({
             } else {
                 setIsLoaded(true);
             }
-        });
+        }).catch(() => {});
         return () => {
             if (player) {
                 player.destroy();

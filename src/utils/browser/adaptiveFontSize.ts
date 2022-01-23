@@ -11,7 +11,7 @@ const adaptiveFontSize = (function func () {
         const multiplier = getMultiplier();
         // calculate font size
         const font = Math.round(multiplier * 16);
-        return utils.math.boundVal(font, [13, 27]);
+        return utils.math.clamp(font, [13, 27]);
     }
 
     /**
@@ -53,7 +53,7 @@ const adaptiveFontSize = (function func () {
                     return 1;
                 }
                 if (width < 360) {
-                    return utils.math.boundVal(width / 360, [0.9375, Infinity]);
+                    return utils.math.clamp(width / 360, [0.9375, Infinity]);
                 }
                 if (width > 400) {
                     return width / width;

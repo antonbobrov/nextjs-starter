@@ -1,7 +1,7 @@
 @import '@/styles/base';
 
 .layout_wrapper {
-    min-height: calc(100 * var(--vh));
+    min-height: calc(100 * var(--vh) - var(--footer-height));
     padding-top: var(--layout-wrapper-top);
     padding-bottom: var(--layout-wrapper-bottom);
 }

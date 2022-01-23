@@ -1,21 +1,28 @@
-import { AppState } from '../store';
+import PCancelable from 'p-cancelable';
+import store, { AppState } from '../store';
 
 type State = {
     preloaderDone: boolean;
+    preloaderHide: boolean;
     preloaderReady: boolean;
     popupMenuShown: boolean;
     loadingCount: number;
+    firstLoad: boolean;
 }
 
 const layoutReducer = (
     state: State = {
         preloaderDone: false,
+        preloaderHide: false,
         preloaderReady: false,
         popupMenuShown: false,
         loadingCount: -1,
+        firstLoad: true,
     },
     action: {
         type: 'SET_PRELOADER_DONE'
+    } | {
+        type: 'SET_PRELOADER_HIDE'
     } | {
         type: 'SET_PRELOADER_READY'
     } | {
@@ -26,11 +33,16 @@ const layoutReducer = (
         type: 'START_LOADING'
     } | {
         type: 'END_LOADING'
+    } | {
+        type: 'FIRST_PAGE_LOAD_DONE',
     },
 ): State => {
     switch (action.type) {
         case 'SET_PRELOADER_DONE':
             state.preloaderDone = true;
+            break;
+        case 'SET_PRELOADER_HIDE':
+            state.preloaderHide = true;
             break;
         case 'SET_PRELOADER_READY':
             state.preloaderReady = true;
@@ -52,6 +64,9 @@ const layoutReducer = (
             }
             handleLoading();
             break;
+        case 'FIRST_PAGE_LOAD_DONE':
+            state.firstLoad = false;
+            break;
         default:
             break;
     }
@@ -62,8 +77,23 @@ const layoutReducer = (
         }
     }
 
-    return state;
+    return {
+        ...state,
+    };
 };
 export default layoutReducer;
 
-export const selectStoreLayout = (state: AppState) => state.layout;
+export const selectLayout = (state: AppState) => state.layout;
+
+export const onLayoutPreloaderReady = () => new PCancelable<void>((resolve) => {
+    if (store.getState().layout.preloaderReady) {
+        resolve();
+    } else {
+        const event = store.subscribe(() => {
+            if (store.getState().layout.preloaderReady) {
+                event();
+                resolve();
+            }
+        });
+    }
+});

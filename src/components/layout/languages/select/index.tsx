@@ -1,18 +1,15 @@
 import {
-    FC, useEffect, useRef, useState,
+    useEffect, useRef, useState, VFC,
 } from 'react';
 import Link from 'next/link';
 import { addEventListener, childOf } from 'vevet-dom';
-import { LanguagesData } from '@/types/page';
+import { useSelector } from 'react-redux';
+import { selectPagePropsGlobal } from '@/store/reducers/pageProps';
 import styles from './styles.module.scss';
 
-interface Data {
-    languages: LanguagesData[];
-}
+const LayoutLanguagesSelect: VFC = () => {
+    const { languages } = useSelector(selectPagePropsGlobal);
 
-const LayoutLanguagesSelect: FC<Data> = ({
-    languages,
-}) => {
     const [languagesList, setLanguagesList] = useState(
         languages.filter((item) => !item.isActive),
     );

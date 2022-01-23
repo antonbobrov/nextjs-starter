@@ -8,16 +8,16 @@ import styles from './styles.module.scss';
 const SliderHScrollList: FC = ({
     children,
 }) => {
-    const ref = useRef<HTMLDivElement>(null);
+    const parentRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
-        if (!ref.current) {
+        if (!parentRef.current) {
             return () => {};
         }
 
         // create scroll list
         const scroll = new SmoothScroll({
             selectors: {
-                outer: ref.current,
+                outer: parentRef.current,
             },
             isHorizontal: true,
             overscroll: false,
@@ -46,10 +46,13 @@ const SliderHScrollList: FC = ({
             scrollbar.destroy();
             scroll.destroy();
         };
-    }, [ref]);
+    }, [parentRef]);
 
     return (
-        <div className={`${styles.slider_h_scroll_list} v-smooth-scroll`} ref={ref}>
+        <div
+            ref={parentRef}
+            className={`${styles.slider_h_scroll_list} v-smooth-scroll`}
+        >
             <div className="v-smooth-scroll__container">
                 {children}
             </div>

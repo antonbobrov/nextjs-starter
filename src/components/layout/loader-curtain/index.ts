@@ -21,7 +21,7 @@ export function showLoaderCurtain () {
     ) => {
         create().show().then(() => {
             resolve();
-        });
+        }).catch(() => {});
     });
 }
 
@@ -34,6 +34,14 @@ export function hideLoaderCurtain () {
     ) => {
         create().hide().then(() => {
             resolve();
-        });
+        }).catch(() => {});
     });
+}
+
+
+/**
+ * Get the loader curtain
+ */
+export function getLoaderCurtain () {
+    return handler;
 }

@@ -2,29 +2,35 @@ import type {
     NextApiRequest, NextApiResponse,
 } from 'next';
 import { DeepRequired } from 'ts-essentials';
-import nextConnect from 'next-connect';
-import { TemplateProps } from '@/types/page';
-import fetchPageAPI from '@/utils/server/fetchPage';
+import fetchGlobalProps from '@/utils/server/fetchGlobalProps';
+import { TemplateNotFoundProps } from '@/templates/not-found';
+import { PageApiProps } from '@/types/page';
 
-const handler = nextConnect().all((
+const handler = async (
     req: NextApiRequest,
-    res: NextApiResponse<DeepRequired<TemplateProps>>,
+    res: NextApiResponse<DeepRequired<
+        PageApiProps<TemplateNotFoundProps>
+    >>,
 ) => {
-    fetchPageAPI<TemplateProps>(req, res, (baseData) => {
-        res.status(404).json({
-            ...baseData,
+    const globalProps = await fetchGlobalProps(req);
 
-            template: 'not-found',
+    res.status(404).json({
 
+        global: {
+            ...globalProps,
             document: {
-                ...baseData.document,
+                ...globalProps.document,
                 pagetitle: '404. Page Not Found',
             },
+            breadcrumbs: [
+                ...globalProps.breadcrumbs,
+                { id: 1, href: '/404/', name: '404' },
+            ],
+        },
 
-            data: {},
+        templateName: 'not-found',
+        template: {},
 
-        });
     });
-});
-
+};
 export default handler;

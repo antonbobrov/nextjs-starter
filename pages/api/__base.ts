@@ -1,32 +1,20 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import fetch from 'node-fetch';
 import { DeepRequired } from 'ts-essentials';
-import { LexiconData } from '@/types/lexicon';
-import { TemplateProps, TemplateDynamicProps } from '@/types/page';
-import env from '@/utils/env';
+import { GlobalProps } from '@/types/page';
 
 export default async function handler (
     req: NextApiRequest,
     res: NextApiResponse<
-        DeepRequired<
-            Omit<TemplateProps, keyof TemplateDynamicProps>
-        >
+        DeepRequired<GlobalProps>
     >,
 ) {
-    // get lexicon
-    const lexicon: LexiconData = await (await fetch(env.getUrlBase('/api/__lexicon'))).json();
-
     // return data
     res.json({
-        success: true,
-
-        template: '',
-
         lang: 'en',
         dir: 'ltr',
 
         document: {
-            pagetitle: lexicon.siteName,
+            pagetitle: 'Next.JS Vevet Starter',
             longtitle: '',
             description: '',
             introtext: '',
@@ -40,27 +28,31 @@ export default async function handler (
         },
 
         settings: {
+            // set false when need "noindex" in head
             searchable: true,
         },
 
-        lexicon,
-
+        // html/js injections, f.e., GA, Pixel, etc.
         inject: {
+            // only js code without the <script> tag
             headJS: '',
+            // any html tags at the top of the <body> tag
             prependBody: '',
+            // any html tags at the bottom of the <body> tag
             appendBody: '',
         },
 
+        // relative paths
         globalLinks: {
             home: '/',
         },
 
         siteMenu: [
             {
-                id: 0, href: '/text-page/', name: 'Text Page', isActive: false, isExternal: false,
+                id: 0, href: '/text-page/', name: 'Text Page', isActive: false,
             },
             {
-                id: 1, href: '/examples/', name: 'Examples', isActive: false, isExternal: false,
+                id: 1, href: '/examples/', name: 'Examples', isActive: false,
             },
         ],
 
@@ -80,8 +72,6 @@ export default async function handler (
             { id: 0, href: '/', name: 'Home' },
             { id: 1, href: '/', name: 'Page name' },
         ],
-
-        data: {},
 
     });
 }

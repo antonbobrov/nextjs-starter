@@ -1,23 +1,23 @@
-import { TemplateProps } from '@/types/page';
 import LayoutSmoothScroll from '@/components/layout/smooth-scroll';
 import LayoutHeader from '@/components/layout/header';
 import TextContent from '@/components/text/content';
-import LayoutBreadCrumbs from '@/components/layout/breadcrumbs';
+import LayoutBreadCrumbsList from '@/components/layout/breadcrumbs/list';
 import LayoutFooter from '@/components/layout/footer';
 import LayoutWrapper from '@/components/layout/wrapper';
 import { useSelector } from 'react-redux';
-import { selectStorePageProps } from '@/store/reducers/page';
+import { VFC } from 'react';
+import { selectPagePropsGlobal } from '@/store/reducers/pageProps';
 import styles from './styles.module.scss';
 import useTemplatePage from '../useTemplatePage';
 
-export interface TemplateTextProps extends TemplateProps {
-    data: {};
+export interface TemplateTextProps {
+
 }
 
-const TemplateText = () => {
+const TemplateText: VFC = () => {
     useTemplatePage();
 
-    const pageProps = useSelector(selectStorePageProps);
+    const globalProps = useSelector(selectPagePropsGlobal);
 
     // render the template
     return (
@@ -25,10 +25,12 @@ const TemplateText = () => {
             <LayoutHeader isFixed={false} />
             <div className={styles.template_text}>
                 <LayoutWrapper>
-                    <LayoutBreadCrumbs />
+                    <LayoutBreadCrumbsList />
                     <div className={styles.wrap}>
                         <div className={styles.content}>
-                            <TextContent html={pageProps.document.content} />
+                            <TextContent
+                                html={globalProps.document.content}
+                            />
                             <div className="clear" />
                         </div>
                     </div>

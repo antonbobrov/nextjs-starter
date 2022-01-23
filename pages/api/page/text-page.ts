@@ -2,21 +2,24 @@ import type {
     NextApiRequest, NextApiResponse,
 } from 'next';
 import { DeepRequired } from 'ts-essentials';
-import nextConnect from 'next-connect';
 import { TemplateTextProps } from '@/templates/text';
-import fetchPageAPI from '@/utils/server/fetchPage';
+import { PageApiProps } from '@/types/page';
+import fetchGlobalProps from '@/utils/server/fetchGlobalProps';
 
-const handler = nextConnect().all((
+const handler = async (
     req: NextApiRequest,
-    res: NextApiResponse<DeepRequired<TemplateTextProps>>,
+    res: NextApiResponse<DeepRequired<
+        PageApiProps<TemplateTextProps>
+    >>,
 ) => {
-    fetchPageAPI<TemplateTextProps>(req, res, (baseData) => {
-        res.json({
-            ...baseData,
+    const globalProps = await fetchGlobalProps(req);
 
-            template: 'text',
+    res.json({
 
+        global: {
+            ...globalProps,
             document: {
+                ...globalProps.document,
                 pagetitle: 'Text page',
                 longtitle: 'This is the text page',
                 description: '',
@@ -67,11 +70,12 @@ const handler = nextConnect().all((
                     <p><img style="float: left;" src="https://picsum.photos/id/237/300/200" alt="" width="150" height="84" />Text Lorem ipsum dolor sit amet</p>
                 `,
             },
+        },
 
-            data: {},
+        templateName: 'text',
+        template: {},
 
-        });
     });
-});
-
+};
 export default handler;
+

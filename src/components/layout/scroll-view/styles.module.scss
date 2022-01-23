@@ -1,0 +1,46 @@
+@import '@/styles/base';
+
+.bottom {
+    opacity: 0;
+
+    &.viewed {
+        @include transition-animation(1s);
+        animation-name: viewBottom;
+        animation-fill-mode: both;
+
+        @keyframes viewBottom {
+            from {
+                transform: translate3d(0, #{px-to-rem(32)}, 0);
+                opacity: 0;
+            }
+
+            to {
+                transform: none;
+                opacity: 1;
+            }
+        }
+            
+    }
+        
+}
+
+.alpha {
+    opacity: 0;
+
+    &.viewed {
+        @include transition-animation(1s);
+        animation-name: viewAlpha;
+        animation-fill-mode: both;
+
+        @keyframes viewAlpha {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+            
+    }
+}

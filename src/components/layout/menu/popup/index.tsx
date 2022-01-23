@@ -1,22 +1,22 @@
 import { Timeline } from 'vevet';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, VFC } from 'react';
 import Link from 'next/link';
 import routerCallbacks from 'src/router';
 import { addEventListener } from 'vevet-dom';
 import app from 'src/app';
 import store from '@/store/store';
 import { useSelector } from 'react-redux';
-import { selectStorePageProps } from '@/store/reducers/page';
+import { selectPagePropsGlobal } from '@/store/reducers/pageProps';
 import styles from './styles.module.scss';
 import LayoutMenuButton from '../button';
 import LayoutLanguagesList from '../../languages/list';
 
 const duration = 450;
 
-const LayoutPopupMenu = () => {
-    const pageProps = useSelector(selectStorePageProps);
+const LayoutMenuPopup: VFC = () => {
+    const { siteMenu } = useSelector(selectPagePropsGlobal);
+
     let focusElement: Element | null = null;
-    const { siteMenu, languages } = pageProps;
     const parentRef = useRef<HTMLDivElement>(null);
     const overlayRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -142,8 +142,6 @@ const LayoutPopupMenu = () => {
                                     <a
                                         href={link.href}
                                         className={link.isActive ? styles.active : ''}
-                                        target={link.isExternal ? '_blank' : ''}
-                                        rel="noreferrer"
                                     >
                                         {link.name}
                                     </a>
@@ -154,7 +152,7 @@ const LayoutPopupMenu = () => {
 
                     {/* catalog menu */}
                     <div className={styles.languages}>
-                        <LayoutLanguagesList languages={languages} />
+                        <LayoutLanguagesList />
                     </div>
 
                 </div>
@@ -162,4 +160,4 @@ const LayoutPopupMenu = () => {
         </div>
     );
 };
-export default LayoutPopupMenu;
+export default LayoutMenuPopup;

@@ -4,10 +4,6 @@ function urlSlashes (
     return val.replace(/([^:]\/)\/+/g, '$1');
 }
 
-function pageUrlToAPI (val: URL) {
-    return urlSlashes(`${val.origin}/api/page/${val.pathname}${val.search}`);
-}
-
 function telephone (
     val: string,
 ) {
@@ -50,13 +46,36 @@ function numDecl (
 }
 
 
+
+function dateToText (date: string) {
+    if (date) {
+        const datetime = new Date(date);
+        return `${datetime.getDate()}.${datetime.getMonth() + 1}.${datetime.getFullYear()}`;
+    }
+    return '';
+}
+
+function dateToValue (date: string) {
+    if (date) {
+        const datetime = new Date(date);
+        const monthNum = datetime.getMonth() + 1;
+        const monthString = monthNum < 10 ? `0${monthNum}` : `${monthNum}`;
+        const dateNum = datetime.getDate();
+        const dateString = dateNum < 10 ? `0${dateNum}` : `${dateNum}`;
+        return `${datetime.getFullYear()}-${monthString}-${dateString}`;
+    }
+    return '';
+}
+
+
 const normalizers = {
     urlSlashes,
-    pageUrlToAPI,
     telephone,
     emptyWYSIWYGString,
     strToNum,
     numDecl,
+    dateToText,
+    dateToValue,
 };
 
 export default normalizers;

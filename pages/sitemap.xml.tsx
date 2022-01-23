@@ -1,4 +1,5 @@
 import env from '@/utils/env';
+import normalizers from '@/utils/normalizers';
 import { GetServerSideProps } from 'next';
 import fetch from 'node-fetch';
 
@@ -11,18 +12,20 @@ interface URLItem {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const { res } = context;
+    const { res, req } = context;
 
     let resources = '';
-    if (process.env.API_IS_REAL === 'true') {
-        const apiUrl = new URL(env.getUrlApiPage());
+    if (process.env.NEXT_PUBLIC_URL_API) {
+        const apiUrl = new URL(
+            normalizers.urlSlashes(`${process.env.NEXT_PUBLIC_URL_API}/sitemap/`),
+        );
         apiUrl.searchParams.set('requireSiteMap', 'true');
         const results = await fetch(apiUrl);
         const json = await results.json() as URLItem[];
         if (Array.isArray(json)) {
             resources += json.map((item) => `
                 <url>
-                    <loc>${env.getUrlBase(item.loc)}</loc>
+                    <loc>${env.getReqUrlBase(req, item.loc)}</loc>
                     <lastmod>${item.lastmod}</lastmod>
                 </url>
             `).join('');

@@ -8,24 +8,6 @@ const withTM = require('next-transpile-modules')(['vevet', 'vevet-dom', 'easing-
 const headers = require('./headers');
 
 const conf = {
-    env: {
-        NEXT_PUBLIC_URL_BASE: process.env.NEXT_PUBLIC_URL_BASE,
-
-        NEXT_PUBLIC_URL_CMS: process.env.NEXT_PUBLIC_URL_CMS,
-        NEXT_PUBLIC_URL_API: process.env.NEXT_PUBLIC_URL_API,
-        NEXT_PUBLIC_URL_API_PAGE: process.env.NEXT_PUBLIC_URL_API_PAGE,
-        API_KEY: process.env.API_KEY,
-        API_IS_REAL: process.env.API_IS_REAL,
-
-        NOINDEX: process.env.NOINDEX,
-        SSP_CACHE: process.env.SSP_CACHE,
-        USE_WEBP_REPLACE: process.env.USE_WEBP_REPLACE,
-
-        SENTRY_DSN: process.env.SENTRY_DSN,
-        SENTRY_ORG: process.env.SENTRY_ORG,
-        SENTRY_PROJECT: process.env.SENTRY_PROJECT,
-        SENTRY_AUTH: process.env.SENTRY_AUTH,
-    },
     reactStrictMode: true,
     trailingSlash: true,
     serverRuntimeConfig: {
@@ -41,6 +23,14 @@ const conf = {
                 headers,
             },
         ];
+    },
+    webpack: (config, { webpack, buildId }) => {
+        config.plugins.push(
+            new webpack.DefinePlugin({
+                'process.env.CONFIG_BUILD_ID': JSON.stringify(buildId),
+            }),
+        );
+        return config;
     },
 };
 

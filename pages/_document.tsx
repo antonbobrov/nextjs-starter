@@ -2,7 +2,7 @@ import Document, {
     Html, Head, Main, NextScript,
     DocumentContext,
 } from 'next/document';
-import { TemplateProps } from '@/types/page';
+import { GlobalProps, PageProps } from '@/types/page';
 
 class MyDocument extends Document {
     static async getInitialProps (ctx: DocumentContext) {
@@ -12,23 +12,19 @@ class MyDocument extends Document {
 
     render () {
         // eslint-disable-next-line no-underscore-dangle
-        const { pageProps } = this.props.__NEXT_DATA__.props;
-        const props = pageProps as TemplateProps;
+        const props = this.props.__NEXT_DATA__.props.pageProps as PageProps;
+        const { global } = props;
 
         // get data
         let lang = 'en';
         let dir = 'ltr';
-        let pageClassName = '';
-        if (props) {
-            lang = props.lang;
-            dir = props.dir;
-            if (props.template) {
-                pageClassName = `v-page-${props.template}`;
-            }
+        let inject: GlobalProps['inject'] | undefined;
+        if (global) {
+            lang = global.lang;
+            dir = global.dir;
+            inject = global.inject;
         }
-
-        // get injections
-        const { inject } = props;
+        const pageClassName = `v-page-${props.templateName}`;
 
         return (
             <Html

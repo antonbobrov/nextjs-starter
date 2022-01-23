@@ -1,13 +1,14 @@
 import normalizers from '@/utils/normalizers';
 import { useSelector } from 'react-redux';
-import { selectStorePageProps } from '@/store/reducers/page';
 import LayoutScrollView from '@/components/layout/scroll-view';
+import { VFC } from 'react';
+import { selectPagePropsGlobal } from '@/store/reducers/pageProps';
 import TextContent from '../content';
 import styles from './styles.module.scss';
 
-const TextPageDesc = () => {
-    const props = useSelector(selectStorePageProps);
-    const { introtext, content } = props.document;
+const TextPageDesc: VFC = () => {
+    const globalProps = useSelector(selectPagePropsGlobal);
+    const { introtext, content } = globalProps.document;
     const headerEmpty = normalizers.emptyWYSIWYGString(introtext);
     const contentEmpty = normalizers.emptyWYSIWYGString(content);
     const isEmpty = headerEmpty && contentEmpty;
@@ -16,7 +17,7 @@ const TextPageDesc = () => {
         isEmpty ? <></> : (
             <div className={styles.text_page_desc}>
                 {headerEmpty ? '' : (
-                    <LayoutScrollView viewClassName="v-view_b">
+                    <LayoutScrollView animation="bottom">
                         <h2
                             className={styles.header}
                             dangerouslySetInnerHTML={{ __html: introtext }}
@@ -24,7 +25,7 @@ const TextPageDesc = () => {
                     </LayoutScrollView>
                 )}
                 {contentEmpty ? '' : (
-                    <LayoutScrollView viewClassName="v-view_b">
+                    <LayoutScrollView animation="bottom">
                         <div className={styles.desc}>
                             <TextContent html={content} />
                         </div>

@@ -40,7 +40,7 @@ const VideoPopupTrigger: FC<Props> = ({
                 store.dispatch({
                     type: 'END_LOADING',
                 });
-            });
+            }).catch(() => {});
         },
     })) : [];
 

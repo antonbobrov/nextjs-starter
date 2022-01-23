@@ -197,7 +197,7 @@ export default class VideoPopup extends CustomLitElement {
                 if (this._container) {
                     this._container.classList.add('loaded');
                 }
-            });
+            }).catch(() => {});
         });
         this._timeline.play();
     }

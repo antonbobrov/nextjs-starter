@@ -5,21 +5,27 @@ import {
 import { utils } from 'vevet';
 import app from 'src/app';
 import { isBrowser } from '@/utils/browser/isBrowser';
+import { onLayoutPreloaderReady } from '@/store/reducers/layout';
+import imageLoader from '@/utils/loaders/image';
+import { ImageAdaptivePaths, ImagePaths } from '@/components/image/types';
 import styles from './styles.module.scss';
 
 const placeholderSrc = '/image/placeholder.svg';
 
-interface ImageAttributes extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'loading'> {
-    src: string;
+type BaseImageAttributes = Omit<ImgHTMLAttributes<HTMLImageElement>, 'loading'>;
+type ImageAttributes = BaseImageAttributes & {
+    src?: string;
+    imagePaths?: ImagePaths | ImageAdaptivePaths;
     alt: string;
 }
 
-interface Props extends ImageAttributes {
+interface ComponentProps {
     /**
      * Positionate the image
      * @default 'cover'
      */
     pos?: false | 'cover' | 'contain' | 'fullabs';
+    loading?: 'lazy' | 'preload';
     /**
      * Callback on image loaded
      */
@@ -30,12 +36,19 @@ interface Props extends ImageAttributes {
      */
     useWrapper?: boolean;
     /**
+     * Use opacity animation
+     * @default true
+     */
+    useAlpha?: boolean;
+    /**
      * Use background color placeholder.
      * Available only when useWrapper is true.
      * @default false
      */
     usePlaceholder?: boolean;
 }
+
+type Props = ComponentProps & ImageAttributes;
 
 interface LazyImageElement extends HTMLImageElement {
     preloadLazyImage?: () => void;
@@ -49,9 +62,12 @@ interface LazyImageElement extends HTMLImageElement {
 const LazyImage = forwardRef<LazyImageElement, Props>(({
     children,
     pos = 'cover',
+    loading = 'lazy',
     handleLoad = undefined,
     useWrapper = true,
+    useAlpha = true,
     usePlaceholder = false,
+    imagePaths,
     ...restProps
 }, ref) => {
     const [isLoaded, setIsLoaded] = useState(false);
@@ -63,18 +79,26 @@ const LazyImage = forwardRef<LazyImageElement, Props>(({
      * Load the image by replacing its src
      */
     const loadImage = useCallback(() => {
-        if (restProps.srcSet) {
-            setImageSrcSet(restProps.srcSet);
+        const imageProps = imagePaths
+            ? imageLoader.getImageProps(imagePaths) : undefined;
+        const srcSet = imageProps ? imageProps.srcSet : restProps.srcSet;
+        const src = (imageProps ? imageProps.src : restProps.src) || '';
+        if (srcSet) {
+            setImageSrcSet(srcSet);
         } else {
-            setImageSrcSet(restProps.src);
+            setImageSrcSet(src);
         }
         if (!!observer && !!domRef.current) {
             observer.unobserve(domRef.current);
         }
-    }, [restProps]);
+    }, [imagePaths, restProps.src, restProps.srcSet]);
 
     // load the image when it appears into the viewport
+    // lazy load only
     useEffect(() => {
+        if (loading !== 'lazy') {
+            return () => {};
+        }
         const el = domRef.current!;
         // set callback
         el.preloadLazyImage = () => {
@@ -96,7 +120,21 @@ const LazyImage = forwardRef<LazyImageElement, Props>(({
                 observer.unobserve(el);
             }
         };
-    }, [domRef, loadImage]);
+    }, [loading, domRef, loadImage]);
+
+    // preload image
+    useEffect(() => {
+        if (loading === 'preload') {
+            const promise = onLayoutPreloaderReady();
+            promise.then(() => {
+                loadImage();
+            }).catch(() => {});
+            return () => {
+                promise.cancel();
+            };
+        }
+        return () => {};
+    }, [loading, loadImage]);
 
 
 
@@ -109,13 +147,22 @@ const LazyImage = forwardRef<LazyImageElement, Props>(({
             ref={domRef}
             className={[
                 styles.img,
-                'js-preload-ignore',
-                isLoaded ? styles.loaded : '',
-                isLoaded ? 'loaded' : '',
-                pos === 'cover' ? styles.cover : '',
-                pos === 'contain' ? styles.contain : '',
-                pos === 'fullabs' ? styles.fullabs : '',
+                useAlpha ? styles.use_alpha : '',
+                [
+                    loading !== 'preload' ? 'js-preload-ignore' : '',
+                    loading === 'preload' ? 'js-preload-global js-preload-inner' : '',
+                ].join(' '),
+                [
+                    isLoaded ? styles.loaded : '',
+                    isLoaded ? 'loaded' : '',
+                ].join(' '),
+                [
+                    pos === 'cover' ? styles.cover : '',
+                    pos === 'contain' ? styles.contain : '',
+                    pos === 'fullabs' ? styles.fullabs : '',
+                ].join(' '),
             ].join(' ')}
+            data-is-loaded={isLoaded ? 'true' : ''}
             onLoad={(e) => {
                 if (imageSrcSet !== placeholderSrc) {
                     setIsLoaded(true);

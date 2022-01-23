@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { useEffect, VFC } from 'react';
 import VideoPlayerMp4 from './mp4';
 import VideoPlayerVimeo from './vimeo';
 import VideoPlayerYouTube from './youtube';
@@ -13,7 +13,7 @@ interface Props {
     onLoaded?: () => void;
 }
 
-const VideoPlayer: FC<Props> = ({
+const VideoPlayer: VFC<Props> = ({
     source,
     src,
     id,
@@ -71,4 +71,5 @@ const VideoPlayer: FC<Props> = ({
         </div>
     );
 };
+
 export default VideoPlayer;

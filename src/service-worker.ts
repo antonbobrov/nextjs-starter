@@ -18,7 +18,7 @@ const registerServiceWorker = () => {
                 })
                 .then(() => {
                     // registered service worker
-                });
+                }).catch(() => {});
         }
     }
 };

@@ -1,28 +1,17 @@
-import {
-    FC, useEffect, useState,
-} from 'react';
 import Link from 'next/link';
-import { LanguagesData } from '@/types/page';
+import { useSelector } from 'react-redux';
+import { VFC } from 'react';
+import { selectPagePropsGlobal } from '@/store/reducers/pageProps';
 import styles from './styles.module.scss';
 
-interface Data {
-    languages: LanguagesData[];
-}
-
-const LayoutLanguagesList: FC<Data> = ({
-    languages,
-}) => {
-    const [languagesList, setLanguagesList] = useState(languages);
-    useEffect(() => {
-        setLanguagesList(languages);
-    }, [languages]);
-
+const LayoutLanguagesList: VFC = () => {
+    const { languages } = useSelector(selectPagePropsGlobal);
 
     return (
         <ul
             className={styles.layout_languages_list}
         >
-            {languagesList.map((item) => (
+            {languages.map((item) => (
                 <li
                     key={item.key}
                     className={[

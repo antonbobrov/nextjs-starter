@@ -1,8 +1,7 @@
 import SliderHScrollList from '@/components/sliders/h-scroll-list';
-import { FC } from 'react';
 import styles from './styles.module.scss';
 
-const ExampleScrollList: FC = () => {
+const ExampleScrollList = () => {
     const items = [{
         id: 0,
         header: 'Item 1',

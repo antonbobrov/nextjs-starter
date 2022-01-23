@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import store from '@/store/store';
 import { useSelector } from 'react-redux';
-import { selectStorePageProps } from '@/store/reducers/page';
+import { selectPagePropsLexicon } from '@/store/reducers/pageProps';
 import styles from './styles.module.scss';
 
 interface Props {
@@ -17,8 +17,7 @@ const LayoutMenuButton = forwardRef<
     },
     ref,
 ) => {
-    const pageProps = useSelector(selectStorePageProps);
-    const { lexicon } = pageProps;
+    const lexicon = useSelector(selectPagePropsLexicon);
 
     return (
         <button

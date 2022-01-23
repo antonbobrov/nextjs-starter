@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, VFC } from 'react';
 import { selectAll, createElement, insertAfter } from 'vevet-dom';
 import styles from './styles.module.scss';
 
@@ -6,9 +6,9 @@ interface Props {
     html: string;
 }
 
-const TextContent = ({
+const TextContent: VFC<Props> = ({
     html,
-}: Props) => {
+}) => {
     const parentRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
         if (parentRef.current) {

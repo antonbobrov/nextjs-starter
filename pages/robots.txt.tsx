@@ -5,7 +5,7 @@ const Robots = () => {};
 export default Robots;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const { res } = context;
+    const { res, req } = context;
 
     const content: string[] = [];
     content.push('User-agent: *');
@@ -13,7 +13,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         content.push('Disallow: /');
     } else {
         content.push('Disallow: *?*');
-        content.push(`Sitemap: ${env.getUrlBase('/sitemap.xml')}`);
+        content.push(`Sitemap: ${env.getReqUrlBase(req, '/sitemap.xml')}`);
     }
 
     res.setHeader('Content-Type', 'text/plain');

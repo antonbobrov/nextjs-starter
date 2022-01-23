@@ -2,66 +2,89 @@ import { GetServerSidePropsContext } from 'next';
 import md5 from 'md5';
 import fs from 'fs';
 import path from 'path';
-import getConfig from 'next/config';
-import { TemplateProps } from '@/types/page';
+import {
+    ConfigProps, PageApiProps, PageProps,
+} from '@/types/page';
+import getLexicon from 'src/lexicon/getLexicon';
+import store from '@/store/store';
 import env from '../env';
 import normalizers from '../normalizers';
+import serverSettings from './settings';
 
-const { serverRuntimeConfig } = getConfig();
-const cacheFileDir = path.join(serverRuntimeConfig.PROJECT_ROOT, '.ssp-cache');
 
-/**
- * Remove cached server side props
- */
-export function clearSSPCache () {
-    try {
-        fs.readdir(cacheFileDir, (fileError, files) => {
-            if (!fileError) {
-                files.forEach((file) => {
-                    fs.unlink(path.join(cacheFileDir, file), (err) => {
-                        if (err) throw err;
-                    });
-                });
-            }
-        });
-        return {
-            success: true,
-        };
-    } catch (e) {
-        return {
-            success: false,
-            message: e,
-        };
-    }
-}
 
 /**
  * Fetch server side props or resolve the props from cache
  */
-export async function fetchSSP (
+export default async function fetchSSP (
     context: GetServerSidePropsContext,
     useCache = process.env.SSP_CACHE === 'true',
 ) {
-    const { res } = context;
-    let props!: TemplateProps;
+    // get api props
+    const pageApiProps = await getAPIPageProps(context, useCache);
 
+    // process errors
+    if ('isError' in pageApiProps) {
+        return {
+            response: {
+                success: false,
+                error: {
+                    message: pageApiProps.message || null,
+                    response: pageApiProps.response || null,
+                },
+            },
+        } as PageProps;
+    }
+
+    // add response
+    let props: PageProps = {
+        ...pageApiProps,
+        response: {
+            success: true,
+        },
+        config: getConfig(context),
+        lexicon: getLexicon(pageApiProps.global.lang),
+    };
+    props = setMetaImage(props);
+
+    // update store
+    store.dispatch({
+        type: 'SET_PAGE_PROPS',
+        data: props,
+    });
+
+    return props;
+}
+
+
+
+async function getAPIPageProps (
+    context: GetServerSidePropsContext,
+    useCache: boolean,
+): Promise<PageApiProps | {
+    isError: true;
+    message?: string;
+    response?: string;
+}> {
     // get urls
-    const { resolvedUrl } = context;
+    const { resolvedUrl, res, req } = context;
     const urlWithoutParameters = resolvedUrl.split('?')[0];
+
+    // get urls parameters
     const urlParams = new URLSearchParams(resolvedUrl.split('?')[1]);
     urlParams.delete('slug');
     const urlHasParameters = Array.from(urlParams.values()).length > 0;
 
-    // decide if can get cached file
+    // decide if we can get cached file
     const urlDeniesCache = resolvedUrl.includes('noCache');
-    const clearCache = resolvedUrl.includes('clearCache');
-    const allowCache = !urlHasParameters && !urlDeniesCache && !clearCache && useCache;
+    const requireClearCache = resolvedUrl.includes('clearCache');
+    const allowCache = !urlHasParameters && !urlDeniesCache && !requireClearCache && useCache;
 
     // get file name
-    const cacheFileName = path.join(cacheFileDir, `${md5(urlWithoutParameters)}.json`);
+    const cacheFileName = path.join(serverSettings.cacheDir, `${md5(urlWithoutParameters)}.json`);
 
-    // clear cache if required
-    if (clearCache) {
+    // clear cache of this very page if required
+    if (requireClearCache) {
         try {
             if (fs.existsSync(cacheFileName)) {
                 fs.unlinkSync(cacheFileName);
@@ -73,115 +96,162 @@ export async function fetchSSP (
     }
 
     // get cached props
-    let cachedProps: any | undefined;
     if (allowCache) {
+        let props: false | PageApiProps = false;
         try {
             if (fs.existsSync(cacheFileName)) {
                 const contents = fs.readFileSync(cacheFileName, { encoding: 'utf8', flag: 'r' }) || '';
-                cachedProps = JSON.parse(contents);
+                props = JSON.parse(contents);
             }
         } catch (err) {
-            throw new Error(`Cannot read ${cacheFileName}`);
+            // if error while parsing
+            res.statusCode = 500;
+            return {
+                isError: true,
+                message: `Cannot read ${cacheFileName}`,
+            };
+        }
+        // if props are parsed
+        if (props) {
+            return props;
         }
     }
 
-    // USE CACHED PROPS
-    if (cachedProps) {
-        props = cachedProps;
+    // FETCH PROPS
+
+    // get api data
+    let apiURL: URL;
+    if (process.env.NEXT_PUBLIC_URL_API_PAGE) {
+        apiURL = new URL(resolvedUrl, process.env.NEXT_PUBLIC_URL_API_PAGE);
     } else {
-        // FETCH PROPS
+        apiURL = new URL(normalizers.urlSlashes(`${env.getReqUrlBase(req)}/api/page/${resolvedUrl}`));
+    }
+    apiURL.searchParams.delete('slug');
+    let response!: Response;
+    try {
+        response = await (await fetch(apiURL.href, {
+            headers: {
+                APIKEY: process.env.API_KEY || '',
+            },
+        }));
+    } catch (e) {
+        res.statusCode = 503;
+        return {
+            isError: true,
+            message: 'API unavailable',
+        };
+    }
 
-        // get api data
-        const apiURL = env.getUrlApiPage(resolvedUrl);
-        let response!: Response;
+    // check redirects
+    if (response.redirected) {
+        const redirectUrl = new URL(response.url);
+        res.setHeader('location', redirectUrl.pathname);
+        res.statusCode = 301;
+        res.end();
+    }
+
+    // set status
+    res.statusCode = response.status;
+    res.statusMessage = response.statusText;
+    const responseClone = response.clone();
+
+    // get json response
+    let props: PageApiProps;
+    try {
+        props = await response.json();
+    } catch (e) {
+        const text = await responseClone.text();
+        res.statusCode = 500;
+        return {
+            isError: true,
+            message: res.statusCode !== 200 ? `${res.statusCode} ${res.statusMessage}` : 'Cannot parse JSON',
+            response: text,
+        };
+    }
+
+    // save props
+    if (allowCache && res.statusCode === 200) {
         try {
-            response = await (await fetch(apiURL, {
-                headers: {
-                    APIKEY: process.env.API_KEY || '',
-                },
-            }));
+            if (!fs.existsSync(serverSettings.cacheDir)) {
+                fs.mkdirSync(serverSettings.cacheDir);
+            }
+            fs.writeFileSync(cacheFileName, JSON.stringify(props));
         } catch (e) {
-            props = {
-                success: false,
-                errorMessage: 'API unavailable',
-            } as any;
-            res.statusCode = 503;
-        }
-
-        if (!props) {
-            // check redirects
-            if (response.redirected && process.env.API_IS_REAL === 'true') {
-                const redirectUrl = new URL(response.url);
-                res.setHeader('location', redirectUrl.pathname);
-                res.statusCode = 301;
-                res.end();
-            }
-
-            // set status
-            res.statusCode = response.status;
-            res.statusMessage = response.statusText;
-            const responseClone = response.clone();
-
-            // get json response
-            try {
-                props = await response.json();
-            } catch (e) {
-                const text = await responseClone.text();
-                props = {
-                    success: false,
-                    errorMessage: res.statusCode !== 200 ? `${res.statusCode} ${res.statusMessage}` : 'Cannot parse JSON',
-                    response: text,
-                } as any;
-                res.statusCode = 500;
-            }
-
-            // save props
-            if (allowCache && res.statusCode === 200) {
-                try {
-                    if (!fs.existsSync(cacheFileDir)) {
-                        fs.mkdirSync(cacheFileDir);
-                    }
-                    fs.writeFileSync(cacheFileName, JSON.stringify(props));
-                } catch (e) {
-                    throw new Error(`Cannot write file ${cacheFileName} ${e}`);
-                }
-            }
+            res.statusCode = 500;
+            return {
+                isError: true,
+                message: `Cannot write file ${cacheFileName} ${e}`,
+            };
         }
     }
 
-    // ADDITIONAL DATA
+    return props;
+}
+
+
+
+function getConfig (
+    context: GetServerSidePropsContext,
+): ConfigProps {
+    const key = +new Date();
 
     // set url data
-    const currentUrl = env.getUrlBase(`/${resolvedUrl}`);
+    const { resolvedUrl } = context;
+    const baseUrl = env.getReqUrlBase(context.req);
+    const currentUrl = normalizers.urlSlashes(`${baseUrl}/${resolvedUrl}`);
     const currentUrlData = new URL(currentUrl);
-    props.url = {
+    const url: ConfigProps['url'] = {
+        base: baseUrl,
         url: currentUrl,
         canonical: normalizers.urlSlashes(`${currentUrlData.origin}/${currentUrlData.pathname}`),
     };
-    // update props time
-    props.key = +new Date();
 
     // add user config
     const requestHeaders = context.req.headers;
-    props.userConfig = {
+    const userAgent = requestHeaders['user-agent'];
+    const user: ConfigProps['user'] = {
         supportsWebP: (
             (!!requestHeaders && !!requestHeaders.accept && requestHeaders.accept.includes('image/webp'))
-            && process.env.USE_WEBP_REPLACE === 'true'
-            && process.env.API_IS_REAL === 'true'
+            || (!!userAgent && (() => {
+                let m: any = userAgent.match(/(Edg|Firefox)\/(\d+)\./);
+                if (m) {
+                    return (m[1] === 'Firefox' && m[2] >= 65) || (m[1] === 'Edge' && m[2] >= 18);
+                }
+                m = userAgent.match(/OS X\s?(?<os>\d+)?.+ Version\/(?<v>\d+\.\d+)/);
+                if (m) {
+                    return m.groups.v >= 14 && (m.groups.os || 99) >= 11;
+                }
+                return false;
+            })())
+        ),
+        supportsAvif: (
+            (!!requestHeaders && !!requestHeaders.accept && requestHeaders.accept.includes('image/avif'))
         ),
     };
 
-    // rewrite images to webp
-    if (props.userConfig.supportsWebP) {
-        let jsonString = JSON.stringify(props);
-        const cmsUrl = process.env.NEXT_PUBLIC_URL_CMS || '';
-        const regex = new RegExp(`${cmsUrl}([^"' ]*\\.(jpg|jpeg|png|gif))`, 'g');
-        jsonString = jsonString.replace(regex, `${cmsUrl}$1.webp`);
-        props = JSON.parse(jsonString);
+    return {
+        key,
+        url,
+        user,
+    };
+}
+
+
+
+function setMetaImage (
+    pageProps: PageProps,
+) {
+    const props: PageProps = {
+        ...pageProps,
+    } as PageProps;
+
+    // search meta image
+    if (!props.global.meta.image) {
+        const matches = JSON.stringify(props).match(new RegExp('(http?s)[^"\' ]*\\.(jpg|png)'));
+        if (matches) {
+            props.global.meta.image = matches.shift();
+        }
     }
 
-    // return data
-    return {
-        props,
-    };
+    return props;
 }

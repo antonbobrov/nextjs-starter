@@ -7,24 +7,24 @@ import styles from './styles.module.scss';
 const ExamplesSplitText: FC = ({
     children,
 }) => {
-    const ref = useRef<HTMLDivElement>(null);
+    const parentRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (!ref.current) {
+        if (!parentRef.current) {
             return () => { };
         }
         const text = new VevetSplitText({
-            container: ref.current,
+            container: parentRef.current,
             appendLines: true,
         });
         return () => {
             text.destroy();
         };
-    }, [ref]);
+    }, [parentRef]);
 
     return (
         <div
-            ref={ref}
+            ref={parentRef}
             className={styles.split_text}
         >
             {children}

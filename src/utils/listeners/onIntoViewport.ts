@@ -37,7 +37,7 @@ export default function onIntoViewport (
             }, options);
             observer.observe(element);
         }
-    });
+    }).catch(() => {});
 
     function handleScroll () {
         const bounding = element.getBoundingClientRect();

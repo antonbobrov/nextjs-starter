@@ -1,4 +1,5 @@
 import { Application } from 'vevet';
+import type { GUI } from 'dat.gui';
 import AppPage from './app/AppPage';
 import registerServiceWorker from './service-worker';
 import { isBrowser } from './utils/browser/isBrowser';
@@ -17,7 +18,7 @@ export function getAppPage () {
 export const isTesting = process.env.NODE_ENV === 'development';
 
 // Scroll Settings
-export const useSmoothScroll = !(!!app && app.isMobile);
+export const useSmoothScroll = !(!!app && (app.isMobile || app.osName === 'mac'));
 export const useWindowScroll = !useSmoothScroll;
 
 // font size settings
@@ -44,5 +45,22 @@ if (!!app && !useWindowScroll) {
     });
 }
 
-// custom curor
-export const useCustomCursor = !!app && !app.isMobile;
+// dat.gui
+export const gui = new Promise((
+    resolve: (arg: GUI | undefined) => void,
+    reject: () => void,
+) => {
+    if (isBrowser) {
+        if (app.isMobile) {
+            reject();
+        } else {
+            import('dat.gui').then((module) => {
+                resolve(new module.GUI({
+                    closed: true,
+                }));
+            }).catch(() => {});
+        }
+    } else {
+        resolve(undefined);
+    }
+});

@@ -1,5 +1,5 @@
 import {
-    FC, useEffect, useRef, useState,
+    useEffect, useRef, useState, VFC,
 } from 'react';
 import type { VideoJsPlayer as VideoJsPlayerType } from 'video.js';
 import app from 'src/app';
@@ -13,7 +13,7 @@ interface Props {
     onLoaded?: () => void;
 }
 
-const VideoPlayerMp4: FC<Props> = ({
+const VideoPlayerMp4: VFC<Props> = ({
     src,
     autoplay = false,
     controls = true,
@@ -39,7 +39,7 @@ const VideoPlayerMp4: FC<Props> = ({
                 player = module.default(videoRef.current, {});
                 setPlayerIsReady(true);
             }
-        });
+        }).catch(() => {});
         return () => {
             destroyed = true;
             if (player) {

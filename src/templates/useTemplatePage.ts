@@ -1,4 +1,4 @@
-import { selectStorePageProps } from '@/store/reducers/page';
+import { selectPageProps } from '@/store/reducers/pageProps';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import AppPage from 'src/app/AppPage';
@@ -7,7 +7,7 @@ export default function useTemplatePage () {
     const [isReady, setIsReady] = useState(false);
     const [isCreated, setIsCreated] = useState(false);
     const [name] = useState(
-        useSelector(selectStorePageProps).template,
+        useSelector(selectPageProps).templateName,
     );
 
     useEffect(() => {

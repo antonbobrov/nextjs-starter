@@ -1,9 +1,10 @@
 import { useSelector } from 'react-redux';
-import { selectStorePageProps } from '@/store/reducers/page';
+import { VFC } from 'react';
+import { selectPagePropsGlobal } from '@/store/reducers/pageProps';
 
-const TextH1 = () => {
-    const props = useSelector(selectStorePageProps);
-    const { description, longtitle, pagetitle } = props.document;
+const TextH1: VFC = () => {
+    const globalProps = useSelector(selectPagePropsGlobal);
+    const { description, longtitle, pagetitle } = globalProps.document;
 
     if (description) {
         return <span dangerouslySetInnerHTML={{ __html: description }} />;

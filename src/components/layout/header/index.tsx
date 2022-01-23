@@ -1,11 +1,9 @@
 import Link from 'next/link';
-import {
-    FC, useEffect, useRef,
-} from 'react';
-import app from 'src/app';
+import { useRef, VFC } from 'react';
 import { selectAll } from 'vevet-dom';
 import { useSelector } from 'react-redux';
-import { selectStorePageProps } from '@/store/reducers/page';
+import { selectPagePropsGlobal, selectPagePropsLexicon } from '@/store/reducers/pageProps';
+import { useOnPageLoadedHook } from '@/utils/hooks/vevet';
 import styles from './styles.module.scss';
 import LayoutLanguagesSelect from '../languages/select';
 import LayoutMenuButton from '../menu/button';
@@ -14,26 +12,24 @@ interface Props {
     isFixed: boolean;
 }
 
-const LayoutHeader: FC<Props> = ({
+const LayoutHeader: VFC<Props> = ({
     isFixed,
 }) => {
-    const pageProps = useSelector(selectStorePageProps);
-    const {
-        lexicon, globalLinks, siteMenu, languages,
-    } = pageProps;
+    const globalProps = useSelector(selectPagePropsGlobal);
+    const { globalLinks, siteMenu } = globalProps;
+    const lexicon = useSelector(selectPagePropsLexicon);
     const parentRef = useRef<HTMLElement>(null);
 
-    useEffect(() => {
+    useOnPageLoadedHook(() => {
         const parent = parentRef.current;
-        if (!!parent && isFixed) {
-            app.onPageLoaded().then(() => {
-                const children = selectAll('*', parent);
-                children.forEach((child) => {
-                    child.setAttribute('aria-hidden', 'true');
-                    child.setAttribute('tabindex', '-1');
-                });
-            });
+        if (!parent || !isFixed) {
+            return;
         }
+        const children = selectAll('*', parent);
+        children.forEach((child) => {
+            child.setAttribute('aria-hidden', 'true');
+            child.setAttribute('tabindex', '-1');
+        });
     }, [parentRef, isFixed]);
 
     return (
@@ -76,9 +72,7 @@ const LayoutHeader: FC<Props> = ({
 
             {/* languages */}
             <nav className={styles.languages}>
-                <LayoutLanguagesSelect
-                    languages={languages}
-                />
+                <LayoutLanguagesSelect />
             </nav>
 
             {/* popup menu */}

@@ -1,24 +1,24 @@
-import { TemplateProps } from '@/types/page';
 import LayoutSmoothScroll from '@/components/layout/smooth-scroll';
 import LayoutHeader from '@/components/layout/header';
 import LayoutWrapper from '@/components/layout/wrapper';
 import LayoutFooter from '@/components/layout/footer';
-import LayoutBreadCrumbs from '@/components/layout/breadcrumbs';
+import LayoutBreadCrumbsList from '@/components/layout/breadcrumbs/list';
 import TextH1 from '@/components/text/h1';
 import VideoPopupTrigger from '@/components/video/popup/trigger';
 import LazyImage from '@/components/image/lazy';
 import VideoPopupFullsizeTrigger from '@/components/video/popup/fullsize-trigger';
 import PopupSimpleTrigger from '@/components/popup/simple/Trigger';
+import { VFC } from 'react';
 import styles from './styles.module.scss';
 import ExampleScrollList from './components/scroll-list';
 import ExamplesSplitText from './components/split-text';
 import useTemplatePage from '../useTemplatePage';
 
-export interface TemplateExamplesProps extends TemplateProps {
-    template: 'examples';
+export interface TemplateExamplesProps {
+
 }
 
-const TemplateExamples = () => {
+const TemplateExamples: VFC = () => {
     useTemplatePage();
 
     // render the template
@@ -27,7 +27,7 @@ const TemplateExamples = () => {
             <LayoutHeader isFixed={false} />
             <div className={styles.template_examples}>
                 <LayoutWrapper>
-                    <LayoutBreadCrumbs />
+                    <LayoutBreadCrumbsList />
                     <main className={styles.wrap}>
 
                         <h1><TextH1 /></h1>

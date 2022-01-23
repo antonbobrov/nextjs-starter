@@ -1,13 +1,14 @@
 import NextHead from 'next/head';
-import env from '@/utils/env';
 import { useSelector } from 'react-redux';
-import { selectStorePageProps } from '@/store/reducers/page';
+import normalizers from '@/utils/normalizers';
+import { selectPageProps } from '@/store/reducers/pageProps';
 
 const LayoutHead = () => {
-    const pageProps = useSelector(selectStorePageProps);
+    const pageProps = useSelector(selectPageProps);
     const {
-        document, url, settings, meta, lang, lexicon, languages, template, inject,
-    } = pageProps;
+        document, settings, meta, lang, languages, inject,
+    } = pageProps.global;
+    const { url } = pageProps.config;
 
     return (
         <NextHead>
@@ -17,7 +18,7 @@ const LayoutHead = () => {
             <meta name="format-detection" content="telephone=no" />
             <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1" />
 
-            <title>{document.longtitle || document.pagetitle}</title>
+            <title>{document.pagetitle}</title>
 
             {/* icons */}
             {[16, 32, 64, 96].map((size) => (
@@ -44,7 +45,7 @@ const LayoutHead = () => {
             {meta.keywords ? <meta name="lang" content={lang} /> : ''}
             {meta.description ? <meta name="abstract" content={meta.description} /> : ''}
 
-            <meta property="og:site_name" content={lexicon.siteName} />
+            <meta property="og:site_name" content={pageProps.lexicon.siteName} />
             <meta property="og:type" content="article" />
             <meta property="og:title" content={document.pagetitle} />
             {meta.description ? <meta property="og:description" content={meta.description} /> : ''}
@@ -57,26 +58,39 @@ const LayoutHead = () => {
             {meta.image ? <meta property="twitter:image" content={meta.image} /> : ''}
 
             {/* links */}
-            <base href={env.getUrlBase()} />
+            <base href={url.base} />
             <link rel="canonical" href={url.canonical} />
 
             {/* languages */}
-            {languages.map((item) => <link key={item.key} rel="alternate" hrefLang={item.key} href={env.getUrlBase(item.href)} />)}
+            {languages.map((item) => (
+                <link
+                    key={item.key}
+                    rel="alternate"
+                    hrefLang={item.key}
+                    href={normalizers.urlSlashes(`${url.base}/${item.href}`)}
+                />
+            ))}
 
             {/* logo microdata */}
-            {template === 'home' ? (
+            {pageProps.templateName === 'home' ? (
                 <script
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{
                         __html: JSON.stringify({
                             '@context': 'https://schema.org',
                             '@type': 'Organization',
-                            url: env.getUrlBase(),
-                            logo: env.getUrlBase('/image/512x512.png'),
+                            url: url.base,
+                            logo: normalizers.urlSlashes(`${url.base}/image/512x512.png`),
                         }),
                     }}
                 />
             ) : ''}
+
+            {/* preload fonts */}
+            <link rel="prefetch" href="/fonts/brutal-type/BrutalType_1.woff2" as="font" type="font/woff2" crossOrigin="" />
+            <link rel="preload" href="/fonts/brutal-type/BrutalType_1.woff2" as="font" type="font/woff2" crossOrigin="" />
+            <link rel="prefetch" href="/fonts/brutal-type/BrutalType-Bold_1.woff2" as="font" type="font/woff2" crossOrigin="" />
+            <link rel="preload" href="/fonts/brutal-type/BrutalType-Bold_1.woff2" as="font" type="font/woff2" crossOrigin="" />
 
             {!!inject && !!inject.headJS ? <script dangerouslySetInnerHTML={{ __html: inject.headJS }} /> : ''}
 

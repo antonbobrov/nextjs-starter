@@ -20,11 +20,14 @@
 
 .img {
     display: block;
-    transition: opacity 0.35s;
-    opacity: 0;
 
-    &.loaded {
-        opacity: 1;
+    &.use_alpha {
+        transition: opacity 0.35s;
+        opacity: 0;
+
+        &.loaded {
+            opacity: 1;
+        }
     }
 
     &.cover,

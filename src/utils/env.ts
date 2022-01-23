@@ -1,32 +1,28 @@
 import normalizers from '@/utils/normalizers';
+import { NextApiRequest } from 'next';
+import { IncomingMessage } from 'http';
 
-function getUrlBase (
-    postfix = '',
+function getReqUrlBase (
+    req: NextApiRequest | IncomingMessage,
+    pathname = '',
 ) {
-    const url = process.env.NEXT_PUBLIC_URL_BASE || 'http://localhost:3000/';
-    return normalizers.urlSlashes(`${url}/${postfix}`);
+    if (process.env.NEXT_PUBLIC_URL_BASE) {
+        return normalizers.urlSlashes(`${process.env.NEXT_PUBLIC_URL_BASE}/${pathname}`);
+    }
+    let url = 'http://localhost:3000/';
+    if (req) {
+        let protocol = 'https:';
+        const host = req.headers['x-forwarded-host'] as string || req.headers.host || 'localhost:3000';
+        if (host.includes('localhost') || host.includes('192.168.')) {
+            protocol = 'http:';
+        }
+        url = `${protocol}//${host}/`;
+    }
+    return normalizers.urlSlashes(`${url}/${pathname}`);
 }
-
-function getUrlApi (
-    postfix = '',
-) {
-    const url = process.env.NEXT_PUBLIC_URL_API || 'http://localhost:3000/api/';
-    return normalizers.urlSlashes(`${url}/${postfix}`);
-}
-
-function getUrlApiPage (
-    postfix = '',
-) {
-    const url = process.env.NEXT_PUBLIC_URL_API_PAGE || 'http://localhost:3000/api/page/';
-    return normalizers.urlSlashes(`${url}/${postfix}`);
-}
-
-
 
 const env = {
-    getUrlBase,
-    getUrlApi,
-    getUrlApiPage,
+    getReqUrlBase,
 };
 
 export default env;

@@ -1,10 +1,10 @@
 import { combineReducers, createStore } from 'redux';
-import page from './reducers/page';
+import pageProps from './reducers/pageProps';
 import layout from './reducers/layout';
 
 const store = createStore(
     combineReducers({
-        page,
+        pageProps,
         layout,
     }),
 );

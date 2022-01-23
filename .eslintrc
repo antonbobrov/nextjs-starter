@@ -3,10 +3,12 @@
         "eslint:recommended",
         "airbnb",
         "next",
-        "next/core-web-vitals"
+        "next/core-web-vitals",
+        "plugin:promise/recommended"
     ],
     "plugins": [
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "promise"
     ],
     "rules": {
         "linebreak-style": "off",
@@ -72,7 +74,12 @@
         "@typescript-eslint/no-unused-vars": [
             "error"
         ],
-        "class-methods-use-this": "off"
+        "class-methods-use-this": "off",
+        "promise/always-return": "off",
+        "promise/no-nesting": "off",
+        "react-hooks/exhaustive-deps": ["warn", {
+            "additionalHooks": "(useOnPageLoadedHook|useOnPageShownHook|useOnPageCreatedHook)"
+        }]
     },
     "overrides": [
         {

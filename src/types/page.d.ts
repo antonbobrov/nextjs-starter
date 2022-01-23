@@ -1,46 +1,14 @@
-import { LayoutBreadCrumbsProps } from '@/components/layout/breadcrumbs';
-import { LexiconData } from './lexicon';
+import { LayoutBreadCrumbsProps } from '@/components/layout/breadcrumbs/types';
+import { LexiconData } from '../lexicon/types';
 
-
-
-export type MetaData = {
-    description?: string;
-    keywords?: string;
-    image?: string;
-}
-
-export interface UrlData {
-    url: string;
-    canonical: string;
-}
-
-export interface DocumentData {
-    pagetitle: string;
-    longtitle: string;
-    description: string;
-    introtext: string;
-    content: string;
-}
-
-export interface SettingsData {
-    searchable: boolean;
-}
-
-
-
-export interface GlobalLinksData {
-    home: string;
-}
-
-export interface MenuLinkData {
+export interface MenuLinkProps {
     id: number;
     href: string;
     name: string;
     isActive: boolean;
-    isExternal: boolean;
 }
 
-export interface LanguagesData {
+interface LanguagesProps {
     key: string;
     href: string;
     name: string;
@@ -50,42 +18,68 @@ export interface LanguagesData {
 
 
 
-export interface TemplateDynamicProps {
-    key: number;
-    url: UrlData;
-    userConfig: UserConfig;
-    warning?: string;
-    errorMessage?: string;
-}
-
-interface UserConfig {
-    supportsWebP: boolean;
-}
-
-export interface TemplateProps extends TemplateDynamicProps {
-    success: boolean;
-
-    template: string;
-
+export interface GlobalProps {
     lang: string;
     dir: 'ltr' | 'rtl';
-
-    meta: MetaData;
-    document: DocumentData;
-    settings: SettingsData;
-    lexicon: LexiconData;
-
+    meta: {
+        description?: string;
+        keywords?: string;
+        image?: string;
+    };
+    document: {
+        pagetitle: string;
+        longtitle: string;
+        description: string;
+        introtext: string;
+        content: string;
+    };
+    settings: {
+        searchable: boolean;
+    };
     inject?: {
         headJS?: string;
         prependBody?: string;
         appendBody?: string;
     };
-
-    globalLinks: GlobalLinksData;
-    siteMenu: MenuLinkData[];
-    languages: LanguagesData[];
+    globalLinks: {
+        home: string;
+    };
+    siteMenu: MenuLinkProps[];
+    languages: LanguagesProps[];
     breadcrumbs: LayoutBreadCrumbsProps[];
+}
 
-    data: any;
+export interface ConfigProps {
+    key: number;
+    url: {
+        base: string;
+        url: string;
+        canonical: string;
+    };
+    user: {
+        supportsWebP: boolean;
+        supportsAvif: boolean;
+    };
+}
 
+export interface PageApiProps <
+    TemplateProps extends Record<string, any> = {}
+> {
+    global: GlobalProps;
+    templateName: string;
+    template: TemplateProps;
+}
+
+export interface PageApiResponse {
+    success: boolean;
+    error?: {
+        message?: string;
+        response?: string;
+    };
+}
+
+export interface PageProps extends PageApiProps<any> {
+    response: PageApiResponse;
+    config: ConfigProps;
+    lexicon: LexiconData;
 }

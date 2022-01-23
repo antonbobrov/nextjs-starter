@@ -2,30 +2,33 @@ import type {
     NextApiRequest, NextApiResponse,
 } from 'next';
 import { DeepRequired } from 'ts-essentials';
-import nextConnect from 'next-connect';
-import fetchPageAPI from '@/utils/server/fetchPage';
 import { TemplateExamplesProps } from '@/templates/examples';
+import { PageApiProps } from '@/types/page';
+import fetchGlobalProps from '@/utils/server/fetchGlobalProps';
 
-const handler = nextConnect().all((
+const handler = async (
     req: NextApiRequest,
-    res: NextApiResponse<DeepRequired<TemplateExamplesProps>>,
+    res: NextApiResponse<DeepRequired<
+        PageApiProps<TemplateExamplesProps>
+    >>,
 ) => {
-    fetchPageAPI<TemplateExamplesProps>(req, res, (baseData) => {
-        res.json({
-            ...baseData,
+    const globalProps = await fetchGlobalProps(req);
 
-            template: 'examples',
+    res.json({
 
+        global: {
+            ...globalProps,
             document: {
-                ...baseData.document,
+                ...globalProps.document,
                 pagetitle: 'Examples',
                 content: '',
             },
+        },
 
-            data: {},
+        templateName: 'examples',
+        template: {},
 
-        });
     });
-});
-
+};
 export default handler;
+

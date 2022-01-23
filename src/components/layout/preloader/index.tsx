@@ -1,21 +1,21 @@
 import store from '@/store/store';
 import {
-    FC, useEffect, useRef, useState,
+    useEffect, useRef, useState, VFC,
 } from 'react';
 import { ProgressPreloader, utils } from 'vevet';
 import styles from './styles.module.scss';
 
-const LayoutPreloader: FC = () => {
+const LayoutPreloader: VFC = () => {
     const [isDone, setIsDone] = useState(false);
 
-    const ref = useRef<HTMLDivElement>(null);
+    const parentRef = useRef<HTMLDivElement>(null);
     const [progress, setProgress] = useState('00');
 
     useEffect(() => {
-        if (isDone || !ref.current) {
+        const container = parentRef.current;
+        if (isDone || !container) {
             return () => {};
         }
-        const container = ref.current;
 
         // reset styles
         container.style.backgroundColor = '';
@@ -24,6 +24,7 @@ const LayoutPreloader: FC = () => {
         container.style.visibility = '';
         container.style.display = '';
 
+        // create preloader
         const preloader = new ProgressPreloader({
             container,
             hide: 350,
@@ -38,23 +39,40 @@ const LayoutPreloader: FC = () => {
             },
         });
         preloader.addCallback('progress', (data) => {
-            const percent = utils.math.boundVal(data.progress * 100, [0, 99]);
+            const percent = utils.math.clamp(data.progress * 100, [0, 99]);
             setProgress((percent).toFixed(0));
         });
+
+        // set store events
         preloader.addCallback('loaded', () => {
+            store.dispatch({
+                type: 'SET_PRELOADER_HIDE',
+            });
+        });
+        preloader.addCallback('hidden', () => {
             store.dispatch({
                 type: 'SET_PRELOADER_DONE',
             });
             setIsDone(true);
         });
 
+        const timeout = setTimeout(() => {
+            store.dispatch({
+                type: 'SET_PRELOADER_READY',
+            });
+        }, 500);
+
         return () => {
             preloader.destroy();
+            clearTimeout(timeout);
         };
-    }, [ref, isDone]);
+    }, [parentRef, isDone]);
 
     return (
-        <div className={`${styles.container} v-preloader`} ref={ref}>
+        <div
+            ref={parentRef}
+            className={`${styles.container} v-preloader`}
+        >
             <span>
                 {progress}
                 %

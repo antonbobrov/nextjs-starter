@@ -4,7 +4,7 @@ import routerCallbacks from 'src/router';
 import Portal from '@/components/Portal';
 import app from 'src/app';
 import { useSelector } from 'react-redux';
-import { selectStorePageProps } from '@/store/reducers/page';
+import { selectPagePropsLexicon } from '@/store/reducers/pageProps';
 import styles from './styles.module.scss';
 
 interface Props {
@@ -21,8 +21,7 @@ const PopupSimple: FC<Props> = ({
     usePadding = true,
     children,
 }) => {
-    const pageProps = useSelector(selectStorePageProps);
-    const { lexicon } = pageProps;
+    const lexicon = useSelector(selectPagePropsLexicon);
 
     const [isActive, setIsActive] = useState(false);
     const [renderChildren, setRenderChildren] = useState(false);
@@ -49,7 +48,8 @@ const PopupSimple: FC<Props> = ({
         }
         // set scroll classes
         app.html.classList.toggle(styles.prevent_scroll, isActive);
-    }, [isActive, handleShow, handleHide]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isActive]);
 
     // hide events
     useEffect(() => {
