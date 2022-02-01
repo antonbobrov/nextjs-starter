@@ -48,11 +48,10 @@ if (!!app && !useWindowScroll) {
 // dat.gui
 export const gui = new Promise((
     resolve: (arg: GUI | undefined) => void,
-    reject: () => void,
 ) => {
     if (isBrowser) {
-        if (app.isMobile) {
-            reject();
+        if (app.isMobile || process.env.NEXT_PUBLIC_USE_GUI !== 'true') {
+            resolve(undefined);
         } else {
             import('dat.gui').then((module) => {
                 resolve(new module.GUI({

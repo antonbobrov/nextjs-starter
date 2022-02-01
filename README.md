@@ -21,6 +21,8 @@ SENTRY_DSN=
 SENTRY_ORG=
 SENTRY_PROJECT=
 SENTRY_AUTH=
+
+NEXT_PUBLIC_USE_GUI=true
 ```
 And run the commands:
 ```bash
