@@ -1,3 +1,9 @@
+function urlSlashes (
+    val: string,
+) {
+    return val.replace(/([^:]\/)\/+/g, '$1');
+}
+
 function telephone (
     val: string,
 ) {
@@ -63,6 +69,7 @@ function dateToValue (date: string) {
 
 
 const normalizers = {
+    urlSlashes,
     telephone,
     emptyWYSIWYGString,
     strToNum,
