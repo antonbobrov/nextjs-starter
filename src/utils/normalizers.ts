@@ -1,7 +1,27 @@
 function urlSlashes (
     val: string,
 ) {
-    return val.replace(/([^:]\/)\/+/g, '$1');
+    function getUrl (
+        protocol: string,
+    ) {
+        if (val.startsWith(protocol)) {
+            return {
+                protocol,
+                url: val.substring(protocol.length),
+            };
+        }
+        return undefined;
+    }
+
+    const res = getUrl('https://') || getUrl('http://') || getUrl('://') || {
+        protocol: '',
+        url: val,
+    };
+
+    const urlParts = res.url.split('?');
+    const urlNoQuery = urlParts[0].replace(/([^:]\/)\/+/g, '$1');
+
+    return res.protocol + urlNoQuery + (urlParts[1] ? `?${urlParts[1]}` : '');
 }
 
 function telephone (

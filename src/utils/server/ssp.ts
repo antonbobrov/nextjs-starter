@@ -1,4 +1,4 @@
-import { GetServerSidePropsContext } from 'next';
+import { GetServerSidePropsContext, Redirect } from 'next';
 import md5 from 'md5';
 import fs from 'fs';
 import path from 'path';
@@ -11,6 +11,12 @@ import env from '../env';
 import normalizers from '../normalizers';
 import serverSettings from './settings';
 
+interface ErrorProps {
+    isError: true;
+    message?: string;
+    response?: string;
+}
+
 
 
 /**
@@ -19,21 +25,34 @@ import serverSettings from './settings';
 export default async function fetchSSP (
     context: GetServerSidePropsContext,
     useCache = process.env.SSP_CACHE === 'true',
-) {
+): Promise<({
+    props: PageProps
+} | {
+    redirect: Redirect;
+})> {
     // get api props
     const pageApiProps = await getAPIPageProps(context, useCache);
+
+    // process redirect
+    if ('redirect' in pageApiProps) {
+        return {
+            redirect: pageApiProps.redirect,
+        };
+    }
 
     // process errors
     if ('isError' in pageApiProps) {
         return {
-            response: {
-                success: false,
-                error: {
-                    message: pageApiProps.message || null,
-                    response: pageApiProps.response || null,
+            props: {
+                response: {
+                    success: false,
+                    error: {
+                        message: pageApiProps.message || null,
+                        response: pageApiProps.response || null,
+                    },
                 },
-            },
-        } as PageProps;
+            } as PageProps,
+        };
     }
 
     // add response
@@ -53,7 +72,9 @@ export default async function fetchSSP (
         data: props,
     });
 
-    return props;
+    return {
+        props,
+    };
 }
 
 
@@ -61,10 +82,8 @@ export default async function fetchSSP (
 async function getAPIPageProps (
     context: GetServerSidePropsContext,
     useCache: boolean,
-): Promise<PageApiProps | {
-    isError: true;
-    message?: string;
-    response?: string;
+): Promise<PageApiProps | ErrorProps | {
+    redirect: Redirect;
 }> {
     // get urls
     const { resolvedUrl, res, req } = context;
@@ -122,12 +141,16 @@ async function getAPIPageProps (
     // get api data
     let apiURL: URL;
     if (process.env.NEXT_PUBLIC_URL_API_PAGE) {
-        apiURL = new URL(resolvedUrl, process.env.NEXT_PUBLIC_URL_API_PAGE);
+        apiURL = new URL(
+            normalizers.urlSlashes(`${process.env.NEXT_PUBLIC_URL_API_PAGE}/${resolvedUrl}`),
+        );
     } else {
-        apiURL = new URL(normalizers.urlSlashes(`${env.getReqUrlBase(req)}/api/page/${resolvedUrl}`));
+        apiURL = new URL(
+            normalizers.urlSlashes(`${env.getReqUrlBase(req)}/api/page/${resolvedUrl}`),
+        );
     }
     apiURL.searchParams.delete('slug');
-    let response!: Response;
+    let response: Response;
     try {
         response = await (await fetch(apiURL.href, {
             headers: {
@@ -142,12 +165,20 @@ async function getAPIPageProps (
         };
     }
 
-    // check redirects
+    // check if redirected
     if (response.redirected) {
-        const redirectUrl = new URL(response.url);
-        res.setHeader('location', redirectUrl.pathname);
-        res.statusCode = 301;
-        res.end();
+        if (response.url) {
+            const redirectURL = normalizers.urlSlashes(`/${response.url.replace(
+                process.env.NEXT_PUBLIC_URL_API_PAGE || '',
+                '',
+            )}`);
+            return {
+                redirect: {
+                    destination: redirectURL,
+                    statusCode: 301,
+                },
+            };
+        }
     }
 
     // set status
