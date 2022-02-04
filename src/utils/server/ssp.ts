@@ -1,4 +1,4 @@
-import { GetServerSidePropsContext } from 'next';
+import { GetServerSidePropsContext, Redirect } from 'next';
 import md5 from 'md5';
 import fs from 'fs';
 import path from 'path';
@@ -7,9 +7,15 @@ import {
 } from '@/types/page';
 import getLexicon from 'src/lexicon/getLexicon';
 import store from '@/store/store';
+import { normalizeRepeatedSlashes } from 'next/dist/shared/lib/utils';
 import env from '../env';
-import normalizers from '../normalizers';
 import serverSettings from './settings';
+
+interface ErrorProps {
+    isError: true;
+    message?: string;
+    response?: string;
+}
 
 
 
@@ -19,21 +25,34 @@ import serverSettings from './settings';
 export default async function fetchSSP (
     context: GetServerSidePropsContext,
     useCache = process.env.SSP_CACHE === 'true',
-) {
+): Promise<({
+    props: PageProps
+} | {
+    redirect: Redirect;
+})> {
     // get api props
     const pageApiProps = await getAPIPageProps(context, useCache);
+
+    // process redirect
+    if ('redirect' in pageApiProps) {
+        return {
+            redirect: pageApiProps.redirect,
+        };
+    }
 
     // process errors
     if ('isError' in pageApiProps) {
         return {
-            response: {
-                success: false,
-                error: {
-                    message: pageApiProps.message || null,
-                    response: pageApiProps.response || null,
+            props: {
+                response: {
+                    success: false,
+                    error: {
+                        message: pageApiProps.message || null,
+                        response: pageApiProps.response || null,
+                    },
                 },
-            },
-        } as PageProps;
+            } as PageProps,
+        };
     }
 
     // add response
@@ -53,7 +72,9 @@ export default async function fetchSSP (
         data: props,
     });
 
-    return props;
+    return {
+        props,
+    };
 }
 
 
@@ -61,10 +82,8 @@ export default async function fetchSSP (
 async function getAPIPageProps (
     context: GetServerSidePropsContext,
     useCache: boolean,
-): Promise<PageApiProps | {
-    isError: true;
-    message?: string;
-    response?: string;
+): Promise<PageApiProps | ErrorProps | {
+    redirect: Redirect;
 }> {
     // get urls
     const { resolvedUrl, res, req } = context;
@@ -122,12 +141,16 @@ async function getAPIPageProps (
     // get api data
     let apiURL: URL;
     if (process.env.NEXT_PUBLIC_URL_API_PAGE) {
-        apiURL = new URL(resolvedUrl, process.env.NEXT_PUBLIC_URL_API_PAGE);
+        const envApiUrl = new URL(process.env.NEXT_PUBLIC_URL_API_PAGE);
+        apiURL = new URL(
+            normalizeRepeatedSlashes(`${envApiUrl.pathname}/${resolvedUrl}`),
+            process.env.NEXT_PUBLIC_URL_API_PAGE,
+        );
     } else {
-        apiURL = new URL(normalizers.urlSlashes(`${env.getReqUrlBase(req)}/api/page/${resolvedUrl}`));
+        apiURL = new URL(normalizeRepeatedSlashes(`${env.getReqUrlBase(req)}/api/page/${resolvedUrl}`));
     }
     apiURL.searchParams.delete('slug');
-    let response!: Response;
+    let response: Response;
     try {
         response = await (await fetch(apiURL.href, {
             headers: {
@@ -142,12 +165,20 @@ async function getAPIPageProps (
         };
     }
 
-    // check redirects
+    // check if redirected
     if (response.redirected) {
-        const redirectUrl = new URL(response.url);
-        res.setHeader('location', redirectUrl.pathname);
-        res.statusCode = 301;
-        res.end();
+        if (response.url) {
+            const redirectURL = normalizeRepeatedSlashes(`/${response.url.replace(
+                process.env.NEXT_PUBLIC_URL_API_PAGE || '',
+                '',
+            )}`);
+            return {
+                redirect: {
+                    destination: redirectURL,
+                    statusCode: 301,
+                },
+            };
+        }
     }
 
     // set status
@@ -198,12 +229,12 @@ function getConfig (
     // set url data
     const { resolvedUrl } = context;
     const baseUrl = env.getReqUrlBase(context.req);
-    const currentUrl = normalizers.urlSlashes(`${baseUrl}/${resolvedUrl}`);
+    const currentUrl = normalizeRepeatedSlashes(`${baseUrl}/${resolvedUrl}`);
     const currentUrlData = new URL(currentUrl);
     const url: ConfigProps['url'] = {
         base: baseUrl,
         url: currentUrl,
-        canonical: normalizers.urlSlashes(`${currentUrlData.origin}/${currentUrlData.pathname}`),
+        canonical: normalizeRepeatedSlashes(`${currentUrlData.origin}/${currentUrlData.pathname}`),
     };
 
     // add user config
