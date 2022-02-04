@@ -1,6 +1,6 @@
 import env from '@/utils/env';
+import normalizers from '@/utils/normalizers';
 import { GetServerSideProps } from 'next';
-import { normalizeRepeatedSlashes } from 'next/dist/shared/lib/utils';
 import fetch from 'node-fetch';
 
 const Sitemap = () => {};
@@ -17,7 +17,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     let resources = '';
     if (process.env.NEXT_PUBLIC_URL_API) {
         const apiUrl = new URL(
-            normalizeRepeatedSlashes(`${process.env.NEXT_PUBLIC_URL_API}/sitemap/`),
+            normalizers.urlSlashes(`${process.env.NEXT_PUBLIC_URL_API}/sitemap/`),
         );
         apiUrl.searchParams.set('requireSiteMap', 'true');
         const results = await fetch(apiUrl);

@@ -1,7 +1,7 @@
 import NextHead from 'next/head';
 import { useSelector } from 'react-redux';
+import normalizers from '@/utils/normalizers';
 import { selectPageProps } from '@/store/reducers/pageProps';
-import { normalizeRepeatedSlashes } from 'next/dist/shared/lib/utils';
 
 const LayoutHead = () => {
     const pageProps = useSelector(selectPageProps);
@@ -67,7 +67,7 @@ const LayoutHead = () => {
                     key={item.key}
                     rel="alternate"
                     hrefLang={item.key}
-                    href={normalizeRepeatedSlashes(`${url.base}/${item.href}`)}
+                    href={normalizers.urlSlashes(`${url.base}/${item.href}`)}
                 />
             ))}
 
@@ -80,7 +80,7 @@ const LayoutHead = () => {
                             '@context': 'https://schema.org',
                             '@type': 'Organization',
                             url: url.base,
-                            logo: normalizeRepeatedSlashes(`${url.base}/image/512x512.png`),
+                            logo: normalizers.urlSlashes(`${url.base}/image/512x512.png`),
                         }),
                     }}
                 />

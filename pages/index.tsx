@@ -12,10 +12,7 @@ export const getServerSideProps: GetServerSideProps<
     PageProps
 > = async (context) => {
     const props = await fetchSSP(context);
-    if ('redirect' in props) {
-        return {
-            redirect: props.redirect,
-        };
-    }
-    return props;
+    return {
+        props,
+    };
 };

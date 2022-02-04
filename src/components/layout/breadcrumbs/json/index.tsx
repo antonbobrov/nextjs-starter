@@ -1,7 +1,7 @@
 import { FC } from 'react';
+import normalizers from '@/utils/normalizers';
 import { useSelector } from 'react-redux';
 import { selectPagePropsConfig, selectPagePropsGlobal } from '@/store/reducers/pageProps';
-import { normalizeRepeatedSlashes } from 'next/dist/shared/lib/utils';
 
 const LayoutBreadCrumbsJSON: FC = () => {
     const globalProps = useSelector(selectPagePropsGlobal);
@@ -24,7 +24,7 @@ const LayoutBreadCrumbsJSON: FC = () => {
                 '@type': 'ListItem',
                 position: index + 1,
                 name: item.name,
-                item: normalizeRepeatedSlashes(`${url.base}/${item.href}`),
+                item: normalizers.urlSlashes(`${url.base}/${item.href}`),
             });
         } else {
             json.itemListElement.push({

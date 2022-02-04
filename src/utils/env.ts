@@ -1,13 +1,13 @@
+import normalizers from '@/utils/normalizers';
 import { NextApiRequest } from 'next';
 import { IncomingMessage } from 'http';
-import { normalizeRepeatedSlashes } from 'next/dist/shared/lib/utils';
 
 function getReqUrlBase (
     req: NextApiRequest | IncomingMessage,
     pathname = '',
 ) {
     if (process.env.NEXT_PUBLIC_URL_BASE) {
-        return normalizeRepeatedSlashes(`${process.env.NEXT_PUBLIC_URL_BASE}/${pathname}`);
+        return normalizers.urlSlashes(`${process.env.NEXT_PUBLIC_URL_BASE}/${pathname}`);
     }
     let url = 'http://localhost:3000/';
     if (req) {
@@ -18,7 +18,7 @@ function getReqUrlBase (
         }
         url = `${protocol}//${host}/`;
     }
-    return normalizeRepeatedSlashes(`${url}/${pathname}`);
+    return normalizers.urlSlashes(`${url}/${pathname}`);
 }
 
 const env = {
