@@ -11,7 +11,7 @@ const conf = {
     reactStrictMode: true,
     trailingSlash: true,
     serverRuntimeConfig: {
-        PROJECT_ROOT: __dirname,
+        PROJECT_ROOT: process.cwd(),
     },
     experimental: {
         esmExternals: 'loose',
