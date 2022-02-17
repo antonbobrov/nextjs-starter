@@ -16,8 +16,6 @@ interface LanguagesProps {
     isActive: boolean;
 }
 
-
-
 export interface GlobalProps {
     lang: string;
     dir: 'ltr' | 'rtl';
