@@ -39,7 +39,6 @@ function emptyWYSIWYGString (
     return true;
 }
 
-
 function strToNum (
     arg: string | number,
 ) {
@@ -50,52 +49,11 @@ function strToNum (
     return Number.isNaN(float) ? 0 : float;
 }
 
-
-function numDecl (
-    number: number,
-    names: string[],
-) {
-    const cases = [2, 0, 1, 1, 1, 2];
-    return names[
-        (number % 100 > 4 && number % 100 < 20)
-            ? 2
-            : cases[(number % 10 < 5)
-                ? number % 10
-                : 5]
-    ];
-}
-
-
-
-function dateToText (date: string) {
-    if (date) {
-        const datetime = new Date(date);
-        return `${datetime.getDate()}.${datetime.getMonth() + 1}.${datetime.getFullYear()}`;
-    }
-    return '';
-}
-
-function dateToValue (date: string) {
-    if (date) {
-        const datetime = new Date(date);
-        const monthNum = datetime.getMonth() + 1;
-        const monthString = monthNum < 10 ? `0${monthNum}` : `${monthNum}`;
-        const dateNum = datetime.getDate();
-        const dateString = dateNum < 10 ? `0${dateNum}` : `${dateNum}`;
-        return `${datetime.getFullYear()}-${monthString}-${dateString}`;
-    }
-    return '';
-}
-
-
 const normalizers = {
     urlSlashes,
     telephone,
     emptyWYSIWYGString,
     strToNum,
-    numDecl,
-    dateToText,
-    dateToValue,
 };
 
 export default normalizers;
