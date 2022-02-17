@@ -35,3 +35,4 @@ yarn-error.log*
 
 # custom server side props cache
 .ssp-cache
+.page-cache
