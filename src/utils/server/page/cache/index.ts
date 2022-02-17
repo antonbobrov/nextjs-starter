@@ -2,10 +2,8 @@
 import fs from 'fs';
 import path from 'path';
 import md5 from 'md5';
-import getConfig from 'next/config';
 
-const { serverRuntimeConfig } = getConfig();
-const dir = path.join(serverRuntimeConfig.PROJECT_ROOT, '.page-cache', process.env.CONFIG_BUILD_ID || '');
+const dir = path.join(process.cwd(), '.page-cache');
 
 /**
  * Get saved page HTML
@@ -14,9 +12,7 @@ export default function getPageHTMLCache (
     href: string,
 ) {
     const filename = path.join(dir, md5(href));
-
-    console.log(__dirname);
-    console.log(process.cwd());
+    console.log(dir);
     try {
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir);
