@@ -86,12 +86,6 @@ const LayoutHead = () => {
                 />
             ) : ''}
 
-            {/* preload fonts */}
-            <link rel="prefetch" href="/fonts/brutal-type/BrutalType_1.woff2" as="font" type="font/woff2" crossOrigin="" />
-            <link rel="preload" href="/fonts/brutal-type/BrutalType_1.woff2" as="font" type="font/woff2" crossOrigin="" />
-            <link rel="prefetch" href="/fonts/brutal-type/BrutalType-Bold_1.woff2" as="font" type="font/woff2" crossOrigin="" />
-            <link rel="preload" href="/fonts/brutal-type/BrutalType-Bold_1.woff2" as="font" type="font/woff2" crossOrigin="" />
-
             {!!inject && !!inject.headJS ? <script dangerouslySetInnerHTML={{ __html: inject.headJS }} /> : ''}
 
         </NextHead>
