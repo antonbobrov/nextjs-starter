@@ -13,9 +13,6 @@ const conf = {
     serverRuntimeConfig: {
         PROJECT_ROOT: process.cwd(),
     },
-    httpAgentOptions: {
-        keepAlive: false,
-    },
     experimental: {
         esmExternals: 'loose',
     },
