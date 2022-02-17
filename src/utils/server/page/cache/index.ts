@@ -19,11 +19,10 @@ export function getPageHTMLCache (
             const contents = fs.readFileSync(filename, { encoding: 'utf8', flag: 'r' }) || '';
             return contents;
         }
+        return undefined;
     } catch (e) {
         throw new Error(`Error while reading the file ${filename}`);
     }
-
-    return undefined;
 }
 
 /**
