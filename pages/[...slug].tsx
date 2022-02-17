@@ -2,7 +2,7 @@ import { GetServerSideProps } from 'next';
 import { PageProps } from '@/types/page';
 import RenderTemplate from '@/templates/RenderTemplate';
 import fetchSSP from '@/utils/server/ssp';
-import getPageHTMLCache from '@/utils/server/page/cache';
+import { getPageHTMLCache } from '@/utils/server/page/cache';
 
 const Router = () => (
     <RenderTemplate />
