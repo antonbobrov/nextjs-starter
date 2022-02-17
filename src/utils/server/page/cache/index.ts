@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import fs from 'fs';
 import path from 'path';
 import md5 from 'md5';
@@ -14,6 +15,8 @@ export default function getPageHTMLCache (
 ) {
     const filename = path.join(dir, md5(href));
 
+    console.log(__dirname);
+    console.log(process.cwd());
     try {
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir);
