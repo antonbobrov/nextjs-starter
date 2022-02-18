@@ -2,7 +2,7 @@ import Document, {
     Html, Head, Main, NextScript,
     DocumentContext,
 } from 'next/document';
-import { GlobalProps, PageProps } from '@/types/page';
+import { GlobalProps, SSPResponse } from '@/types/page';
 
 class MyDocument extends Document {
     static async getInitialProps (ctx: DocumentContext) {
@@ -12,19 +12,22 @@ class MyDocument extends Document {
 
     render () {
         // eslint-disable-next-line no-underscore-dangle
-        const props = this.props.__NEXT_DATA__.props.pageProps as PageProps;
-        const { global } = props;
+        const props = this.props.__NEXT_DATA__.props.pageProps as Required<SSPResponse>;
 
         // get data
         let lang = 'en';
         let dir = 'ltr';
         let inject: GlobalProps['inject'] | undefined;
-        if (global) {
-            lang = global.lang;
-            dir = global.dir;
-            inject = global.inject;
+        let pageClassName = '';
+        if (props.props) {
+            const { global, templateName } = props.props;
+            if (global) {
+                lang = global.lang;
+                dir = global.dir;
+                inject = global.inject;
+                pageClassName = `v-page-${templateName}`;
+            }
         }
-        const pageClassName = `v-page-${props.templateName}`;
 
         return (
             <Html

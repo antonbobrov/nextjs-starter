@@ -4,7 +4,7 @@ import routerCallbacks from 'src/router';
 import Portal from '@/components/Portal';
 import app from 'src/app';
 import { useSelector } from 'react-redux';
-import { selectPagePropsLexicon } from '@/store/reducers/pageProps';
+import { selectLexicon } from '@/store/reducers/lexicon';
 import styles from './styles.module.scss';
 
 interface Props {
@@ -21,7 +21,7 @@ const PopupSimple: FC<Props> = ({
     usePadding = true,
     children,
 }) => {
-    const lexicon = useSelector(selectPagePropsLexicon);
+    const lexicon = useSelector(selectLexicon);
 
     const [isActive, setIsActive] = useState(false);
     const [renderChildren, setRenderChildren] = useState(false);

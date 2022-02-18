@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext, Redirect } from 'next';
 import {
-    ConfigProps, PageApiProps, PageProps,
+    ConfigProps, PageApiProps, SSPResponse,
 } from '@/types/page';
 import getLexicon from 'src/lexicon/getLexicon';
 import store from '@/store/store';
@@ -36,7 +36,7 @@ const pageCache: Map<string, CacheItem> = new Map();
 export default async function fetchSSP (
     context: GetServerSidePropsContext,
 ): Promise<({
-    props: PageProps
+    props: SSPResponse
 } | RedirectProps)> {
     // get api props
     const pageApiProps = await getAPIPageProps(context);
@@ -59,25 +59,33 @@ export default async function fetchSSP (
                         response: pageApiProps.response || null,
                     },
                 },
-            } as PageProps,
+            },
         };
     }
 
     // add response
-    let props: PageProps = {
-        ...pageApiProps,
+    const props: SSPResponse = {
         response: {
             success: true,
         },
+        props: pageApiProps,
         config: getConfig(context),
         lexicon: getLexicon(pageApiProps.global.lang),
     };
-    props = setMetaImage(props);
+    props.props = setMetaImage(props.props!);
 
     // update store
     store.dispatch({
         type: 'SET_PAGE_PROPS',
-        data: props,
+        data: props.props,
+    });
+    store.dispatch({
+        type: 'SET_CONFIG',
+        data: props.config!,
+    });
+    store.dispatch({
+        type: 'SET_LEXICON',
+        data: props.lexicon!,
     });
 
     return {
@@ -211,44 +219,20 @@ function getConfig (
         canonical: normalizers.urlSlashes(`${currentUrlData.origin}/${currentUrlData.pathname}`),
     };
 
-    // add user config
-    const requestHeaders = context.req.headers;
-    const userAgent = requestHeaders['user-agent'];
-    const user: ConfigProps['user'] = {
-        supportsWebP: (
-            (!!requestHeaders && !!requestHeaders.accept && requestHeaders.accept.includes('image/webp'))
-            || (!!userAgent && (() => {
-                let m: any = userAgent.match(/(Edg|Firefox)\/(\d+)\./);
-                if (m) {
-                    return (m[1] === 'Firefox' && m[2] >= 65) || (m[1] === 'Edge' && m[2] >= 18);
-                }
-                m = userAgent.match(/OS X\s?(?<os>\d+)?.+ Version\/(?<v>\d+\.\d+)/);
-                if (m) {
-                    return m.groups.v >= 14 && (m.groups.os || 99) >= 11;
-                }
-                return false;
-            })())
-        ),
-        supportsAvif: (
-            (!!requestHeaders && !!requestHeaders.accept && requestHeaders.accept.includes('image/avif'))
-        ),
-    };
-
     return {
         key,
         url,
-        user,
     };
 }
 
 
 
 function setMetaImage (
-    pageProps: PageProps,
+    pageProps: PageApiProps,
 ) {
-    const props: PageProps = {
+    const props: PageApiProps = {
         ...pageProps,
-    } as PageProps;
+    } as PageApiProps;
 
     // search meta image
     if (!props.global.meta.image) {

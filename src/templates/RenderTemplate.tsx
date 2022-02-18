@@ -1,7 +1,8 @@
 import dynamic from 'next/dynamic';
 import { useSelector } from 'react-redux';
 import { VFC } from 'react';
-import { selectPageProps, selectPagePropsConfig } from '@/store/reducers/pageProps';
+import { selectPageProps } from '@/store/reducers/pageProps';
+import { selectConfig } from '@/store/reducers/config';
 
 const Empty = dynamic(import('./Empty'), {
     ssr: true,
@@ -22,7 +23,7 @@ const Examples = dynamic(import('./examples'), {
 const RenderTemplate: VFC = () => {
     const pageProps = useSelector(selectPageProps);
     const template = pageProps.templateName;
-    const pageConfig = useSelector(selectPagePropsConfig);
+    const pageConfig = useSelector(selectConfig);
     const { key } = pageConfig;
 
     switch (template) {

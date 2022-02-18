@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { selectPagePropsLexicon } from '@/store/reducers/pageProps';
+import { selectLexicon } from '@/store/reducers/lexicon';
 import styles from './styles.module.scss';
 import { VideoPlayerSource } from '../../player';
 
@@ -16,7 +16,7 @@ const VideoPopupFullsizeTrigger: FC<Props> = ({
     id,
     children,
 }) => {
-    const lexicon = useSelector(selectPagePropsLexicon);
+    const lexicon = useSelector(selectLexicon);
     const [disabled, setDisabled] = useState(false);
 
     return (

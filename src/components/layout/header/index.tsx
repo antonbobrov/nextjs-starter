@@ -2,8 +2,9 @@ import Link from 'next/link';
 import { useRef, VFC } from 'react';
 import { selectAll } from 'vevet-dom';
 import { useSelector } from 'react-redux';
-import { selectPagePropsGlobal, selectPagePropsLexicon } from '@/store/reducers/pageProps';
+import { selectPagePropsGlobal } from '@/store/reducers/pageProps';
 import { useOnPageLoadedHook } from '@/utils/hooks/vevet';
+import { selectLexicon } from '@/store/reducers/lexicon';
 import styles from './styles.module.scss';
 import LayoutLanguagesSelect from '../languages/select';
 import LayoutMenuButton from '../menu/button';
@@ -17,7 +18,7 @@ const LayoutHeader: VFC<Props> = ({
 }) => {
     const globalProps = useSelector(selectPagePropsGlobal);
     const { globalLinks, siteMenu } = globalProps;
-    const lexicon = useSelector(selectPagePropsLexicon);
+    const lexicon = useSelector(selectLexicon);
     const parentRef = useRef<HTMLElement>(null);
 
     useOnPageLoadedHook(() => {

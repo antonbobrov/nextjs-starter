@@ -54,10 +54,6 @@ export interface ConfigProps {
         url: string;
         canonical: string;
     };
-    user: {
-        supportsWebP: boolean;
-        supportsAvif: boolean;
-    };
 }
 
 export interface PageApiProps <
@@ -68,16 +64,15 @@ export interface PageApiProps <
     template: TemplateProps;
 }
 
-export interface PageApiResponse {
-    success: boolean;
-    error?: {
-        message?: string;
-        response?: string;
+export interface SSPResponse<T extends Record<string, any> = {}> {
+    response: {
+        success: boolean;
+        error?: {
+            message?: string | null;
+            response?: string | null;
+        };
     };
-}
-
-export interface PageProps extends PageApiProps<any> {
-    response: PageApiResponse;
-    config: ConfigProps;
-    lexicon: LexiconData;
+    props?: PageApiProps<T>;
+    config?: ConfigProps;
+    lexicon?: LexiconData;
 }

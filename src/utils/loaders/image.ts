@@ -1,7 +1,19 @@
-import store from '@/store/store';
 import { ImagePaths, ImageAdaptivePaths, ImageSizes } from '@/components/image/types';
 import PCancelable from 'p-cancelable';
 import app from 'src/app';
+
+export const supportsWebP = (() => {
+    if (typeof document === 'undefined') {
+        return false;
+    }
+    const elem = document.createElement('canvas');
+    if (elem.getContext && elem.getContext('2d')) {
+        return elem.toDataURL('image/webp').indexOf('data:image/webp') === 0;
+    }
+    return false;
+})();
+
+
 
 interface LoadProps {
     crossOrigin?: string | null;
@@ -59,9 +71,6 @@ function load (
 function getImageProps (
     data: ImagePaths | ImageAdaptivePaths,
 ) {
-    const { config } = store.getState().pageProps;
-    const { supportsWebP } = config.user;
-
     // get src
     let src = data.original;
     if (data.thumb) {
@@ -116,8 +125,6 @@ function getApproximatedSrcSet (
     data: ImagePaths | ImageAdaptivePaths,
 ) {
     const screenWidth = window.screen.width * app.viewport.dpr;
-    const { config } = store.getState().pageProps;
-    const { supportsWebP } = config.user;
 
     const srcSetSizes: {
         width: number;

@@ -1,5 +1,4 @@
 import { GetServerSideProps } from 'next';
-import { PageProps } from '@/types/page';
 import RenderTemplate from '@/templates/RenderTemplate';
 import fetchSSP from '@/server/ssp';
 
@@ -8,9 +7,7 @@ const Router = () => (
 );
 export default Router;
 
-export const getServerSideProps: GetServerSideProps<
-    PageProps
-> = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
     const props = await fetchSSP(context);
     if ('redirect' in props) {
         return {

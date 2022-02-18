@@ -1,12 +1,13 @@
 import { FC } from 'react';
 import normalizers from '@/utils/normalizers';
 import { useSelector } from 'react-redux';
-import { selectPagePropsConfig, selectPagePropsGlobal } from '@/store/reducers/pageProps';
+import { selectPagePropsGlobal } from '@/store/reducers/pageProps';
+import { selectConfig } from '@/store/reducers/config';
 
 const LayoutBreadCrumbsJSON: FC = () => {
     const globalProps = useSelector(selectPagePropsGlobal);
     const { breadcrumbs } = globalProps;
-    const configProps = useSelector(selectPagePropsConfig);
+    const configProps = useSelector(selectConfig);
     const { url } = configProps;
 
     if (!breadcrumbs || breadcrumbs.length === 0) {

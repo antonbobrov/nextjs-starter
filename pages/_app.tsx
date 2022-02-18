@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app';
 import 'src/utils/browser/adaptiveFontSize';
 import 'src/router';
 
-import { PageProps } from '@/types/page';
+import { SSPResponse } from '@/types/page';
 import store from '@/store/store';
 import { Provider } from 'react-redux';
 import LayoutHead from '@/components/layout/head';
@@ -15,34 +15,41 @@ import LayoutBreadCrumbsJSON from '@/components/layout/breadcrumbs/json';
 import { isBrowser } from 'src/app';
 
 let storeUpdated = false;
+function updateStore (props: SSPResponse) {
+    store.dispatch({
+        type: 'SET_PAGE_PROPS',
+        data: props.props!,
+    });
+    store.dispatch({
+        type: 'SET_CONFIG',
+        data: props.config!,
+    });
+    store.dispatch({
+        type: 'SET_LEXICON',
+        data: props.lexicon!,
+    });
+    storeUpdated = true;
+}
 
 function MyApp ({ Component, pageProps }: AppProps) {
-    const props = pageProps as PageProps;
+    const props = pageProps as SSPResponse | {
+        statusCode: number;
+    };
 
     if (isBrowser && !storeUpdated) {
-        store.dispatch({
-            type: 'SET_PAGE_PROPS',
-            data: props,
-        });
-        storeUpdated = true;
+        if (!('statusCode' in props)) {
+            updateStore(props);
+        }
     }
     useEffect(() => {
-        if (props.config) {
-            const oldConfig = store.getState().pageProps?.config;
-            if (oldConfig?.key !== props.config.key) {
-                store.dispatch({
-                    type: 'SET_PAGE_PROPS',
-                    data: {
-                        ...props,
-                        config: {
-                            ...props.config,
-                            ...oldConfig.user,
-                        },
-                    },
-                });
-            }
+        if (!('statusCode' in props)) {
+            updateStore(props);
         }
     }, [props]);
+
+    if ('statusCode' in props) {
+        return <h1>{props.statusCode}</h1>;
+    }
 
     if (!!props.response && props.response.success) {
         return (

@@ -1,4 +1,4 @@
-import { selectPagePropsLexicon } from '@/store/reducers/pageProps';
+import { selectLexicon } from '@/store/reducers/lexicon';
 import { useOnPageLoadedHook, useOnPageShownHook } from '@/utils/hooks/vevet';
 import { useCallback, useRef, VFC } from 'react';
 import { useSelector } from 'react-redux';
@@ -6,7 +6,7 @@ import app from 'src/app';
 import styles from './styles.module.scss';
 
 const LayoutFooter: VFC = () => {
-    const lexicon = useSelector(selectPagePropsLexicon);
+    const lexicon = useSelector(selectLexicon);
     const copyrightText = lexicon.copyright.replace('{year}', `${new Date().getFullYear()}`);
 
     const parentRef = useRef<HTMLElement>(null);
