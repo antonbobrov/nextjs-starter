@@ -13,6 +13,21 @@ interface ErrorProps {
     response?: string;
 }
 
+interface RedirectProps {
+    redirect: Redirect;
+}
+
+interface CacheItem {
+    time: number;
+    redirected: boolean;
+    url: string;
+    status: number;
+    statusText: string;
+    text: string;
+}
+
+const cached: Map<string, CacheItem> = new Map();
+
 
 
 /**
@@ -22,9 +37,7 @@ export default async function fetchSSP (
     context: GetServerSidePropsContext,
 ): Promise<({
     props: PageProps
-} | {
-    redirect: Redirect;
-})> {
+} | RedirectProps)> {
     // get api props
     const pageApiProps = await getAPIPageProps(context);
 
@@ -76,15 +89,9 @@ export default async function fetchSSP (
 
 async function getAPIPageProps (
     context: GetServerSidePropsContext,
-): Promise<PageApiProps | ErrorProps | {
-    redirect: Redirect;
-}> {
+): Promise<PageApiProps | ErrorProps | RedirectProps> {
     // get urls
     const { resolvedUrl, res, req } = context;
-
-    // FETCH PROPS
-
-    // get api data
     let apiURL: URL;
     if (process.env.NEXT_PUBLIC_URL_API_PAGE) {
         apiURL = new URL(
@@ -96,26 +103,50 @@ async function getAPIPageProps (
         );
     }
     apiURL.searchParams.delete('slug');
-    let response: Response;
-    try {
-        response = await (await fetch(apiURL.href, {
-            headers: {
-                APIKEY: process.env.API_KEY || '',
-            },
-        }));
-    } catch (e) {
-        res.statusCode = 503;
-        return {
-            isError: true,
-            message: 'API unavailable',
-        };
+
+    // page data
+    let data: CacheItem;
+
+    console.log(cached.keys());
+
+    // check if the url is already cached
+    const cachedResponse = cached.get(apiURL.href);
+    if (cachedResponse) {
+        data = cachedResponse;
+        console.log(`from cache ${apiURL.href}`);
+    } else {
+        console.log(`from api ${apiURL.href}`);
+        // otherwise fetch props from api
+        try {
+            const response = await (await fetch(apiURL.href, {
+                headers: {
+                    APIKEY: process.env.API_KEY || '',
+                },
+            }));
+            cached.set(apiURL.href, {
+                time: +new Date(),
+                redirected: response.redirected,
+                url: response.url,
+                status: response.status,
+                statusText: response.statusText,
+                text: await response.text(),
+            });
+            data = cached.get(apiURL.href)!;
+        } catch (e: any) {
+            res.statusCode = 503;
+            return {
+                isError: true,
+                message: 'API unavailable ',
+                response: `${e}`,
+            };
+        }
     }
 
     // check if redirected
     if (!/\.(.*)$/.test(resolvedUrl)) {
-        if (response.redirected) {
-            if (response.url) {
-                const redirectURL = normalizers.urlSlashes(`/${response.url.replace(
+        if (data.redirected) {
+            if (data.url) {
+                const redirectURL = normalizers.urlSlashes(`/${data.url.replace(
                     process.env.NEXT_PUBLIC_URL_API_PAGE || '',
                     '',
                 )}`);
@@ -130,21 +161,19 @@ async function getAPIPageProps (
     }
 
     // set status
-    res.statusCode = response.status;
-    res.statusMessage = response.statusText;
-    const responseClone = response.clone();
+    res.statusCode = data.status;
+    res.statusMessage = data.statusText;
 
     // get json response
     let props: PageApiProps;
     try {
-        props = await response.json();
+        props = JSON.parse(data.text);
     } catch (e) {
-        const text = await responseClone.text();
         res.statusCode = 500;
         return {
             isError: true,
             message: res.statusCode !== 200 ? `${res.statusCode} ${res.statusMessage}` : 'Cannot parse JSON',
-            response: text,
+            response: data.text,
         };
     }
 
