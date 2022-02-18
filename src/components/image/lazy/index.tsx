@@ -1,6 +1,6 @@
 import {
     forwardRef, ImgHTMLAttributes, useCallback,
-    useEffect, useImperativeHandle, useRef, useState,
+    useEffect, useImperativeHandle, useMemo, useRef, useState,
 } from 'react';
 import { utils } from 'vevet';
 import app, { isBrowser } from 'src/app';
@@ -67,38 +67,39 @@ const LazyImage = forwardRef<LazyImageElement, Props>(({
     useAlpha = true,
     usePlaceholder = false,
     imagePaths,
-    ...restProps
+    ...tagProps
 }, ref) => {
+    const imageRef = useRef<LazyImageElement>(null);
+    useImperativeHandle(ref, () => imageRef.current!);
+
     const [isLoaded, setIsLoaded] = useState(false);
+    const imageProps = useMemo(() => (
+        imagePaths ? imageLoader.getImageProps(imagePaths) : undefined),
+    [imagePaths]);
+    const [imageSrc] = useState(
+        tagProps.src || (imageProps ? imageProps.src : ''),
+    );
     const [imageSrcSet, setImageSrcSet] = useState(placeholderSrc);
-    const domRef = useRef<LazyImageElement>(null);
-    useImperativeHandle(ref, () => domRef.current!);
 
     /**
      * Load the image by replacing its src
      */
     const loadImage = useCallback(() => {
-        const imageProps = imagePaths
-            ? imageLoader.getImageProps(imagePaths) : undefined;
-        const srcSet = imageProps ? imageProps.srcSet : restProps.srcSet;
-        const src = (imageProps ? imageProps.src : restProps.src) || '';
-        if (srcSet) {
-            setImageSrcSet(srcSet);
-        } else {
-            setImageSrcSet(src);
+        const srcSet = imageProps ? imageProps.srcSet : tagProps.srcSet;
+        const src = (imageProps ? imageProps.src : tagProps.src) || '';
+        setImageSrcSet(srcSet || src);
+        if (!!observer && !!imageRef.current) {
+            observer.unobserve(imageRef.current);
         }
-        if (!!observer && !!domRef.current) {
-            observer.unobserve(domRef.current);
-        }
-    }, [imagePaths, restProps.src, restProps.srcSet]);
+    }, [imageProps, tagProps.src, tagProps.srcSet]);
 
     // load the image when it appears into the viewport
     // lazy load only
     useEffect(() => {
         if (loading !== 'lazy') {
-            return () => {};
+            return undefined;
         }
-        const el = domRef.current!;
+        const el = imageRef.current!;
         // set callback
         el.preloadLazyImage = () => {
             loadImage();
@@ -119,46 +120,54 @@ const LazyImage = forwardRef<LazyImageElement, Props>(({
                 observer.unobserve(el);
             }
         };
-    }, [loading, domRef, loadImage]);
+    }, [loading, imageRef, loadImage]);
 
     // preload image
     useEffect(() => {
-        if (loading === 'preload') {
-            const promise = onLayoutPreloaderReady();
-            promise.then(() => {
-                loadImage();
-            }).catch(() => {});
-            return () => {
-                promise.cancel();
-            };
+        if (loading !== 'preload') {
+            return undefined;
         }
-        return () => {};
+        const promise = onLayoutPreloaderReady();
+        promise.then(() => {
+            loadImage();
+        }).catch(() => {});
+        return () => {
+            promise.cancel();
+        };
     }, [loading, loadImage]);
 
 
 
-    const image = (
+    // collect classnames
+    const classNames = [
+        useAlpha ? styles.use_alpha : '',
+        usePlaceholder ? styles.use_placeholder : '',
+        [
+            isLoaded ? styles.loaded : '',
+            isLoaded ? 'loaded' : '',
+        ].join(' '),
+        [
+            pos === 'cover' ? styles.cover : '',
+            pos === 'contain' ? styles.contain : '',
+            pos === 'fullabs' ? styles.fullabs : '',
+        ].join(' '),
+    ].join(' ').trim();
+
+
+
+    const image = useMemo(() => (
         <img
-            {...restProps}
-            src={restProps.src}
-            alt={restProps.alt}
+            {...tagProps}
+            alt={tagProps.alt || ''}
+            src={imageSrc}
             srcSet={imageSrcSet}
-            ref={domRef}
+            ref={imageRef}
             className={[
                 styles.img,
-                useAlpha ? styles.use_alpha : '',
+                classNames,
                 [
                     loading !== 'preload' ? 'js-preload-ignore' : '',
                     loading === 'preload' ? 'js-preload-global js-preload-inner' : '',
-                ].join(' '),
-                [
-                    isLoaded ? styles.loaded : '',
-                    isLoaded ? 'loaded' : '',
-                ].join(' '),
-                [
-                    pos === 'cover' ? styles.cover : '',
-                    pos === 'contain' ? styles.contain : '',
-                    pos === 'fullabs' ? styles.fullabs : '',
                 ].join(' '),
             ].join(' ')}
             data-is-loaded={isLoaded ? 'true' : ''}
@@ -171,7 +180,7 @@ const LazyImage = forwardRef<LazyImageElement, Props>(({
                 }
             }}
         />
-    );
+    ), [classNames, handleLoad, imageSrc, imageSrcSet, isLoaded, loading, tagProps]);
 
     if (!useWrapper) {
         return (
@@ -186,12 +195,7 @@ const LazyImage = forwardRef<LazyImageElement, Props>(({
         <div
             className={[
                 styles.lazy_image,
-                isLoaded ? styles.loaded : '',
-                isLoaded ? 'loaded' : '',
-                pos === 'cover' ? styles.cover : '',
-                pos === 'contain' ? styles.contain : '',
-                pos === 'fullabs' ? styles.fullabs : '',
-                usePlaceholder ? styles.use_placeholder : '',
+                classNames,
             ].join(' ')}
         >
             {image}
