@@ -77,7 +77,7 @@ const LazyImage = forwardRef<LazyImageElement, Props>(({
         imagePaths ? imageLoader.getImageProps(imagePaths) : undefined),
     [imagePaths]);
     const [imageSrc] = useState(
-        tagProps.src || (imageProps ? imageProps.src : ''),
+        tagProps.src || (imagePaths ? imagePaths.thumb : ''),
     );
     const [imageSrcSet, setImageSrcSet] = useState(placeholderSrc);
 
