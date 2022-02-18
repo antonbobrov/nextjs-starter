@@ -26,7 +26,7 @@ interface CacheItem {
     text: string;
 }
 
-const cached: Map<string, CacheItem> = new Map();
+const pageCache: Map<string, CacheItem> = new Map();
 
 
 
@@ -104,18 +104,29 @@ async function getAPIPageProps (
     }
     apiURL.searchParams.delete('slug');
 
+    // get cache settings
+    const clearCache = apiURL.searchParams.get('clear-cache');
+    const useCache = !apiURL.searchParams.get('no-cache') && process.env.SSP_CACHE === 'true' && !clearCache;
+    if (clearCache) {
+        if (clearCache === 'all') {
+            pageCache.clear();
+        } else {
+            pageCache.delete(apiURL.href);
+        }
+    }
+
+    // remove cache identifiers from url
+    apiURL.searchParams.delete('no-cache');
+    apiURL.searchParams.delete('clear-cache');
+
     // page data
     let data: CacheItem;
 
-    console.log(cached.keys());
-
-    // check if the url is already cached
-    const cachedResponse = cached.get(apiURL.href);
-    if (cachedResponse) {
-        data = cachedResponse;
-        console.log(`from cache ${apiURL.href}`);
+    // check if the url is already pageCache
+    const pageCacheResponse = useCache ? pageCache.get(apiURL.href) : undefined;
+    if (pageCacheResponse) {
+        data = pageCacheResponse;
     } else {
-        console.log(`from api ${apiURL.href}`);
         // otherwise fetch props from api
         try {
             const response = await (await fetch(apiURL.href, {
@@ -123,15 +134,17 @@ async function getAPIPageProps (
                     APIKEY: process.env.API_KEY || '',
                 },
             }));
-            cached.set(apiURL.href, {
+            data = {
                 time: +new Date(),
                 redirected: response.redirected,
                 url: response.url,
                 status: response.status,
                 statusText: response.statusText,
                 text: await response.text(),
-            });
-            data = cached.get(apiURL.href)!;
+            };
+            if (useCache) {
+                pageCache.set(apiURL.href, data);
+            }
         } catch (e: any) {
             res.statusCode = 503;
             return {
