@@ -1,4 +1,4 @@
-import clearSSPCache from '@/utils/server/clearSSPCache';
+import clearSSPCache from '@/server/clearSSPCache';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default function handler (

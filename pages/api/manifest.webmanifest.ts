@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import env from '@/utils/env';
+import serverEnv from '@/server/env';
 
 export default async function handler (
     req: NextApiRequest,
@@ -13,7 +13,7 @@ export default async function handler (
     res.json({
         name: 'Next.JS Vevet Starter',
         short_name: 'Next.JS Vevet Starter',
-        start_url: env.getReqUrlBase(req),
+        start_url: serverEnv.getReqUrlBase(req),
         display: 'fullscreen',
         background_color: '#000000',
         theme_color: '#000000',

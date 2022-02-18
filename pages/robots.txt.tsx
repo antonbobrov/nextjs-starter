@@ -1,4 +1,4 @@
-import env from '@/utils/env';
+import serverEnv from '@/server/env';
 import { GetServerSideProps } from 'next';
 
 const Robots = () => {};
@@ -13,7 +13,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         content.push('Disallow: /');
     } else {
         content.push('Disallow: *?*');
-        content.push(`Sitemap: ${env.getReqUrlBase(req, '/sitemap.xml')}`);
+        content.push(`Sitemap: ${serverEnv.getReqUrlBase(req, '/sitemap.xml')}`);
     }
 
     res.setHeader('Content-Type', 'text/plain');

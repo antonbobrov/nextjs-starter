@@ -1,4 +1,4 @@
-import env from '@/utils/env';
+import serverEnv from '@/server/env';
 import normalizers from '@/utils/normalizers';
 import { GetServerSideProps } from 'next';
 import fetch from 'node-fetch';
@@ -25,7 +25,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         if (Array.isArray(json)) {
             resources += json.map((item) => `
                 <url>
-                    <loc>${env.getReqUrlBase(req, item.loc)}</loc>
+                    <loc>${serverEnv.getReqUrlBase(req, item.loc)}</loc>
                     <lastmod>${item.lastmod}</lastmod>
                 </url>
             `).join('');

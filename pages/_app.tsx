@@ -12,7 +12,7 @@ import LayoutHeader from '@/components/layout/header';
 import LayoutMenuPopup from '@/components/layout/menu/popup';
 import { useEffect } from 'react';
 import LayoutBreadCrumbsJSON from '@/components/layout/breadcrumbs/json';
-import { isBrowser } from '@/utils/browser/isBrowser';
+import { isBrowser } from 'src/app';
 
 let storeUpdated = false;
 

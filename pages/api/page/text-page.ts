@@ -4,7 +4,7 @@ import type {
 import { DeepRequired } from 'ts-essentials';
 import { TemplateTextProps } from '@/templates/text';
 import { PageApiProps } from '@/types/page';
-import fetchGlobalProps from '@/utils/server/fetchGlobalProps';
+import fetchGlobalProps from '@/server/fetchGlobalProps';
 
 const handler = async (
     req: NextApiRequest,

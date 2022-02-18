@@ -3,8 +3,7 @@ import {
     useEffect, useImperativeHandle, useRef, useState,
 } from 'react';
 import { utils } from 'vevet';
-import app from 'src/app';
-import { isBrowser } from '@/utils/browser/isBrowser';
+import app, { isBrowser } from 'src/app';
 import { onLayoutPreloaderReady } from '@/store/reducers/layout';
 import imageLoader from '@/utils/loaders/image';
 import { ImageAdaptivePaths, ImagePaths } from '@/components/image/types';

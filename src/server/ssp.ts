@@ -7,8 +7,8 @@ import {
 } from '@/types/page';
 import getLexicon from 'src/lexicon/getLexicon';
 import store from '@/store/store';
-import env from '../env';
-import normalizers from '../normalizers';
+import serverEnv from './env';
+import normalizers from '../utils/normalizers';
 import serverSettings from './settings';
 
 interface ErrorProps {
@@ -146,7 +146,7 @@ async function getAPIPageProps (
         );
     } else {
         apiURL = new URL(
-            normalizers.urlSlashes(`${env.getReqUrlBase(req)}/api/page/${resolvedUrl}`),
+            normalizers.urlSlashes(`${serverEnv.getReqUrlBase(req)}/api/page/${resolvedUrl}`),
         );
     }
     apiURL.searchParams.delete('slug');
@@ -230,7 +230,7 @@ function getConfig (
 
     // set url data
     const { resolvedUrl } = context;
-    const baseUrl = env.getReqUrlBase(context.req);
+    const baseUrl = serverEnv.getReqUrlBase(context.req);
     const currentUrl = normalizers.urlSlashes(`${baseUrl}/${resolvedUrl}`);
     const currentUrlData = new URL(currentUrl);
     const url: ConfigProps['url'] = {

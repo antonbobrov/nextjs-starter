@@ -2,7 +2,7 @@ import type {
     NextApiRequest, NextApiResponse,
 } from 'next';
 import { DeepRequired } from 'ts-essentials';
-import fetchGlobalProps from '@/utils/server/fetchGlobalProps';
+import fetchGlobalProps from '@/server/fetchGlobalProps';
 import { TemplateNotFoundProps } from '@/templates/not-found';
 import { PageApiProps } from '@/types/page';
 

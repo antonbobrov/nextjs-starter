@@ -1,7 +1,5 @@
-import { isBrowser } from './utils/browser/isBrowser';
-
 const registerServiceWorker = () => {
-    if (process.env.NODE_ENV === 'development' || !isBrowser) {
+    if (process.env.NODE_ENV === 'development' || typeof window === 'undefined') {
         return;
     }
 

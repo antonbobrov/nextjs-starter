@@ -1,8 +1,7 @@
 import Router from 'next/router';
 import { Callbacks, NCallbacks } from 'vevet';
-import { getAppPage } from './app';
+import { getAppPage, isBrowser } from './app';
 import store from './store/store';
-import { isBrowser } from './utils/browser/isBrowser';
 
 interface CallbackTypes extends NCallbacks.CallbacksTypes {
     before: false;

@@ -2,9 +2,11 @@ import { Application } from 'vevet';
 import type { GUI } from 'dat.gui';
 import AppPage from './app/AppPage';
 import registerServiceWorker from './service-worker';
-import { isBrowser } from './utils/browser/isBrowser';
 
 registerServiceWorker();
+
+export const isBrowser = typeof window !== 'undefined';
+export const isServer = !isBrowser;
 
 const app = (isBrowser ? new Application<AppPage>() : undefined) as Application<AppPage>;
 export default app;

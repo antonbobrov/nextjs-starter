@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import env from '@/utils/env';
-import { updatePageHTMLCache } from '@/utils/server/page/cache';
+import serverEnv from '@/server/env';
+import { updatePageHTMLCache } from '@/server/page/cache';
 
 export default async function handler (
     req: NextApiRequest,
@@ -8,7 +8,7 @@ export default async function handler (
 ) {
     const url = new URL(
         typeof req.query.url === 'string' ? req.query.url : '/',
-        env.getReqUrlBase(req),
+        serverEnv.getReqUrlBase(req),
     );
     updatePageHTMLCache(url);
     res.json({

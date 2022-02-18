@@ -21,8 +21,8 @@ function getReqUrlBase (
     return normalizers.urlSlashes(`${url}/${pathname}`);
 }
 
-const env = {
+const serverEnv = {
     getReqUrlBase,
 };
 
-export default env;
+export default serverEnv;
