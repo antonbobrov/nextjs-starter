@@ -1,7 +1,4 @@
 import { GetServerSidePropsContext, Redirect } from 'next';
-import md5 from 'md5';
-import fs from 'fs';
-import path from 'path';
 import {
     ConfigProps, PageApiProps, PageProps,
 } from '@/types/page';
@@ -9,7 +6,6 @@ import getLexicon from 'src/lexicon/getLexicon';
 import store from '@/store/store';
 import serverEnv from './env';
 import normalizers from '../utils/normalizers';
-import serverSettings from './settings';
 
 interface ErrorProps {
     isError: true;
@@ -20,18 +16,17 @@ interface ErrorProps {
 
 
 /**
- * Fetch server side props or resolve the props from cache
+ * Fetch server side props
  */
 export default async function fetchSSP (
     context: GetServerSidePropsContext,
-    useCache = process.env.SSP_CACHE === 'true',
 ): Promise<({
     props: PageProps
 } | {
     redirect: Redirect;
 })> {
     // get api props
-    const pageApiProps = await getAPIPageProps(context, useCache);
+    const pageApiProps = await getAPIPageProps(context);
 
     // process redirect
     if ('redirect' in pageApiProps) {
@@ -81,60 +76,11 @@ export default async function fetchSSP (
 
 async function getAPIPageProps (
     context: GetServerSidePropsContext,
-    useCache: boolean,
 ): Promise<PageApiProps | ErrorProps | {
     redirect: Redirect;
 }> {
     // get urls
     const { resolvedUrl, res, req } = context;
-    const urlWithoutParameters = resolvedUrl.split('?')[0];
-
-    // get urls parameters
-    const urlParams = new URLSearchParams(resolvedUrl.split('?')[1]);
-    urlParams.delete('slug');
-    const urlHasParameters = Array.from(urlParams.values()).length > 0;
-
-    // decide if we can get cached file
-    const urlDeniesCache = resolvedUrl.includes('noCache');
-    const requireClearCache = resolvedUrl.includes('clearCache');
-    const allowCache = !urlHasParameters && !urlDeniesCache && !requireClearCache && useCache;
-
-    // get file name
-    const cacheFileName = path.join(serverSettings.cacheDir, `${md5(urlWithoutParameters)}.json`);
-
-    // clear cache of this very page if required
-    if (requireClearCache) {
-        try {
-            if (fs.existsSync(cacheFileName)) {
-                fs.unlinkSync(cacheFileName);
-            }
-        } catch (e) {
-            //
-            throw new Error(`Cannot clear ${cacheFileName}`);
-        }
-    }
-
-    // get cached props
-    if (allowCache) {
-        let props: false | PageApiProps = false;
-        try {
-            if (fs.existsSync(cacheFileName)) {
-                const contents = fs.readFileSync(cacheFileName, { encoding: 'utf8', flag: 'r' }) || '';
-                props = JSON.parse(contents);
-            }
-        } catch (err) {
-            // if error while parsing
-            res.statusCode = 500;
-            return {
-                isError: true,
-                message: `Cannot read ${cacheFileName}`,
-            };
-        }
-        // if props are parsed
-        if (props) {
-            return props;
-        }
-    }
 
     // FETCH PROPS
 
@@ -200,22 +146,6 @@ async function getAPIPageProps (
             message: res.statusCode !== 200 ? `${res.statusCode} ${res.statusMessage}` : 'Cannot parse JSON',
             response: text,
         };
-    }
-
-    // save props
-    if (allowCache && res.statusCode === 200) {
-        try {
-            if (!fs.existsSync(serverSettings.cacheDir)) {
-                fs.mkdirSync(serverSettings.cacheDir);
-            }
-            fs.writeFileSync(cacheFileName, JSON.stringify(props));
-        } catch (e) {
-            res.statusCode = 500;
-            return {
-                isError: true,
-                message: `Cannot write file ${cacheFileName} ${e}`,
-            };
-        }
     }
 
     return props;

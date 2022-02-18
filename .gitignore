@@ -32,7 +32,3 @@ yarn-error.log*
 
 # vercel
 .vercel
-
-# custom server side props cache
-.ssp-cache
-.page-cache

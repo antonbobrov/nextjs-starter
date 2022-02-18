@@ -15,7 +15,6 @@ NEXT_PUBLIC_URL_API_PAGE=https://cms.example.com/api/page/
 API_KEY=_____test_key_____
 
 NOINDEX=true
-SSP_CACHE=false
 
 SENTRY_DSN=
 SENTRY_ORG=
