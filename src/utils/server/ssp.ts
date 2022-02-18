@@ -166,18 +166,20 @@ async function getAPIPageProps (
     }
 
     // check if redirected
-    if (response.redirected) {
-        if (response.url) {
-            const redirectURL = normalizers.urlSlashes(`/${response.url.replace(
-                process.env.NEXT_PUBLIC_URL_API_PAGE || '',
-                '',
-            )}`);
-            return {
-                redirect: {
-                    destination: redirectURL,
-                    statusCode: 301,
-                },
-            };
+    if (!/\.(.*)$/.test(resolvedUrl)) {
+        if (response.redirected) {
+            if (response.url) {
+                const redirectURL = normalizers.urlSlashes(`/${response.url.replace(
+                    process.env.NEXT_PUBLIC_URL_API_PAGE || '',
+                    '',
+                )}`);
+                return {
+                    redirect: {
+                        destination: redirectURL,
+                        statusCode: 301,
+                    },
+                };
+            }
         }
     }
 
