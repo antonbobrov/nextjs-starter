@@ -2,16 +2,15 @@ import { ImagePaths, ImageAdaptivePaths, ImageSizes } from '@/components/image/t
 import PCancelable from 'p-cancelable';
 import app from 'src/app';
 
-export const supportsWebP = (() => {
-    if (typeof document === 'undefined') {
-        return false;
-    }
-    const elem = document.createElement('canvas');
-    if (elem.getContext && elem.getContext('2d')) {
-        return elem.toDataURL('image/webp').indexOf('data:image/webp') === 0;
-    }
-    return false;
+let canUseWebP = false;
+(() => {
+    const testWebP = new Image();
+    testWebP.onload = () => {
+        canUseWebP = testWebP.width === 1;
+    };
+    testWebP.src = 'data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoBAAEAAwA0JaQAA3AA/vuUAAA=';
 })();
+export const supportsWebP = () => canUseWebP;
 
 
 
@@ -76,14 +75,14 @@ function getImageProps (
     if (data.thumb) {
         src = data.thumb;
     }
-    if (supportsWebP && !!data.thumbWebp) {
+    if (supportsWebP() && !!data.thumbWebp) {
         src = data.thumbWebp;
     }
 
     // get src set
     let srcSet = '';
     // get webp images
-    if (supportsWebP && 'sizesWebp' in data && !!data.sizesWebp) {
+    if (supportsWebP() && 'sizesWebp' in data && !!data.sizesWebp) {
         srcSet = imageSizesToScrSet(data.sizesWebp);
     } else if ('sizes' in data && !!data.sizes) {
         srcSet = imageSizesToScrSet(data.sizes);
@@ -132,7 +131,7 @@ function getApproximatedSrcSet (
     }[] = [];
     let availableSizes: ImageSizes | undefined;
 
-    if (supportsWebP && 'sizesWebp' in data && !!data.sizesWebp) {
+    if (supportsWebP() && 'sizesWebp' in data && !!data.sizesWebp) {
         availableSizes = data.sizesWebp;
     } else if ('sizes' in data && !!data.sizes) {
         availableSizes = data.sizes;
@@ -157,7 +156,7 @@ function getApproximatedSrcSet (
         }
     }
 
-    if (supportsWebP && !!data.thumbWebp) {
+    if (supportsWebP() && !!data.thumbWebp) {
         return data.thumbWebp;
     }
     if (data.thumb) {

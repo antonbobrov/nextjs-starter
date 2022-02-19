@@ -8,8 +8,9 @@ import { onLayoutPreloaderReady } from '@/store/reducers/layout';
 import imageLoader from '@/utils/loaders/image';
 import { ImageAdaptivePaths, ImagePaths } from '@/components/image/types';
 import styles from './styles.module.scss';
+import imagePlaceholder from '../placeholder.svg';
 
-const placeholderSrc = '/image/placeholder.svg';
+const placeholderSrc = imagePlaceholder.src;
 
 type BaseImageAttributes = Omit<ImgHTMLAttributes<HTMLImageElement>, 'loading'>;
 type ImageAttributes = BaseImageAttributes & {
@@ -73,25 +74,21 @@ const LazyImage = forwardRef<LazyImageElement, Props>(({
     useImperativeHandle(ref, () => imageRef.current!);
 
     const [isLoaded, setIsLoaded] = useState(false);
-    const imageProps = useMemo(() => (
-        imagePaths ? imageLoader.getImageProps(imagePaths) : undefined),
-    [imagePaths]);
-    const [imageSrc] = useState(
-        tagProps.src || (imagePaths ? imagePaths.thumb : ''),
-    );
+    const imageSrc = tagProps.src || (imagePaths ? (imagePaths.thumb || imagePaths.original) : '');
     const [imageSrcSet, setImageSrcSet] = useState(placeholderSrc);
 
     /**
      * Load the image by replacing its src
      */
     const loadImage = useCallback(() => {
+        const imageProps = imagePaths ? imageLoader.getImageProps(imagePaths) : undefined;
         const srcSet = imageProps ? imageProps.srcSet : tagProps.srcSet;
         const src = (imageProps ? imageProps.src : tagProps.src) || '';
         setImageSrcSet(srcSet || src);
         if (!!observer && !!imageRef.current) {
             observer.unobserve(imageRef.current);
         }
-    }, [imageProps, tagProps.src, tagProps.srcSet]);
+    }, [imagePaths, tagProps.src, tagProps.srcSet]);
 
     // load the image when it appears into the viewport
     // lazy load only
