@@ -114,12 +114,18 @@ async function getAPIPageProps (
 
     // get cache settings
     const clearCache = apiURL.searchParams.get('clear-cache');
-    const useCache = !apiURL.searchParams.get('no-cache') && process.env.SSP_CACHE === 'true' && !clearCache;
+    const useCache = !apiURL.searchParams.get('no-cache') && typeof process.env.SSP_CACHE !== 'undefined' && !clearCache;
     if (clearCache) {
         if (clearCache === 'all') {
             pageCache.clear();
         } else {
             pageCache.delete(apiURL.href);
+        }
+    }
+    if (useCache) {
+        const maxSize = parseInt(process.env.SSP_CACHE!, 10) ?? 100;
+        if (pageCache.size > maxSize) {
+            pageCache.clear();
         }
     }
 
@@ -150,7 +156,7 @@ async function getAPIPageProps (
                 statusText: response.statusText,
                 text: await response.text(),
             };
-            if (useCache) {
+            if (useCache && response.status === 200) {
                 pageCache.set(apiURL.href, data);
             }
         } catch (e: any) {
