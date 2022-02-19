@@ -123,7 +123,8 @@ async function getAPIPageProps (
         }
     }
     if (useCache) {
-        const maxSize = parseInt(process.env.SSP_CACHE!, 10) ?? 100;
+        let maxSize = parseInt(process.env.SSP_CACHE!, 10);
+        maxSize = Number.isInteger(maxSize) ? maxSize : 100;
         if (pageCache.size > maxSize) {
             pageCache.clear();
         }
