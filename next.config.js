@@ -21,6 +21,15 @@ const conf = {
             },
         ];
     },
+    async redirects () {
+        return [
+            {
+                source: '/admin/',
+                destination: '/',
+                permanent: true,
+            },
+        ];
+    },
     webpack: (config, { webpack, buildId }) => {
         config.plugins.push(
             new webpack.DefinePlugin({
