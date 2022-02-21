@@ -8,7 +8,9 @@ registerServiceWorker();
 export const isBrowser = typeof window !== 'undefined';
 export const isServer = !isBrowser;
 
-const app = (isBrowser ? new Application<AppPage>() : undefined) as Application<AppPage>;
+const app = (isBrowser ? new Application<AppPage>({
+    viewportResizeTimeout: 100,
+}) : undefined) as Application<AppPage>;
 export default app;
 
 // get current Vevet page
