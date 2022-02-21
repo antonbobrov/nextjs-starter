@@ -10,9 +10,6 @@ const headers = require('./headers');
 const conf = {
     reactStrictMode: true,
     trailingSlash: true,
-    serverRuntimeConfig: {
-        PROJECT_ROOT: process.cwd(),
-    },
     experimental: {
         esmExternals: 'loose',
     },
