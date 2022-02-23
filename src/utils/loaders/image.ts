@@ -4,11 +4,13 @@ import app from 'src/app';
 
 let canUseWebP = false;
 (() => {
-    const testWebP = new Image();
-    testWebP.onload = () => {
-        canUseWebP = testWebP.width === 1;
-    };
-    testWebP.src = 'data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoBAAEAAwA0JaQAA3AA/vuUAAA=';
+    if (typeof window !== 'undefined') {
+        const testWebP = new Image();
+        testWebP.onload = () => {
+            canUseWebP = testWebP.width === 1;
+        };
+        testWebP.src = 'data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoBAAEAAwA0JaQAA3AA/vuUAAA=';
+    }
 })();
 export const supportsWebP = () => canUseWebP;
 
