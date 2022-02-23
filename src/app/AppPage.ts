@@ -70,7 +70,7 @@ export default class AppPage extends Page {
         });
 
         // show the page on preloader hide
-        this._catchPreloaderDone().then(() => {
+        this._catchPreloaderHidden().then(() => {
             this.onCreate().then(() => {
                 this.show().catch(() => {
                     throw new Error('cant');
@@ -79,15 +79,15 @@ export default class AppPage extends Page {
         }).catch(() => {});
     }
 
-    protected _catchPreloaderDone () {
+    protected _catchPreloaderHidden () {
         return new Promise<void>((
             resolve,
         ) => {
-            if (store.getState().layout.preloaderDone) {
+            if (store.getState().layout.preloaderHidden) {
                 resolve();
             } else {
                 const event = store.subscribe(() => {
-                    if (store.getState().layout.preloaderDone) {
+                    if (store.getState().layout.preloaderHidden) {
                         resolve();
                         event();
                     }
@@ -106,7 +106,7 @@ export default class AppPage extends Page {
             resolve,
         ) => {
             super._show().then(() => {
-                const hasInnerPreloader = store.getState().layout.preloaderDone;
+                const hasInnerPreloader = store.getState().layout.preloaderHidden;
                 if (hasInnerPreloader) {
                     this._onPageLoaded().then(() => {
                         this._showInner();

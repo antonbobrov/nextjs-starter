@@ -1,10 +1,8 @@
-import PCancelable from 'p-cancelable';
-import store, { AppState } from '../store';
+import { AppState } from '../store';
 
 type State = {
-    preloaderDone: boolean;
     preloaderHide: boolean;
-    preloaderReady: boolean;
+    preloaderHidden: boolean;
     popupMenuShown: boolean;
     loadingCount: number;
     firstLoad: boolean;
@@ -12,19 +10,16 @@ type State = {
 
 const layoutReducer = (
     state: State = {
-        preloaderDone: false,
         preloaderHide: false,
-        preloaderReady: false,
+        preloaderHidden: false,
         popupMenuShown: false,
         loadingCount: -1,
         firstLoad: true,
     },
     action: {
-        type: 'SET_PRELOADER_DONE'
-    } | {
         type: 'SET_PRELOADER_HIDE'
     } | {
-        type: 'SET_PRELOADER_READY'
+        type: 'SET_PRELOADER_HIDDEN'
     } | {
         type: 'SHOW_POPUP_MENU'
     } | {
@@ -38,14 +33,11 @@ const layoutReducer = (
     },
 ): State => {
     switch (action.type) {
-        case 'SET_PRELOADER_DONE':
-            state.preloaderDone = true;
-            break;
         case 'SET_PRELOADER_HIDE':
             state.preloaderHide = true;
             break;
-        case 'SET_PRELOADER_READY':
-            state.preloaderReady = true;
+        case 'SET_PRELOADER_HIDDEN':
+            state.preloaderHidden = true;
             break;
         case 'SHOW_POPUP_MENU':
             state.popupMenuShown = true;
@@ -84,16 +76,3 @@ const layoutReducer = (
 export default layoutReducer;
 
 export const selectLayout = (state: AppState) => state.layout;
-
-export const onLayoutPreloaderReady = () => new PCancelable<void>((resolve) => {
-    if (store.getState().layout.preloaderReady) {
-        resolve();
-    } else {
-        const event = store.subscribe(() => {
-            if (store.getState().layout.preloaderReady) {
-                event();
-                resolve();
-            }
-        });
-    }
-});

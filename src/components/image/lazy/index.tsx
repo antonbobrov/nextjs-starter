@@ -4,7 +4,6 @@ import {
 } from 'react';
 import { utils } from 'vevet';
 import app, { isBrowser } from 'src/app';
-import { onLayoutPreloaderReady } from '@/store/reducers/layout';
 import imageLoader from '@/utils/loaders/image';
 import { ImageAdaptivePaths, ImagePaths } from '@/components/image/types';
 import styles from './styles.module.scss';
@@ -124,12 +123,11 @@ const LazyImage = forwardRef<LazyImageElement, Props>(({
         if (loading !== 'preload') {
             return undefined;
         }
-        const promise = onLayoutPreloaderReady();
-        promise.then(() => {
+        const timeout = setTimeout(() => {
             loadImage();
-        }).catch(() => {});
+        }, 250);
         return () => {
-            promise.cancel();
+            clearTimeout(timeout);
         };
     }, [loading, loadImage]);
 

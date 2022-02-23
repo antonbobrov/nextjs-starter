@@ -51,20 +51,13 @@ const LayoutPreloader: VFC = () => {
         });
         preloader.addCallback('hidden', () => {
             store.dispatch({
-                type: 'SET_PRELOADER_DONE',
+                type: 'SET_PRELOADER_HIDDEN',
             });
             setIsDone(true);
         });
 
-        const timeout = setTimeout(() => {
-            store.dispatch({
-                type: 'SET_PRELOADER_READY',
-            });
-        }, 500);
-
         return () => {
             preloader.destroy();
-            clearTimeout(timeout);
         };
     }, [parentRef, isDone]);
 
