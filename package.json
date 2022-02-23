@@ -34,7 +34,6 @@
     "youtube-player": "^5.5.2"
   },
   "devDependencies": {
-    "@types/md5": "^2.3.1",
     "@types/node-fetch": "^2.5.12",
     "@types/react": "17.0.13",
     "@types/react-dom": "^17.0.11",
