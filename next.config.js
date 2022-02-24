@@ -28,6 +28,11 @@ const conf = {
                 destination: '/',
                 permanent: true,
             },
+            {
+                source: '/media/',
+                destination: '/',
+                permanent: true,
+            },
         ];
     },
     webpack: (config, { webpack, buildId }) => {
