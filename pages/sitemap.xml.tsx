@@ -1,7 +1,6 @@
 import serverEnv from '@/server/env';
 import normalizers from '@/utils/normalizers';
 import { GetServerSideProps } from 'next';
-import fetch from 'node-fetch';
 
 const Sitemap = () => {};
 export default Sitemap;
@@ -20,7 +19,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             normalizers.urlSlashes(`${process.env.NEXT_PUBLIC_URL_API}/sitemap/`),
         );
         apiUrl.searchParams.set('requireSiteMap', 'true');
-        const results = await fetch(apiUrl);
+        const results = await fetch(apiUrl.href);
         const json = await results.json() as URLItem[];
         if (Array.isArray(json)) {
             resources += json.map((item) => `
