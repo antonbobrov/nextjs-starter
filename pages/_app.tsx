@@ -47,6 +47,16 @@ function MyApp ({ Component, pageProps }: AppProps) {
         }
     }, [props]);
 
+    // loading state
+    useEffect(() => store.subscribe(() => {
+        if (typeof document !== 'undefined') {
+            document.documentElement.classList.toggle(
+                'is-loading',
+                store.getState().layout.loadingCount > 0,
+            );
+        }
+    }), []);
+
     if ('statusCode' in props) {
         return <h1>{props.statusCode}</h1>;
     }

@@ -1,3 +1,4 @@
+import { utils } from 'vevet';
 import { AppState } from '../store';
 
 type State = {
@@ -34,44 +35,45 @@ const layoutReducer = (
 ): State => {
     switch (action.type) {
         case 'SET_PRELOADER_HIDE':
-            state.preloaderHide = true;
-            break;
+            return {
+                ...state,
+                preloaderHide: true,
+            };
         case 'SET_PRELOADER_HIDDEN':
-            state.preloaderHidden = true;
-            break;
+            return {
+                ...state,
+                preloaderHidden: true,
+            };
         case 'SHOW_POPUP_MENU':
-            state.popupMenuShown = true;
-            break;
+            return {
+                ...state,
+                popupMenuShown: true,
+            };
         case 'HIDE_POPUP_MENU':
-            state.popupMenuShown = false;
-            break;
+            return {
+                ...state,
+                popupMenuShown: false,
+            };
         case 'START_LOADING':
-            state.loadingCount += 1;
-            handleLoading();
-            break;
+            return {
+                ...state,
+                loadingCount: state.loadingCount + 1,
+            };
         case 'END_LOADING':
-            state.loadingCount -= 1;
-            if (state.loadingCount < 0) {
-                state.loadingCount = 0;
-            }
-            handleLoading();
-            break;
+            return {
+                ...state,
+                loadingCount: utils.math.clamp(state.loadingCount - 1, [0, Infinity]),
+            };
         case 'FIRST_PAGE_LOAD_DONE':
-            state.firstLoad = false;
-            break;
+            return {
+                ...state,
+                firstLoad: false,
+            };
         default:
             break;
     }
 
-    function handleLoading () {
-        if (typeof document !== 'undefined') {
-            document.documentElement.classList.toggle('is-loading', state.loadingCount > 0);
-        }
-    }
-
-    return {
-        ...state,
-    };
+    return state;
 };
 export default layoutReducer;
 
