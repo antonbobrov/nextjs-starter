@@ -11,6 +11,7 @@
     "lint:style": "npx stylelint \"**/*.scss\""
   },
   "dependencies": {
+    "@redux-devtools/extension": "^3.2.2",
     "@sentry/nextjs": "^6.18.0",
     "@types/dat.gui": "^0.7.7",
     "@vimeo/player": "^2.16.3",

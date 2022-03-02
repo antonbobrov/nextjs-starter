@@ -1,4 +1,5 @@
 import { combineReducers, createStore } from 'redux';
+import { composeWithDevTools } from '@redux-devtools/extension';
 import pageProps from './reducers/pageProps';
 import layout from './reducers/layout';
 import config from './reducers/config';
@@ -11,6 +12,7 @@ const store = createStore(
         config,
         lexicon,
     }),
+    composeWithDevTools(),
 );
 export default store;
 
