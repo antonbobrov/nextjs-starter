@@ -1,3 +1,4 @@
+import { Reducer } from 'redux';
 import { utils } from 'vevet';
 import { AppState } from '../store';
 
@@ -9,29 +10,31 @@ type State = {
     firstLoad: boolean;
 }
 
-const layoutReducer = (
-    state: State = {
+type Action = {
+    type: 'SET_PRELOADER_HIDE'
+} | {
+    type: 'SET_PRELOADER_HIDDEN'
+} | {
+    type: 'SHOW_POPUP_MENU'
+} | {
+    type: 'HIDE_POPUP_MENU'
+} | {
+    type: 'START_LOADING'
+} | {
+    type: 'END_LOADING'
+} | {
+    type: 'FIRST_PAGE_LOAD_DONE',
+};
+
+const layoutReducer: Reducer<State, Action> = (
+    state = {
         preloaderHide: false,
         preloaderHidden: false,
         popupMenuShown: false,
         loadingCount: -1,
         firstLoad: true,
     },
-    action: {
-        type: 'SET_PRELOADER_HIDE'
-    } | {
-        type: 'SET_PRELOADER_HIDDEN'
-    } | {
-        type: 'SHOW_POPUP_MENU'
-    } | {
-        type: 'HIDE_POPUP_MENU'
-    } | {
-        type: 'START_LOADING'
-    } | {
-        type: 'END_LOADING'
-    } | {
-        type: 'FIRST_PAGE_LOAD_DONE',
-    },
+    action,
 ): State => {
     switch (action.type) {
         case 'SET_PRELOADER_HIDE':

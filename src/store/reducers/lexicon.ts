@@ -1,13 +1,18 @@
+import { Reducer } from 'redux';
 import { LexiconData } from 'src/lexicon/types';
 import { AppState } from '../store';
 
-const lexiconReducer = (
-    state: LexiconData = {} as LexiconData,
-    action: {
-        type: 'SET_LEXICON',
-        data: LexiconData;
-    },
-): LexiconData => {
+type State = LexiconData;
+
+type Action = {
+    type: 'SET_LEXICON',
+    data: LexiconData;
+};
+
+const lexiconReducer: Reducer<State, Action> = (
+    state = {} as State,
+    action,
+): State => {
     switch (action.type) {
         case 'SET_LEXICON':
             return {
