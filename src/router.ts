@@ -1,6 +1,7 @@
 import Router from 'next/router';
 import { Callbacks, NCallbacks } from 'vevet';
 import { getAppPage, isBrowser } from './app';
+import loadingSlice from './store/reducers/loading';
 import store from './store/store';
 
 interface CallbackTypes extends NCallbacks.CallbacksTypes {
@@ -100,12 +101,8 @@ function readyToReload () {
         if (page) {
             // hide the page if it is shown
             if (page.shown) {
-                store.dispatch({
-                    type: 'START_LOADING',
-                });
-                store.dispatch({
-                    type: 'FIRST_PAGE_LOAD_DONE',
-                });
+                store.dispatch(loadingSlice.actions.start());
+                store.dispatch(loadingSlice.actions.firstLoaded());
                 page.hide().then(() => {
                     // destroy the page
                     page.destroy().then(() => {
@@ -116,19 +113,15 @@ function readyToReload () {
                 }).catch(() => {
                     resolve();
                 });
-                return;
+            } else {
+                // reject when the page is not shown
+                reject();
             }
-            // reject when the page is not shown
-            reject();
-            return;
+        } else {
+            // change the route if no page
+            store.dispatch(loadingSlice.actions.start());
+            store.dispatch(loadingSlice.actions.firstLoaded());
+            resolve();
         }
-        // change the route if no page
-        store.dispatch({
-            type: 'START_LOADING',
-        });
-        store.dispatch({
-            type: 'FIRST_PAGE_LOAD_DONE',
-        });
-        resolve();
     });
 }

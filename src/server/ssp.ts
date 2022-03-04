@@ -4,6 +4,9 @@ import {
 } from '@/types/page';
 import getLexicon from 'src/lexicon/getLexicon';
 import store from '@/store/store';
+import configSlice from '@/store/reducers/config';
+import pagePropsSlice from '@/store/reducers/pageProps';
+import lexiconSlice from '@/store/reducers/lexicon';
 import serverEnv from './env';
 import normalizers from '../utils/normalizers';
 
@@ -75,18 +78,9 @@ export default async function fetchSSP (
     props.props = setMetaImage(props.props!);
 
     // update store
-    store.dispatch({
-        type: 'SET_PAGE_PROPS',
-        data: props.props,
-    });
-    store.dispatch({
-        type: 'SET_CONFIG',
-        data: props.config!,
-    });
-    store.dispatch({
-        type: 'SET_LEXICON',
-        data: props.lexicon!,
-    });
+    store.dispatch(pagePropsSlice.actions.set(props.props!));
+    store.dispatch(configSlice.actions.set(props.config!));
+    store.dispatch(lexiconSlice.actions.set(props.lexicon!));
 
     return {
         props,

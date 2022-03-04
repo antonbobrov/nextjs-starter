@@ -1,4 +1,4 @@
-import { Middleware } from 'redux';
+import { Middleware } from '@reduxjs/toolkit';
 import { AppState } from '../store';
 
 const loadingCountMiddleware: Middleware<
@@ -8,7 +8,7 @@ const loadingCountMiddleware: Middleware<
     const result = next(action);
     const state = storeAPI.getState();
     if (typeof document !== 'undefined') {
-        document.documentElement.classList.toggle('is-loading', state.layout.loadingCount > 0);
+        document.documentElement.classList.toggle('is-loading', state.loading.count > 0);
     }
     return result;
 };

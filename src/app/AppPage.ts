@@ -7,6 +7,8 @@ import app, { gui, useSmoothScroll } from 'src/app';
 import store from '@/store/store';
 import { hideLoaderCurtain, showLoaderCurtain } from '@/components/layout/loader-curtain';
 import createFixedHeaderHandler, { IFixedHeaderHandler } from '@/components/layout/header/createFixedHeaderHandler';
+import loadingSlice from '@/store/reducers/loading';
+import layoutSlice from '@/store/reducers/layout';
 
 export default class AppPage extends Page {
     // page preloader
@@ -83,11 +85,11 @@ export default class AppPage extends Page {
         return new Promise<void>((
             resolve,
         ) => {
-            if (store.getState().layout.preloaderHidden) {
+            if (store.getState().layout.preloader.hidden) {
                 resolve();
             } else {
                 const event = store.subscribe(() => {
-                    if (store.getState().layout.preloaderHidden) {
+                    if (store.getState().layout.preloader.hidden) {
                         resolve();
                         event();
                     }
@@ -106,19 +108,19 @@ export default class AppPage extends Page {
             resolve,
         ) => {
             super._show().then(() => {
-                const hasInnerPreloader = store.getState().layout.preloaderHidden;
+                const hasInnerPreloader = store.getState().layout.preloader.hidden;
                 if (hasInnerPreloader) {
                     this._onPageLoaded().then(() => {
                         this._showInner();
                         resolve();
-                        if (!store.getState().layout.firstLoad) {
+                        if (!store.getState().loading.firstLoad) {
                             hideLoaderCurtain();
                         }
                     }).catch(() => {});
                 } else {
                     this._showInner();
                     resolve();
-                    if (!store.getState().layout.firstLoad) {
+                    if (!store.getState().loading.firstLoad) {
                         hideLoaderCurtain();
                     }
                 }
@@ -130,9 +132,7 @@ export default class AppPage extends Page {
      * Show the page
      */
     protected _showInner () {
-        store.dispatch({
-            type: 'END_LOADING',
-        });
+        store.dispatch(loadingSlice.actions.end());
 
         this._createScrollBar();
         if (this._scrollView) {
@@ -269,9 +269,7 @@ export default class AppPage extends Page {
                     resolve();
                 }).catch(() => {});
             }).catch(() => {});
-            store.dispatch({
-                type: 'HIDE_POPUP_MENU',
-            });
+            store.dispatch(layoutSlice.actions.hidePopupMenu());
         });
     }
 }

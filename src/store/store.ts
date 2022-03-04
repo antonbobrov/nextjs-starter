@@ -1,28 +1,24 @@
-import {
-    applyMiddleware, combineReducers, createStore,
-} from 'redux';
-import { composeWithDevTools } from '@redux-devtools/extension';
-import pageProps from './reducers/pageProps';
-import layout from './reducers/layout';
-import config from './reducers/config';
-import lexicon from './reducers/lexicon';
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import loadingCountMiddleware from './middleware/loadingCount';
+import configSlice from './reducers/config';
+import loadingSlice from './reducers/loading';
+import layoutSlice from './reducers/layout';
+import pagePropsSlice from './reducers/pageProps';
+import lexiconSlice from './reducers/lexicon';
 
 const rootReducer = combineReducers({
-    pageProps,
-    layout,
-    config,
-    lexicon,
+    config: configSlice.reducer,
+    loading: loadingSlice.reducer,
+    layout: layoutSlice.reducer,
+    pageProps: pagePropsSlice.reducer,
+    lexicon: lexiconSlice.reducer,
 });
 
-const store = createStore(
-    rootReducer,
-    composeWithDevTools(
-        applyMiddleware(loadingCountMiddleware),
-    ),
-);
+const store = configureStore({
+    reducer: rootReducer,
+    middleware: [loadingCountMiddleware],
+});
 export default store;
 
 export type AppState = ReturnType<typeof rootReducer>
 export type AppDispatch = typeof store.dispatch;
-export type AppAction = Parameters<typeof store.dispatch>[0];

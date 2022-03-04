@@ -1,24 +1,21 @@
 import { PageApiProps } from '@/types/page';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppState } from '../store';
 
-const pagePropsReducer = (
-    state: PageApiProps = {} as PageApiProps,
-    action: {
-        type: 'SET_PAGE_PROPS',
-        data: PageApiProps;
+type State = PageApiProps;
+
+const initialState: State = {} as State;
+
+const pagePropsSlice = createSlice({
+    name: 'pageProps',
+    initialState,
+    reducers: {
+        set (state, action: PayloadAction<State>) {
+            return action.payload;
+        },
     },
-): PageApiProps => {
-    switch (action.type) {
-        case 'SET_PAGE_PROPS':
-            return {
-                ...action.data,
-            };
-        default:
-            break;
-    }
-    return state;
-};
-export default pagePropsReducer;
+});
+export default pagePropsSlice;
 
 export const selectPageProps = (state: AppState) => state.pageProps;
 export const selectPagePropsGlobal = (state: AppState) => state.pageProps.global;

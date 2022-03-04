@@ -1,29 +1,19 @@
 import { ConfigProps } from '@/types/page';
-import { Reducer } from 'redux';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppState } from '../store';
 
 type State = ConfigProps;
 
-type Action = {
-    type: 'SET_CONFIG',
-    data: ConfigProps;
-};
+const initialState: State = {} as State;
 
-const configReducer: Reducer<State, Action> = (
-    state = {} as State,
-    action,
-): State => {
-    switch (action.type) {
-        case 'SET_CONFIG':
-            return {
-                ...action.data,
-            };
-        default:
-            break;
-    }
-    return state;
-};
-export default configReducer;
+const configSlice = createSlice({
+    name: 'config',
+    initialState,
+    reducers: {
+        set: (state, action: PayloadAction<ConfigProps>) => action.payload,
+    },
+});
+export default configSlice;
 
 export const selectConfig = (state: AppState) => state.config;
 

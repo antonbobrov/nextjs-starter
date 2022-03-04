@@ -1,3 +1,4 @@
+import layoutSlice from '@/store/reducers/layout';
 import store from '@/store/store';
 import {
     useEffect, useRef, useState, VFC,
@@ -45,14 +46,10 @@ const LayoutPreloader: VFC = () => {
 
         // set store events
         preloader.addCallback('loaded', () => {
-            store.dispatch({
-                type: 'SET_PRELOADER_HIDE',
-            });
+            store.dispatch(layoutSlice.actions.setPreloaderHide());
         });
         preloader.addCallback('hidden', () => {
-            store.dispatch({
-                type: 'SET_PRELOADER_HIDDEN',
-            });
+            store.dispatch(layoutSlice.actions.setPreloaderHidden());
             setIsDone(true);
         });
 

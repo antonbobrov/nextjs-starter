@@ -2,32 +2,29 @@ import 'src/styles/index.scss';
 import type { AppProps } from 'next/app';
 import 'src/utils/browser/adaptiveFontSize';
 import 'src/router';
+import { isBrowser } from 'src/app';
+
+import store from '@/store/store';
+import configSlice from '@/store/reducers/config';
+import pagePropsSlice from '@/store/reducers/pageProps';
+import lexiconSlice from '@/store/reducers/lexicon';
+
+import { Provider } from 'react-redux';
 
 import { SSPResponse } from '@/types/page';
-import store from '@/store/store';
-import { Provider } from 'react-redux';
 import LayoutHead from '@/components/layout/head';
 import LayoutPreloader from '@/components/layout/preloader';
 import LayoutHeader from '@/components/layout/header';
 import LayoutMenuPopup from '@/components/layout/menu/popup';
 import { useEffect } from 'react';
 import LayoutBreadCrumbsJSON from '@/components/layout/breadcrumbs/json';
-import { isBrowser } from 'src/app';
 
 let storeUpdated = false;
+let rerenderProps = false;
 function updateStore (props: SSPResponse) {
-    store.dispatch({
-        type: 'SET_PAGE_PROPS',
-        data: props.props!,
-    });
-    store.dispatch({
-        type: 'SET_CONFIG',
-        data: props.config!,
-    });
-    store.dispatch({
-        type: 'SET_LEXICON',
-        data: props.lexicon!,
-    });
+    store.dispatch(pagePropsSlice.actions.set(props.props!));
+    store.dispatch(configSlice.actions.set(props.config!));
+    store.dispatch(lexiconSlice.actions.set(props.lexicon!));
     storeUpdated = true;
 }
 
@@ -42,9 +39,12 @@ function MyApp ({ Component, pageProps }: AppProps) {
         }
     }
     useEffect(() => {
-        if (!('statusCode' in props)) {
-            updateStore(props);
+        if (rerenderProps) {
+            if (!('statusCode' in props)) {
+                updateStore(props);
+            }
         }
+        rerenderProps = true;
     }, [props]);
 
     if ('statusCode' in props) {

@@ -2,6 +2,7 @@ import { forwardRef } from 'react';
 import store from '@/store/store';
 import { useSelector } from 'react-redux';
 import { selectLexicon } from '@/store/reducers/lexicon';
+import layoutSlice from '@/store/reducers/layout';
 import styles from './styles.module.scss';
 
 interface Props {
@@ -25,9 +26,11 @@ const LayoutMenuButton = forwardRef<
             type="button"
             className={styles.layout_menu_button}
             onClick={() => {
-                store.dispatch({
-                    type: isActive ? 'HIDE_POPUP_MENU' : 'SHOW_POPUP_MENU',
-                });
+                store.dispatch(
+                    isActive
+                        ? layoutSlice.actions.hidePopupMenu()
+                        : layoutSlice.actions.showPopupMenu(),
+                );
             }}
         >
             <span>{isActive ? lexicon.hideMenu : lexicon.showMenu}</span>

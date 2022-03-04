@@ -75,7 +75,7 @@ export default function onIntoViewport (
     }
 
     return {
-        remove: () => {
+        remove () {
             isDestroyed = true;
             pageEvent.cancel();
             if (scrollEvent) {

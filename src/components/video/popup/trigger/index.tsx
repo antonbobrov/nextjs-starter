@@ -1,3 +1,4 @@
+import loadingSlice from '@/store/reducers/loading';
 import store from '@/store/store';
 import {
     FC, useState, cloneElement, Children,
@@ -22,9 +23,7 @@ const VideoPopupTrigger: FC<Props> = ({
     const newChildren = children ? Children.map(children, (child) => cloneElement(child as any, {
         disabled,
         onClick: () => {
-            store.dispatch({
-                type: 'START_LOADING',
-            });
+            store.dispatch(loadingSlice.actions.start());
             const { activeElement } = document;
             setDisabled(true);
             import('../index').then((module) => {
@@ -37,9 +36,7 @@ const VideoPopupTrigger: FC<Props> = ({
                 document.body.appendChild(popup);
                 setDisabled(false);
             }).finally(() => {
-                store.dispatch({
-                    type: 'END_LOADING',
-                });
+                store.dispatch(loadingSlice.actions.end());
             }).catch(() => {});
         },
     })) : [];

@@ -1,29 +1,21 @@
-import { Reducer } from 'redux';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { LexiconData } from 'src/lexicon/types';
 import { AppState } from '../store';
 
 type State = LexiconData;
 
-type Action = {
-    type: 'SET_LEXICON',
-    data: LexiconData;
-};
+const initialState: State = {} as State;
 
-const lexiconReducer: Reducer<State, Action> = (
-    state = {} as State,
-    action,
-): State => {
-    switch (action.type) {
-        case 'SET_LEXICON':
-            return {
-                ...action.data,
-            };
-        default:
-            break;
-    }
-    return state;
-};
-export default lexiconReducer;
+const lexiconSlice = createSlice({
+    name: 'lexicon',
+    initialState,
+    reducers: {
+        set (state, action: PayloadAction<State>) {
+            return action.payload;
+        },
+    },
+});
+export default lexiconSlice;
 
 export const selectLexicon = (state: AppState) => state.lexicon;
 

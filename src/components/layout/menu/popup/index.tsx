@@ -7,6 +7,7 @@ import app from 'src/app';
 import store from '@/store/store';
 import { useSelector } from 'react-redux';
 import { selectPagePropsGlobal } from '@/store/reducers/pageProps';
+import layoutSlice from '@/store/reducers/layout';
 import styles from './styles.module.scss';
 import LayoutMenuButton from '../button';
 import LayoutLanguagesList from '../../languages/list';
@@ -26,16 +27,12 @@ const LayoutMenuPopup: VFC = () => {
     useEffect(() => {
         // hide menu on route change
         const routerEvent = routerCallbacks.add('before', () => {
-            store.dispatch({
-                type: 'HIDE_POPUP_MENU',
-            });
+            store.dispatch(layoutSlice.actions.hidePopupMenu());
         });
         // hide menu on escape
         const escapeListener = addEventListener(window, 'keydown', (e) => {
-            if (e.keyCode === 27 && store.getState().layout.popupMenuShown) {
-                store.dispatch({
-                    type: 'HIDE_POPUP_MENU',
-                });
+            if (e.keyCode === 27 && store.getState().layout.popupMenu.shown) {
+                store.dispatch(layoutSlice.actions.hidePopupMenu());
             }
         });
         return () => {
@@ -73,7 +70,7 @@ const LayoutMenuPopup: VFC = () => {
 
         // subscribe to store
         const storeListener = store.subscribe(() => {
-            const state = store.getState().layout.popupMenuShown;
+            const state = store.getState().layout.popupMenu.shown;
             // prevent underneath scrolling
             app.html.classList.toggle(styles.prevent_scroll, state);
             // animate the parent element
@@ -115,9 +112,7 @@ const LayoutMenuPopup: VFC = () => {
                 data-overlay
                 className={styles.overlay}
                 onClick={() => {
-                    store.dispatch({
-                        type: 'HIDE_POPUP_MENU',
-                    });
+                    store.dispatch(layoutSlice.actions.hidePopupMenu());
                 }}
                 aria-hidden
             />
