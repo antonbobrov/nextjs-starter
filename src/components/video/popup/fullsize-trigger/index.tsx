@@ -1,48 +1,44 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectLexicon } from '@/store/reducers/lexicon';
 import styles from './styles.module.scss';
-import { VideoPlayerSource } from '../../player';
+import { VideoPlayerProps } from '../../player';
+import VideoPopupWindow from '../window';
 
-interface Props {
-    source: VideoPlayerSource;
-    src?: string;
-    id?: string;
-}
-
-const VideoPopupFullsizeTrigger: FC<Props> = ({
-    source,
-    src,
-    id,
+const VideoPopupFullsizeTrigger: FC<VideoPlayerProps> = ({
     children,
+    ...player
 }) => {
     const lexicon = useSelector(selectLexicon);
-    const [disabled, setDisabled] = useState(false);
+    const [buttonDisabled, setButtonDisabled] = useState(false);
+    const [popupIsShown, setPopupIsShown] = useState(false);
+
+    useEffect(() => {
+        setButtonDisabled(popupIsShown);
+    }, [popupIsShown]);
 
     return (
-        <button
-            type="button"
-            className={styles.video_popup_fullsize_trigger}
-            disabled={disabled}
-            onClick={() => {
-                const { activeElement } = document;
-                setDisabled(true);
-                import('../index').then((module) => {
-                    const VideoPopup = module.default;
-                    const popup = new VideoPopup();
-                    popup.videoSource = source;
-                    popup.videoSrc = src;
-                    popup.videoID = id;
-                    popup.activeElement = activeElement;
-                    document.body.appendChild(popup);
-                    setDisabled(false);
-                }).catch(() => {});
-            }}
-        >
-            {children || (
-                <span>{lexicon.playVideo}</span>
-            )}
-        </button>
+        <>
+            <button
+                type="button"
+                className={styles.video_popup_fullsize_trigger}
+                disabled={buttonDisabled}
+                onClick={() => {
+                    setPopupIsShown(true);
+                }}
+            >
+                {children || (
+                    <span>{lexicon.playVideo}</span>
+                )}
+            </button>
+            <VideoPopupWindow
+                isShown={popupIsShown}
+                handleHide={() => {
+                    setPopupIsShown(false);
+                }}
+                player={player}
+            />
+        </>
     );
 };
 export default VideoPopupFullsizeTrigger;

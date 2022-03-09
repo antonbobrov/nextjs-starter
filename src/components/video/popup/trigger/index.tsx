@@ -1,46 +1,38 @@
-import loadingSlice from '@/store/reducers/loading';
-import store from '@/store/store';
 import {
-    FC, useState, cloneElement, Children,
+    FC, useState, cloneElement, Children, useEffect,
 } from 'react';
-import type { VideoPlayerSource } from '../../player';
+import type { VideoPlayerProps } from '../../player';
+import VideoPopupWindow from '../window';
 
-
-interface Props {
-    source: VideoPlayerSource;
-    src?: string;
-    id?: string;
-}
-
-const VideoPopupTrigger: FC<Props> = ({
-    source,
-    src,
-    id,
+const VideoPopupTrigger: FC<VideoPlayerProps> = ({
     children,
+    ...player
 }) => {
-    const [disabled, setDisabled] = useState(false);
+    const [buttonDisabled, setButtonDisabled] = useState(false);
+    const [popupIsShown, setPopupIsShown] = useState(false);
+
+    useEffect(() => {
+        setButtonDisabled(popupIsShown);
+    }, [popupIsShown]);
 
     const newChildren = children ? Children.map(children, (child) => cloneElement(child as any, {
-        disabled,
+        disabled: buttonDisabled,
         onClick: () => {
-            store.dispatch(loadingSlice.actions.start());
-            const { activeElement } = document;
-            setDisabled(true);
-            import('../index').then((module) => {
-                const VideoPopup = module.default;
-                const popup = new VideoPopup();
-                popup.videoSource = source;
-                popup.videoSrc = src;
-                popup.videoID = id;
-                popup.activeElement = activeElement;
-                document.body.appendChild(popup);
-                setDisabled(false);
-            }).finally(() => {
-                store.dispatch(loadingSlice.actions.end());
-            }).catch(() => {});
+            setPopupIsShown(true);
         },
     })) : [];
 
-    return <>{newChildren}</>;
+    return (
+        <>
+            {newChildren}
+            <VideoPopupWindow
+                isShown={popupIsShown}
+                handleHide={() => {
+                    setPopupIsShown(false);
+                }}
+                player={player}
+            />
+        </>
+    );
 };
 export default VideoPopupTrigger;
