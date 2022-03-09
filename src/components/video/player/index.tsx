@@ -6,14 +6,14 @@ import styles from './styles.module.scss';
 
 export type VideoPlayerSource = 'mp4' | 'yt' | 'vm';
 
-interface Props {
+export interface VideoPlayerProps {
     source: VideoPlayerSource;
     src?: string;
     id?: string;
     onLoaded?: () => void;
 }
 
-const VideoPlayer: VFC<Props> = ({
+const VideoPlayer: VFC<VideoPlayerProps> = ({
     source,
     src,
     id,
