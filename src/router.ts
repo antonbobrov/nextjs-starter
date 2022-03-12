@@ -9,6 +9,7 @@ interface CallbackTypes extends NCallbacks.CallbacksTypes {
     after: false;
 }
 
+
 /**
  * Callback on router change
  */
