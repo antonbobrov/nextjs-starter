@@ -12,7 +12,7 @@ let canUseWebP = false;
         testWebP.src = 'data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoBAAEAAwA0JaQAA3AA/vuUAAA=';
     }
 })();
-export const supportsWebP = () => canUseWebP;
+const supportsWebP = () => canUseWebP;
 
 
 
@@ -170,6 +170,7 @@ function getApproximatedSrcSet (
 
 
 const imageLoader = {
+    supportsWebP,
     load,
     getImageProps,
     getApproximatedSrcSet,
