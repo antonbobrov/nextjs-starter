@@ -165,7 +165,7 @@ const LazyImage = forwardRef<LazyImageElement, Props>(({
                     loading === 'preload' ? 'js-preload-global js-preload-inner' : '',
                 ].join(' '),
             ].join(' ')}
-            data-is-loaded={isLoaded ? 'true' : ''}
+            data-is-loaded={isLoaded ? 'true' : undefined}
             onLoad={(e) => {
                 if (imageSrcSet !== placeholderSrc) {
                     setIsLoaded(true);
