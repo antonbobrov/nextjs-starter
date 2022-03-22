@@ -29,7 +29,7 @@ const PopupSimpleTrigger: FC<Props> = ({
             {clonedTrigger}
             <PopupSimple
                 isShown={isShown}
-                handleHide={useCallback(() => {
+                onHide={useCallback(() => {
                     setIsShown(false);
                 }, [])}
             >

@@ -13,15 +13,15 @@ import VideoPlayer, { VideoPlayerProps } from '../../player';
 
 interface Props {
     isShown?: boolean;
-    handleShow?: () => void;
-    handleHide?: () => void;
+    onShow?: () => void;
+    onHide?: () => void;
     player: VideoPlayerProps;
 }
 
 const VideoPopupWindow: VFC<Props> = ({
     isShown = false,
-    handleShow,
-    handleHide,
+    onShow,
+    onHide,
     player,
 }) => {
     const lexicon = useSelector(selectLexicon);
@@ -52,11 +52,11 @@ const VideoPopupWindow: VFC<Props> = ({
     // show & hide on state change
     useEffect(() => {
         if (isActive) {
-            if (handleShow) {
-                handleShow();
+            if (onShow) {
+                onShow();
             }
-        } else if (handleHide) {
-            handleHide();
+        } else if (onHide) {
+            onHide();
         }
         // set scroll classes
         app.html.classList.toggle(styles.prevent_scroll, isActive);

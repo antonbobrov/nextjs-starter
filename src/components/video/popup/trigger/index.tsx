@@ -27,7 +27,7 @@ const VideoPopupTrigger: FC<VideoPlayerProps> = ({
             {newChildren}
             <VideoPopupWindow
                 isShown={popupIsShown}
-                handleHide={() => {
+                onHide={() => {
                     setPopupIsShown(false);
                 }}
                 player={player}
