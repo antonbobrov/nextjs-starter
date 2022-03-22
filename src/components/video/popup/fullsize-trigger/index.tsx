@@ -32,7 +32,7 @@ const VideoPopupFullsizeTrigger: FC<VideoPlayerProps> = ({
                 )}
             </button>
             <VideoPopupWindow
-                isShown={popupIsShown}
+                show={popupIsShown}
                 onHide={() => {
                     setPopupIsShown(false);
                 }}

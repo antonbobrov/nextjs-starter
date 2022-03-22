@@ -12,14 +12,14 @@ import styles from './styles.module.scss';
 import VideoPlayer, { VideoPlayerProps } from '../../player';
 
 interface Props {
-    isShown?: boolean;
+    show?: boolean;
     onShow?: () => void;
     onHide?: () => void;
     player: VideoPlayerProps;
 }
 
 const VideoPopupWindow: VFC<Props> = ({
-    isShown = false,
+    show = false,
     onShow,
     onHide,
     player,
@@ -29,7 +29,6 @@ const VideoPopupWindow: VFC<Props> = ({
     const parentRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const closeRef = useRef<HTMLButtonElement>(null);
-    const timelineRef = useRef<Timeline>(null);
 
     const [isActive, setIsActive] = useState(false);
     const [allowRender, setAllowRender] = useState(false);
@@ -37,19 +36,15 @@ const VideoPopupWindow: VFC<Props> = ({
     const [renderVideo, setRenderVideo] = useState(false);
     const [videoIsLoaded, setVideoIsLoaded] = useState(false);
 
-    // render children when first show is required
+    // set render children to true when the popup window should be shown
     useEffect(() => {
-        if (isShown && !allowRender) {
+        if (show) {
+            setIsActive(show);
             setAllowRender(true);
         }
-    }, [isShown, allowRender]);
+    }, [show]);
 
-    // show/hide the popup
-    useEffect(() => {
-        setIsActive(isShown);
-    }, [isShown]);
-
-    // show & hide on state change
+    // launch callbacks
     useEffect(() => {
         if (isActive) {
             if (onShow) {
@@ -146,38 +141,44 @@ const VideoPopupWindow: VFC<Props> = ({
         }).remove;
     }, [isActive, allowRender, resize]);
 
-    // render the scene
+
+
+    // animate the popup
+    const timelineRef = useRef<Timeline>(null);
+    useEffect(() => () => {
+        timelineRef.current?.destroy();
+    }, []);
     useEffect(() => {
         if (!allowRender) {
             return;
         }
+        // create timeline if it doesn't exist yet
         if (!timelineRef.current) {
             // @ts-ignore
             timelineRef.current = new Timeline({
                 duration: 500,
             });
-            timelineRef.current.addCallback('progress', (data) => {
+            timelineRef.current.addCallback('progress', (progressData) => {
                 resize();
-                if (parentRef.current) {
-                    parentRef.current.style.opacity = `${data.easing}`;
-                    if (data.progress === 0) {
-                        parentRef.current.style.visibility = 'hidden';
-                        parentRef.current.style.display = 'none';
-                        setRenderVideo(false);
-                    } else {
-                        parentRef.current.style.visibility = 'visible';
-                        parentRef.current.style.display = '';
-                    }
+                const parent = parentRef.current;
+                if (parent) {
+                    parent.style.visibility = progressData.progress > 0 ? 'visible' : 'hidden';
+                    parent.style.opacity = `${progressData.easing}`;
+                }
+                if (progressData.progress === 0 && timelineRef.current?.isReversed) {
+                    setAllowRender(false);
+                }
+                if (progressData.progress === 1 && !timelineRef.current?.isReversed) {
+                    setRenderVideo(true);
                 }
             });
         }
         if (isActive) {
             timelineRef.current.play();
-            setRenderVideo(true);
         } else {
             timelineRef.current.reverse();
         }
-    }, [isActive, allowRender, resize]);
+    }, [allowRender, isActive, parentRef, resize]);
 
 
 
