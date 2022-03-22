@@ -1,21 +1,24 @@
-import { FC, useEffect, useState } from 'react';
-import { addEventListener } from 'vevet-dom';
+import {
+    FC, useEffect, useRef, useState,
+} from 'react';
+import { addEventListener, childOf } from 'vevet-dom';
 import routerCallbacks from 'src/router';
 import Portal from '@/components/Portal';
 import app from 'src/app';
 import { useSelector } from 'react-redux';
 import { selectLexicon } from '@/store/reducers/lexicon';
+import { Timeline } from 'vevet';
 import styles from './styles.module.scss';
 
 interface Props {
-    isShown?: boolean;
+    show?: boolean;
     onShow?: () => void;
     onHide?: () => void;
     usePadding?: boolean;
 }
 
 const PopupSimple: FC<Props> = ({
-    isShown = false,
+    show = false,
     onShow,
     onHide,
     usePadding = true,
@@ -23,21 +26,20 @@ const PopupSimple: FC<Props> = ({
 }) => {
     const lexicon = useSelector(selectLexicon);
 
+    const parentRef = useRef<HTMLDivElement>(null);
+    const wrapperRef = useRef<HTMLDivElement>(null);
     const [isActive, setIsActive] = useState(false);
-    const [renderChildren, setRenderChildren] = useState(false);
-    useEffect(() => {
-        if (isShown && !renderChildren) {
-            setRenderChildren(true);
-        }
-    }, [isShown, renderChildren]);
-    useEffect(() => {
-        if (renderChildren) {
-            setTimeout(() => {
-                setIsActive(isShown);
-            }, 100);
-        }
-    }, [isShown, renderChildren]);
+    const [allowRender, setAllowRender] = useState(false);
 
+    // set render children to true when the popup window should be shown
+    useEffect(() => {
+        if (show) {
+            setIsActive(show);
+            setAllowRender(true);
+        }
+    }, [show]);
+
+    // launch callbacks
     useEffect(() => {
         if (isActive) {
             if (onShow) {
@@ -72,38 +74,66 @@ const PopupSimple: FC<Props> = ({
         };
     }, []);
 
+    // animate the popup
+    const timelineRef = useRef<Timeline>(null);
+    useEffect(() => () => {
+        timelineRef.current?.destroy();
+    }, []);
+    useEffect(() => {
+        if (!allowRender) {
+            return;
+        }
+        // create timeline if it doesn't exist yet
+        if (!timelineRef.current) {
+            // @ts-ignore
+            timelineRef.current = new Timeline({
+                duration: 500,
+            });
+            timelineRef.current.addCallback('progress', (progressData) => {
+                const parent = parentRef.current;
+                if (parent) {
+                    parent.style.visibility = progressData.progress > 0 ? 'visible' : 'hidden';
+                    parent.style.opacity = `${progressData.easing}`;
+                }
+                if (progressData.progress === 0 && timelineRef.current?.isReversed) {
+                    setAllowRender(false);
+                }
+            });
+        }
+        if (isActive) {
+            timelineRef.current.play();
+        } else {
+            timelineRef.current.reverse();
+        }
+    }, [allowRender, isActive, parentRef]);
+
     return (
-        renderChildren ? (
+        allowRender ? (
             <Portal>
                 <div
-                    className={[
-                        styles.popup_simple,
-                        isActive ? styles.shown : '',
-                    ].join(' ')}
+                    ref={parentRef}
+                    className={styles.popup_simple}
+                    role="dialog"
+                    aria-modal
                 >
                     <div
-                        className={[
-                            styles.container,
-                            isActive ? styles.shown : '',
-                        ].join(' ')}
+                        className={styles.container}
                     >
+                        <div className={styles.overlay} />
+                        {/* eslint-disable-next-line max-len */}
+                        {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
                         <div
-                            className={[
-                                styles.overlay,
-                                isActive ? styles.shown : '',
-                            ].join(' ')}
-                            onClick={() => {
-                                setIsActive(false);
+                            className={styles.scroll}
+                            onClick={(evt) => {
+                                if (wrapperRef.current) {
+                                    if (!childOf(evt.target as Element, wrapperRef.current)) {
+                                        setIsActive(false);
+                                    }
+                                }
                             }}
-                            aria-hidden
-                        />
-                        <div
-                            className={[
-                                styles.scroll,
-                                isActive ? styles.shown : '',
-                            ].join(' ')}
                         >
                             <div
+                                ref={wrapperRef}
                                 className={[
                                     styles.wrapper,
                                     usePadding ? styles.use_padding : '',
