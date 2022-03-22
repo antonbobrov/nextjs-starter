@@ -25,6 +25,9 @@ export const isTesting = process.env.NODE_ENV === 'development';
 export const useSmoothScroll = !(!!app && (app.isMobile || app.osName === 'mac'));
 export const useWindowScroll = !useSmoothScroll;
 
+// what animation type to use
+export const preferCSSAnimation = !(!!app && app.browserName === 'crios');
+
 // font size settings
 export const useAdaptiveFontSize = true;
 
