@@ -11,6 +11,8 @@ import loadingSlice from '@/store/reducers/loading';
 import layoutSlice from '@/store/reducers/layout';
 
 export default class AppPage extends Page {
+    protected _needsInnerPreloader = true;
+
     // page preloader
     protected _pagePreloader?: ProgressPreloader;
 
@@ -86,10 +88,12 @@ export default class AppPage extends Page {
             resolve,
         ) => {
             if (store.getState().layout.preloader.hidden) {
+                this._needsInnerPreloader = true;
                 resolve();
             } else {
                 const event = store.subscribe(() => {
                     if (store.getState().layout.preloader.hidden) {
+                        this._needsInnerPreloader = false;
                         resolve();
                         event();
                     }
@@ -108,8 +112,7 @@ export default class AppPage extends Page {
             resolve,
         ) => {
             super._show().then(() => {
-                const hasInnerPreloader = store.getState().layout.preloader.hidden;
-                if (hasInnerPreloader) {
+                if (this._needsInnerPreloader) {
                     this._onPageLoaded().then(() => {
                         this._showInner();
                         resolve();
