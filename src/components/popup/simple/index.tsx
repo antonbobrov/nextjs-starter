@@ -3,7 +3,7 @@ import {
 } from 'react';
 import { addEventListener, childOf } from 'vevet-dom';
 import routerCallbacks from 'src/router';
-import Portal from '@/components/Portal';
+import { Portal } from 'react-portal';
 import app from 'src/app';
 import { useSelector } from 'react-redux';
 import { selectLexicon } from '@/store/reducers/lexicon';
