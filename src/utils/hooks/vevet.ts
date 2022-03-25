@@ -7,12 +7,17 @@ export function useOnPageLoadedHook (
 ) {
     useEffect(
         () => {
+            let destroyed = false;
             let unsubscribe: (() => void) | undefined | void;
             const promise = app.onPageLoaded();
             promise.then(() => {
+                if (destroyed) {
+                    return;
+                }
                 unsubscribe = effect();
             }).catch(() => {});
             return () => {
+                destroyed = true;
                 promise.cancel();
                 if (unsubscribe) {
                     unsubscribe();
@@ -30,12 +35,17 @@ export function useOnPageCreatedHook (
 ) {
     useEffect(
         () => {
+            let destroyed = false;
             let unsubscribe: (() => void) | undefined | void;
             const promise = app.onPageCreated();
             promise.then(() => {
+                if (destroyed) {
+                    return;
+                }
                 unsubscribe = effect();
             }).catch(() => {});
             return () => {
+                destroyed = true;
                 promise.cancel();
                 if (unsubscribe) {
                     unsubscribe();
@@ -53,12 +63,17 @@ export function useOnPageShownHook (
 ) {
     useEffect(
         () => {
+            let destroyed = false;
             let unsubscribe: (() => void) | undefined | void;
             const promise = app.onPageShown();
             promise.then(() => {
+                if (destroyed) {
+                    return;
+                }
                 unsubscribe = effect();
             }).catch(() => {});
             return () => {
+                destroyed = true;
                 promise.cancel();
                 if (unsubscribe) {
                     unsubscribe();
