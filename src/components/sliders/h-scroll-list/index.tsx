@@ -5,13 +5,31 @@ import {
 import app from 'src/app';
 import styles from './styles.module.scss';
 
-const SliderHScrollList: FC = ({
+interface Props {
+    /**
+     * @default true
+     */
+    useScrollbar?: boolean;
+    /**
+     * @default true
+     */
+    useKeyboard?: boolean;
+    /**
+     * @default true
+     */
+    useDrag?: boolean;
+}
+
+const SliderHScrollList: FC<Props> = ({
     children,
+    useScrollbar = true,
+    useKeyboard = true,
+    useDrag = true,
 }) => {
     const parentRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
         if (!parentRef.current) {
-            return () => {};
+            return undefined;
         }
 
         // create scroll list
@@ -26,27 +44,37 @@ const SliderHScrollList: FC = ({
                 lerp: app.isMobile ? 0.2 : 0.1,
             },
         });
+
         // add scroll bar
-        const scrollbar = new ScrollBar({
-            container: scroll,
-        });
+        let scrollbar: ScrollBar | undefined;
+        if (useScrollbar) {
+            scrollbar = new ScrollBar({
+                container: scroll,
+            });
+        }
+
         // add dragger
-        scroll.addPlugin(new SmoothScrollDragPlugin({
-            speed: app.isMobile ? 1.5 : 1,
-            stopPropagation: {
-                dir: 'x',
-                threshold: 5,
-            },
-        }));
+        if (useDrag) {
+            scroll.addPlugin(new SmoothScrollDragPlugin({
+                speed: app.isMobile ? 1.5 : 1,
+                stopPropagation: {
+                    dir: 'x',
+                    threshold: 5,
+                },
+            }));
+        }
+
         // add keyboard
-        scroll.addPlugin(new SmoothScrollKeyboardPlugin());
+        if (useKeyboard) {
+            scroll.addPlugin(new SmoothScrollKeyboardPlugin());
+        }
 
         // destroy the scene
         return () => {
-            scrollbar.destroy();
+            scrollbar?.destroy();
             scroll.destroy();
         };
-    }, [parentRef]);
+    }, [parentRef, useScrollbar, useDrag, useKeyboard]);
 
     return (
         <div
