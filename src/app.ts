@@ -52,6 +52,21 @@ if (!!app && !useWindowScroll) {
     });
 }
 
+/**
+ * Get current scroll selector
+ */
+export function getScrollSelector () {
+    const page = getAppPage();
+    if (page) {
+        // get scroll selector
+        if (page.smoothScroll) {
+            return page.smoothScroll;
+        }
+        return window;
+    }
+    return undefined;
+}
+
 // dat.gui
 export const gui = new Promise((
     resolve: (arg: GUI | undefined) => void,
