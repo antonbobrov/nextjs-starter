@@ -17,6 +17,7 @@ const rootReducer = combineReducers({
 const store = configureStore({
     reducer: rootReducer,
     middleware: [loadingCountMiddleware],
+    devTools: process.env.NODE_ENV !== 'production',
 });
 export default store;
 
