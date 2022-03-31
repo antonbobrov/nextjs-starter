@@ -234,6 +234,7 @@ export default class AppPage extends Page {
                 max: 1000,
                 dir: 'y',
             },
+            viewportTarget: app.isMobile ? 'w' : '',
         });
     }
 
