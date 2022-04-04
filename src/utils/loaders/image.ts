@@ -2,12 +2,15 @@ import { ImagePaths, ImageAdaptivePaths, ImageSizes } from '@/components/image/t
 import PCancelable from 'p-cancelable';
 import app from 'src/app';
 
-let canUseWebP = false;
+let canUseWebP: undefined | boolean;
 (() => {
     if (typeof window !== 'undefined') {
         const testWebP = new Image();
         testWebP.onload = () => {
             canUseWebP = testWebP.width === 1;
+        };
+        testWebP.onerror = () => {
+            canUseWebP = false;
         };
         testWebP.src = 'data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoBAAEAAwA0JaQAA3AA/vuUAAA=';
     }
