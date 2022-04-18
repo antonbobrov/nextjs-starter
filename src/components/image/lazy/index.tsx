@@ -4,8 +4,7 @@ import {
 } from 'react';
 import { utils } from 'vevet';
 import app, { isBrowser } from 'src/app';
-import imageLoader from '@/utils/loaders/image';
-import { ImageAdaptivePaths, ImagePaths } from '@/components/image/types';
+import { ImageAdaptivePaths, ImagePaths } from '@/types/image';
 import styles from './styles.module.scss';
 import imagePlaceholder from '../placeholder.svg';
 
@@ -80,7 +79,7 @@ const LazyImage = forwardRef<LazyImageElement, Props>(({
      * Load the image by replacing its src
      */
     const loadImage = useCallback(() => {
-        const imageProps = imagePaths ? imageLoader.getImageProps(imagePaths) : undefined;
+        const imageProps = imagePaths ? utils.image.pathsToProps(imagePaths) : undefined;
         const srcSet = imageProps ? imageProps.srcSet : tagProps.srcSet;
         const src = (imageProps ? imageProps.src : tagProps.src) || '';
         setImageSrcSet(srcSet || src);

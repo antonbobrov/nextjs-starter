@@ -1,8 +1,8 @@
 import {
     forwardRef, ImgHTMLAttributes, useEffect, useState,
 } from 'react';
-import imageLoader from '@/utils/loaders/image';
-import { ImageAdaptivePaths, ImagePaths } from '@/components/image/types';
+import { ImageAdaptivePaths, ImagePaths } from '@/types/image';
+import { utils } from 'vevet';
 import imagePlaceholder from './placeholder.svg';
 
 type BaseImageAttributes = ImgHTMLAttributes<HTMLImageElement>;
@@ -26,7 +26,7 @@ const Image = forwardRef<HTMLImageElement, Props>((
     const [srcSet, setSrcSet] = useState(imagePlaceholder.src);
 
     useEffect(() => {
-        const imageProps = imagePaths ? imageLoader.getImageProps(imagePaths) : undefined;
+        const imageProps = imagePaths ? utils.image.pathsToProps(imagePaths) : undefined;
         setSrcSet(
             (imageProps ? (imageProps.srcSet || imageProps.src) : undefined) || tagProps.srcSet,
         );

@@ -10,6 +10,7 @@ export const isServer = !isBrowser;
 
 const app = (isBrowser ? new Application<AppPage>({
     viewportResizeTimeout: 100,
+    webpSupport: true,
 }) : undefined) as Application<AppPage>;
 export default app;
 
