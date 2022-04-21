@@ -1,43 +1,53 @@
 import {
-    FC, useEffect, useRef, useState,
+    forwardRef, ReactNode, useEffect, useImperativeHandle, useRef, useState,
 } from 'react';
 import { addEventListener, childOf } from 'vevet-dom';
 import routerCallbacks from 'src/router';
 import { Portal } from 'react-portal';
 import app from 'src/app';
+import { Timeline } from 'vevet';
 import { useSelector } from 'react-redux';
 import { selectLexicon } from '@/store/reducers/lexicon';
-import { Timeline } from 'vevet';
 import styles from './styles.module.scss';
 
+export interface PopupSimpleRef {
+    show: () => void;
+    hide: () => void;
+}
+
 interface Props {
-    show?: boolean;
     onShow?: () => void;
     onHide?: () => void;
     usePadding?: boolean;
+    children: ReactNode;
 }
 
-const PopupSimple: FC<Props> = ({
-    show = false,
+const PopupSimple = forwardRef<
+    PopupSimpleRef,
+    Props
+>(({
     onShow,
     onHide,
     usePadding = true,
     children,
-}) => {
+}, ref) => {
     const lexicon = useSelector(selectLexicon);
 
     const parentRef = useRef<HTMLDivElement>(null);
     const wrapperRef = useRef<HTMLDivElement>(null);
+
     const [isActive, setIsActive] = useState(false);
     const [allowRender, setAllowRender] = useState(false);
 
-    // set render children to true when the popup window should be shown
-    useEffect(() => {
-        if (show) {
-            setIsActive(show);
+    useImperativeHandle(ref, () => ({
+        show: () => {
             setAllowRender(true);
-        }
-    }, [show]);
+            setIsActive(true);
+        },
+        hide: () => {
+            setIsActive(false);
+        },
+    }));
 
     // launch callbacks
     useEffect(() => {
@@ -155,5 +165,6 @@ const PopupSimple: FC<Props> = ({
             </Portal>
         ) : <></>
     );
-};
+});
+PopupSimple.displayName = 'PopupSimple';
 export default PopupSimple;

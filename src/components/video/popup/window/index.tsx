@@ -1,5 +1,6 @@
 import {
-    useCallback, useEffect, useRef, useState, VFC,
+    forwardRef,
+    useCallback, useEffect, useImperativeHandle, useRef, useState,
 } from 'react';
 import { addEventListener } from 'vevet-dom';
 import routerCallbacks from 'src/router';
@@ -11,6 +12,11 @@ import { Timeline } from 'vevet';
 import styles from './styles.module.scss';
 import VideoPlayer, { VideoPlayerProps } from '../../player';
 
+export interface VideoPopupWindowRef {
+    show: () => void;
+    hide: () => void;
+}
+
 interface Props {
     show?: boolean;
     onShow?: () => void;
@@ -18,12 +24,14 @@ interface Props {
     player: VideoPlayerProps;
 }
 
-const VideoPopupWindow: VFC<Props> = ({
-    show = false,
+const VideoPopupWindow = forwardRef<
+    VideoPopupWindowRef,
+    Props
+>(({
     onShow,
     onHide,
     player,
-}) => {
+}, ref) => {
     const lexicon = useSelector(selectLexicon);
 
     const parentRef = useRef<HTMLDivElement>(null);
@@ -32,17 +40,18 @@ const VideoPopupWindow: VFC<Props> = ({
 
     const [isActive, setIsActive] = useState(false);
     const [allowRender, setAllowRender] = useState(false);
+    useImperativeHandle(ref, () => ({
+        show: () => {
+            setAllowRender(true);
+            setIsActive(true);
+        },
+        hide: () => {
+            setIsActive(false);
+        },
+    }));
 
     const [renderVideo, setRenderVideo] = useState(false);
     const [videoIsLoaded, setVideoIsLoaded] = useState(false);
-
-    // set render children to true when the popup window should be shown
-    useEffect(() => {
-        if (show) {
-            setIsActive(show);
-            setAllowRender(true);
-        }
-    }, [show]);
 
     // launch callbacks
     useEffect(() => {
@@ -235,5 +244,6 @@ const VideoPopupWindow: VFC<Props> = ({
             </Portal>
         ) : <></>
     );
-};
+});
+VideoPopupWindow.displayName = 'VideoPopupWindow';
 export default VideoPopupWindow;

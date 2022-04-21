@@ -1,21 +1,41 @@
-import { FC, useEffect, useState } from 'react';
+import {
+    forwardRef, ReactNode, useImperativeHandle, useRef, useState,
+} from 'react';
 import { useSelector } from 'react-redux';
 import { selectLexicon } from '@/store/reducers/lexicon';
 import styles from './styles.module.scss';
 import { VideoPlayerProps } from '../../player';
 import VideoPopupWindow from '../window';
 
-const VideoPopupFullsizeTrigger: FC<VideoPlayerProps> = ({
+export interface VideoPopupFullsizeTriggerRef {
+    show: () => void;
+    hide: () => void;
+}
+
+interface Props extends VideoPlayerProps {
+    children?: ReactNode;
+}
+
+const VideoPopupFullsizeTrigger = forwardRef<
+    VideoPopupFullsizeTriggerRef,
+    Props
+>(({
     children,
     ...player
-}) => {
+}, ref) => {
     const lexicon = useSelector(selectLexicon);
-    const [buttonDisabled, setButtonDisabled] = useState(false);
-    const [popupIsShown, setPopupIsShown] = useState(false);
 
-    useEffect(() => {
-        setButtonDisabled(popupIsShown);
-    }, [popupIsShown]);
+    const [buttonDisabled, setButtonDisabled] = useState(false);
+    const popupRef = useRef<VideoPopupFullsizeTriggerRef>(null);
+
+    useImperativeHandle(ref, () => ({
+        show: () => {
+            popupRef.current?.show();
+        },
+        hide: () => {
+            popupRef.current?.hide();
+        },
+    }));
 
     return (
         <>
@@ -24,7 +44,7 @@ const VideoPopupFullsizeTrigger: FC<VideoPlayerProps> = ({
                 className={styles.video_popup_fullsize_trigger}
                 disabled={buttonDisabled}
                 onClick={() => {
-                    setPopupIsShown(true);
+                    popupRef.current?.show();
                 }}
             >
                 {children || (
@@ -32,13 +52,17 @@ const VideoPopupFullsizeTrigger: FC<VideoPlayerProps> = ({
                 )}
             </button>
             <VideoPopupWindow
-                show={popupIsShown}
+                ref={popupRef}
+                onShow={() => {
+                    setButtonDisabled(true);
+                }}
                 onHide={() => {
-                    setPopupIsShown(false);
+                    setButtonDisabled(false);
                 }}
                 player={player}
             />
         </>
     );
-};
+});
+VideoPopupFullsizeTrigger.displayName = 'VideoPopupFullsizeTrigger';
 export default VideoPopupFullsizeTrigger;

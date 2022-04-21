@@ -1,24 +1,41 @@
 import {
-    FC, useState, cloneElement, Children, useEffect,
+    useState, cloneElement, Children, ReactNode, forwardRef, useRef, useImperativeHandle,
 } from 'react';
 import type { VideoPlayerProps } from '../../player';
 import VideoPopupWindow from '../window';
 
-const VideoPopupTrigger: FC<VideoPlayerProps> = ({
+export interface VideoPopupTriggerRef {
+    show: () => void;
+    hide: () => void;
+}
+
+interface Props extends VideoPlayerProps {
+    children: ReactNode;
+}
+
+const VideoPopupTrigger = forwardRef<
+    VideoPopupTriggerRef,
+    Props
+>(({
     children,
     ...player
-}) => {
+}, ref) => {
     const [buttonDisabled, setButtonDisabled] = useState(false);
-    const [popupIsShown, setPopupIsShown] = useState(false);
+    const popupRef = useRef<VideoPopupTriggerRef>(null);
 
-    useEffect(() => {
-        setButtonDisabled(popupIsShown);
-    }, [popupIsShown]);
+    useImperativeHandle(ref, () => ({
+        show: () => {
+            popupRef.current?.show();
+        },
+        hide: () => {
+            popupRef.current?.hide();
+        },
+    }));
 
     const newChildren = children ? Children.map(children, (child) => cloneElement(child as any, {
         disabled: buttonDisabled,
         onClick: () => {
-            setPopupIsShown(true);
+            popupRef.current?.show();
         },
     })) : [];
 
@@ -26,13 +43,17 @@ const VideoPopupTrigger: FC<VideoPlayerProps> = ({
         <>
             {newChildren}
             <VideoPopupWindow
-                show={popupIsShown}
+                ref={popupRef}
+                onShow={() => {
+                    setButtonDisabled(true);
+                }}
                 onHide={() => {
-                    setPopupIsShown(false);
+                    setButtonDisabled(false);
                 }}
                 player={player}
             />
         </>
     );
-};
+});
+VideoPopupTrigger.displayName = 'VideoPopupTrigger';
 export default VideoPopupTrigger;

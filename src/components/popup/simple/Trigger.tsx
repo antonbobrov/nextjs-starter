@@ -1,17 +1,36 @@
 import {
-    cloneElement, FC, useCallback, useState,
+    cloneElement, forwardRef, ReactNode,
+    useImperativeHandle, useRef,
 } from 'react';
-import PopupSimple from '.';
+import PopupSimple, { PopupSimpleRef } from '.';
+
+export interface PopupSimpleTriggerRef {
+    show: () => void;
+    hide: () => void;
+}
 
 interface Props {
     trigger: JSX.Element;
+    children: ReactNode;
 }
 
-const PopupSimpleTrigger: FC<Props> = ({
+const PopupSimpleTrigger = forwardRef<
+    PopupSimpleTriggerRef,
+    Props
+>(({
     trigger,
     children,
-}) => {
-    const [isShown, setIsShown] = useState(false);
+}, ref) => {
+    const popupRef = useRef<PopupSimpleRef>(null);
+
+    useImperativeHandle(ref, () => ({
+        show: () => {
+            popupRef.current?.show();
+        },
+        hide: () => {
+            popupRef.current?.hide();
+        },
+    }));
 
     // clone the trigger element
     const clonedTrigger = cloneElement(trigger, {
@@ -20,7 +39,7 @@ const PopupSimpleTrigger: FC<Props> = ({
             if (trigger.props.onClick) {
                 trigger.props.onClick(evt);
             }
-            setIsShown(true);
+            popupRef.current?.show();
         },
     });
 
@@ -28,15 +47,12 @@ const PopupSimpleTrigger: FC<Props> = ({
         <>
             {clonedTrigger}
             <PopupSimple
-                show={isShown}
-                onHide={useCallback(() => {
-                    setIsShown(false);
-                }, [])}
+                ref={popupRef}
             >
                 {children}
             </PopupSimple>
         </>
     );
-};
-
+});
+PopupSimpleTrigger.displayName = 'PopupSimpleTrigger';
 export default PopupSimpleTrigger;
