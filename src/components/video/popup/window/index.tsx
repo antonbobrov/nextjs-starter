@@ -144,7 +144,7 @@ const VideoPopupWindow: VFC<Props> = ({
 
 
     // animate the popup
-    const timelineRef = useRef<Timeline>(null);
+    const timelineRef = useRef<Timeline | null>(null);
     useEffect(() => () => {
         timelineRef.current?.destroy();
     }, []);
@@ -154,7 +154,6 @@ const VideoPopupWindow: VFC<Props> = ({
         }
         // create timeline if it doesn't exist yet
         if (!timelineRef.current) {
-            // @ts-ignore
             timelineRef.current = new Timeline({
                 duration: 500,
             });
