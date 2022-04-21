@@ -1,5 +1,9 @@
 const registerServiceWorker = () => {
-    if (process.env.NODE_ENV === 'development' || typeof window === 'undefined') {
+    if (
+        process.env.NODE_ENV === 'development'
+        || typeof window === 'undefined'
+        || process.env.NEXT_PUBLIC_REGISTER_SERVICE_WORKER !== 'true'
+    ) {
         return;
     }
 
