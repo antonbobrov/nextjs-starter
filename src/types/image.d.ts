@@ -13,6 +13,6 @@ export type ImageSizes = {
     2560: string;
 }
 
-export interface ImageAdaptivePaths extends GeneralTypes.ImageAdaptivePaths {
+export interface ImageAdaptivePaths extends GeneralTypes.ImageAdaptivePaths<ImageSizes> {
 
 }
