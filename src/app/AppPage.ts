@@ -6,12 +6,11 @@ import { selectOne } from 'vevet-dom';
 import app, { gui, useSmoothScroll } from 'src/app';
 import store from '@/store/store';
 import { hideLoaderCurtain, showLoaderCurtain } from '@/components/layout/loader-curtain';
-import createFixedHeaderHandler, { IFixedHeaderHandler } from '@/components/layout/header/createFixedHeaderHandler';
 import loadingSlice from '@/store/reducers/loading';
 import layoutSlice from '@/store/reducers/layout';
 
 export default class AppPage extends Page {
-    protected _needsInnerPreloader = true;
+    protected _needsInnerPreloader = store.getState().layout.preloader.hidden;
 
     // page preloader
     protected _pagePreloader?: ProgressPreloader;
@@ -37,9 +36,6 @@ export default class AppPage extends Page {
         return this._scrollView;
     }
 
-    // fixed header handler
-    protected _fixedHeaderHandler?: IFixedHeaderHandler;
-
 
 
     /**
@@ -50,124 +46,22 @@ export default class AppPage extends Page {
             resolve,
         ) => {
             super._create().then(() => {
-                this._createInner();
-                resolve();
-            }).catch(() => {});
-        });
-    }
+                // create smooth scrolling
+                this._createSmoothScroll();
+                this._createScrollView();
+                this._createScrollBar();
 
-    /**
-     * Create the page
-     */
-    protected _createInner () {
-        // create smooth scrolling
-        this._createSmoothScroll();
-        this._createScrollView();
-
-        // process layout headers
-        this._fixedHeaderHandler = createFixedHeaderHandler();
-        this.addCallback('destroy', () => {
-            if (this._fixedHeaderHandler) {
-                this._fixedHeaderHandler.destroy();
-                this._fixedHeaderHandler = undefined;
-            }
-        });
-
-        // show the page on preloader hide
-        this._catchPreloaderHidden().then(() => {
-            this.onCreate().then(() => {
-                this.show().catch(() => {
-                    throw new Error('cant');
-                });
-            }).catch(() => {});
-        }).catch(() => {});
-    }
-
-    protected _catchPreloaderHidden () {
-        return new Promise<void>((
-            resolve,
-        ) => {
-            if (store.getState().layout.preloader.hidden) {
-                this._needsInnerPreloader = true;
-                resolve();
-            } else {
-                const event = store.subscribe(() => {
-                    if (store.getState().layout.preloader.hidden) {
-                        this._needsInnerPreloader = false;
-                        resolve();
-                        event();
-                    }
-                });
-            }
-        });
-    }
-
-
-
-    /**
-     * Show the page
-     */
-    protected _show () {
-        return new Promise<void>((
-            resolve,
-        ) => {
-            super._show().then(() => {
-                if (this._needsInnerPreloader) {
-                    this._onPageLoaded().then(() => {
-                        this._showInner();
-                        resolve();
-                        if (!store.getState().loading.firstLoad) {
-                            hideLoaderCurtain();
-                        }
+                // show the page on preloader hide
+                this._onPreloaderHidden().then(() => {
+                    this.onCreate().then(() => {
+                        this.show().catch(() => {
+                            throw new Error('cant');
+                        });
                     }).catch(() => {});
-                } else {
-                    this._showInner();
-                    resolve();
-                    if (!store.getState().loading.firstLoad) {
-                        hideLoaderCurtain();
-                    }
-                }
-            }).catch(() => {});
-        });
-    }
+                }).catch(() => {});
 
-    /**
-     * Show the page
-     */
-    protected _showInner () {
-        store.dispatch(loadingSlice.actions.end());
-
-        this._createScrollBar();
-        if (this._scrollView) {
-            this._scrollView.changeProp({
-                enabled: true,
-            });
-        }
-    }
-
-    /**
-     * Create a page preloader
-     */
-    protected _onPageLoaded () {
-        return new Promise<void>((
-            resolve,
-        ) => {
-            this._pagePreloader = new ProgressPreloader({
-                parent: this,
-                container: false,
-                hide: false,
-                loaders: {
-                    img: false,
-                    video: false,
-                    custom: '.js-preload-inner',
-                },
-                calc: {
-                    lerp: false,
-                },
-            });
-            this._pagePreloader.addCallback('loaded', () => {
                 resolve();
-            });
+            }).catch(() => {});
         });
     }
 
@@ -185,7 +79,7 @@ export default class AppPage extends Page {
         // create smooth scroll
         this._smoothScroll = new SmoothScroll({
             parent: this,
-            enabled: true,
+            enabled: false,
             selectors: {
                 outer: container,
             },
@@ -250,8 +144,110 @@ export default class AppPage extends Page {
         this._scrollBar = new ScrollBar({
             parent: this,
             container,
+            domParent: this.smoothScroll ? document.body : undefined,
             optimizeCalculations: true,
         });
+    }
+
+
+
+    /**
+     * Catch the moment when the preloader is hidden
+     */
+    protected _onPreloaderHidden () {
+        return new Promise<void>((
+            resolve,
+        ) => {
+            if (store.getState().layout.preloader.hidden) {
+                resolve();
+            } else {
+                const event = store.subscribe(() => {
+                    if (store.getState().layout.preloader.hide) {
+                        resolve();
+                        event();
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * Create a page preloader
+     * and resolve when all resources are loaded
+     */
+    protected _onInnerPreloaderDone () {
+        return new Promise<void>((
+            resolve,
+        ) => {
+            if (this._needsInnerPreloader) {
+                this._pagePreloader = new ProgressPreloader({
+                    parent: this,
+                    container: false,
+                    hide: false,
+                    loaders: {
+                        img: false,
+                        video: false,
+                        custom: '.js-preload-inner',
+                    },
+                    calc: {
+                        lerp: false,
+                    },
+                });
+                this._pagePreloader.addCallback('loaded', () => {
+                    resolve();
+                });
+            } else {
+                resolve();
+            }
+        });
+    }
+
+
+
+    /**
+     * Check if the page can be shown.
+     */
+    public canShow () {
+        return new Promise<void>((
+            resolve, reject,
+        ) => {
+            super.canShow().then(() => {
+                this._onInnerPreloaderDone().then(() => {
+                    resolve();
+                }).catch(() => {
+                    reject();
+                });
+            }).catch(() => {
+                reject();
+            });
+        });
+    }
+
+    /**
+     * Show the page
+     */
+    protected _show () {
+        return super._show().then(() => {
+            // remove loading indicator
+            store.dispatch(loadingSlice.actions.end());
+
+            // hide loader curtain
+            if (!store.getState().loading.firstLoad) {
+                hideLoaderCurtain();
+            }
+
+            // enable scrolling
+            if (this._smoothScroll) {
+                this._smoothScroll.changeProp({
+                    enabled: true,
+                });
+            }
+            if (this._scrollView) {
+                this._scrollView.changeProp({
+                    enabled: true,
+                });
+            }
+        }).catch(() => {});
     }
 
 
