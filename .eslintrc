@@ -77,7 +77,7 @@
         "promise/always-return": "off",
         "promise/no-nesting": "off",
         "react-hooks/exhaustive-deps": ["warn", {
-            "additionalHooks": "(useOnPageLoadedHook|useOnPageShownHook|useOnPageCreatedHook)"
+            "additionalHooks": "(useOnPageLoadedHook|useOnPageShownHook|useOnPageCreatedHook|useOnPageBeforeShownHook)"
         }]
     },
     "overrides": [
