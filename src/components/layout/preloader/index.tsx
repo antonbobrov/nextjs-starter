@@ -3,6 +3,7 @@ import store from '@/store/store';
 import {
     useEffect, useRef, useState, VFC,
 } from 'react';
+import { isTesting } from 'src/app';
 import { ProgressPreloader, utils } from 'vevet';
 import styles from './styles.module.scss';
 
@@ -35,8 +36,8 @@ const LayoutPreloader: VFC = () => {
                 custom: '.js-preload-global',
             },
             calc: {
-                lerp: 0.5,
-                forceEnd: 250,
+                lerp: isTesting ? 1 : 0.25,
+                forceEnd: isTesting ? 50 : 250,
             },
         });
         preloader.addCallback('progress', (data) => {

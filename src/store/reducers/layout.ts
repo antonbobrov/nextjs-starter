@@ -8,7 +8,7 @@ type State = {
     };
     popupMenu: {
         shown: boolean;
-    }
+    };
 }
 
 const initialState: State = {

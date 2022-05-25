@@ -70,11 +70,11 @@ export function getScrollSelector () {
 
 // dat.gui
 export const gui = new Promise((
-    resolve: (arg: GUI | undefined) => void,
+    resolve: (arg: GUI | null) => void,
 ) => {
     if (isBrowser) {
         if (app.isMobile || process.env.NEXT_PUBLIC_USE_GUI !== 'true') {
-            resolve(undefined);
+            resolve(null);
         } else {
             import('dat.gui').then((module) => {
                 resolve(new module.GUI({
@@ -83,6 +83,8 @@ export const gui = new Promise((
             }).catch(() => {});
         }
     } else {
-        resolve(undefined);
+        resolve(null);
     }
 });
+
+export type GUIFolder = GUI;

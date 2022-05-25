@@ -38,7 +38,7 @@ const VideoPopupWindow = forwardRef<
     const containerRef = useRef<HTMLDivElement>(null);
     const closeRef = useRef<HTMLButtonElement>(null);
 
-    const [isActive, setIsActive] = useState(false);
+    const [isActive, setIsActive] = useState<undefined | boolean>(undefined);
     const [allowRender, setAllowRender] = useState(false);
     useImperativeHandle(ref, () => ({
         show: () => {
@@ -55,6 +55,9 @@ const VideoPopupWindow = forwardRef<
 
     // launch callbacks
     useEffect(() => {
+        if (typeof isActive === 'undefined') {
+            return;
+        }
         if (isActive) {
             if (onShow) {
                 onShow();
@@ -158,7 +161,7 @@ const VideoPopupWindow = forwardRef<
         timelineRef.current?.destroy();
     }, []);
     useEffect(() => {
-        if (!allowRender) {
+        if (!allowRender || typeof isActive === 'undefined') {
             return;
         }
         // create timeline if it doesn't exist yet
@@ -175,6 +178,7 @@ const VideoPopupWindow = forwardRef<
                 }
                 if (progressData.progress === 0 && timelineRef.current?.isReversed) {
                     setAllowRender(false);
+                    setIsActive(undefined);
                 }
                 if (progressData.progress === 1 && !timelineRef.current?.isReversed) {
                     setRenderVideo(true);

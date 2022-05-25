@@ -57,7 +57,7 @@ function MyApp ({ Component, pageProps }: AppProps) {
                 <LayoutHead />
                 <LayoutBreadCrumbsJSON />
                 <div className="app" id="app">
-                    <LayoutHeader isFixed />
+                    <LayoutHeader />
                     <Component />
                     <LayoutMenuPopup />
                 </div>

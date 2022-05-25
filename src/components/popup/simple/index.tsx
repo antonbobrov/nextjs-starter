@@ -36,7 +36,7 @@ const PopupSimple = forwardRef<
     const parentRef = useRef<HTMLDivElement>(null);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
-    const [isActive, setIsActive] = useState(false);
+    const [isActive, setIsActive] = useState<undefined | boolean>(undefined);
     const [allowRender, setAllowRender] = useState(false);
 
     useImperativeHandle(ref, () => ({
@@ -51,6 +51,9 @@ const PopupSimple = forwardRef<
 
     // launch callbacks
     useEffect(() => {
+        if (typeof isActive === 'undefined') {
+            return;
+        }
         if (isActive) {
             if (onShow) {
                 onShow();
@@ -90,7 +93,7 @@ const PopupSimple = forwardRef<
         timelineRef.current?.destroy();
     }, []);
     useEffect(() => {
-        if (!allowRender) {
+        if (!allowRender || typeof isActive === 'undefined') {
             return;
         }
         // create timeline if it doesn't exist yet
@@ -106,6 +109,7 @@ const PopupSimple = forwardRef<
                 }
                 if (progressData.progress === 0 && timelineRef.current?.isReversed) {
                     setAllowRender(false);
+                    setIsActive(undefined);
                 }
             });
         }
@@ -128,7 +132,13 @@ const PopupSimple = forwardRef<
                     <div
                         className={styles.container}
                     >
-                        <div className={styles.overlay} />
+                        <div
+                            aria-hidden
+                            className={styles.overlay}
+                            onClick={() => {
+                                setIsActive(false);
+                            }}
+                        />
                         {/* eslint-disable-next-line max-len */}
                         {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
                         <div

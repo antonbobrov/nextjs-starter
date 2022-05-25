@@ -1,12 +1,11 @@
 import LayoutSmoothScroll from '@/components/layout/smooth-scroll';
-import LayoutHeader from '@/components/layout/header';
 import TextContent from '@/components/text/content';
-import LayoutBreadCrumbsList from '@/components/layout/breadcrumbs/list';
 import LayoutFooter from '@/components/layout/footer';
 import LayoutWrapper from '@/components/layout/wrapper';
 import { useSelector } from 'react-redux';
 import { VFC } from 'react';
 import { selectPagePropsGlobal } from '@/store/reducers/pageProps';
+import LayoutBreadCrumbsList from '@/components/layout/breadcrumbs/list';
 import styles from './styles.module.scss';
 import useTemplatePage from '../useTemplatePage';
 
@@ -22,7 +21,6 @@ const TemplateText: VFC = () => {
     // render the template
     return (
         <LayoutSmoothScroll>
-            <LayoutHeader isFixed={false} />
             <div className={styles.template_text}>
                 <LayoutWrapper>
                     <LayoutBreadCrumbsList />

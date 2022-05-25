@@ -3,7 +3,7 @@
 $hide-header-duration: 0.5s;
 
 .layout_header {
-    position: absolute;
+    position: fixed;
     z-index: 9;
     top: 0;
     left: 0;
@@ -19,27 +19,6 @@ $hide-header-duration: 0.5s;
 
     background-color: var(--color-contrast-bg);
     border-bottom: 1px solid var(--color-text);
-    
-    &.is_fixed {
-        position: fixed;
-        
-        @at-root :global(html:not(.v-browser-safari)) & {
-            @include transition(transform $hide-header-duration);
-            transform: translate(0, -100%);
-        } 
-        @at-root :global(html:not(.v-browser-safari).show-fixed-header) & {
-            transform: translate(0, 0);
-        }
-        
-        @at-root :global(html.v-browser-safari) & {
-            @include transition(opacity $hide-header-duration);
-            opacity: 0;
-        } 
-        @at-root :global(html.v-browser-safari.show-fixed-header) & {
-            opacity: 1;
-        }
-
-    }
 
     .menu {
         display: flex;

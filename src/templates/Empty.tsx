@@ -1,5 +1,4 @@
 import TextH1 from '@/components/text/h1';
-import LayoutHeader from '@/components/layout/header';
 import LayoutSmoothScroll from '@/components/layout/smooth-scroll';
 import LayoutFooter from '@/components/layout/footer';
 import LayoutWrapper from '@/components/layout/wrapper';
@@ -11,7 +10,6 @@ const TemplateEmpty: VFC = () => {
 
     return (
         <LayoutSmoothScroll>
-            <LayoutHeader isFixed={false} />
             <LayoutWrapper>
                 <div className="wrap">
                     <br />
