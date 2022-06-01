@@ -10,7 +10,7 @@ const LayoutHead = () => {
     const { url } = useSelector(selectConfig);
     const lexicon = useSelector(selectLexicon);
     const {
-        document, settings, meta, lang, languages, inject,
+        document, settings, meta, lang, languages,
     } = pageProps.global;
 
     return (
@@ -87,10 +87,6 @@ const LayoutHead = () => {
                         }),
                     }}
                 />
-            )}
-
-            {!!inject && !!inject.headJS && (
-                <script dangerouslySetInnerHTML={{ __html: inject.headJS }} />
             )}
 
         </NextHead>

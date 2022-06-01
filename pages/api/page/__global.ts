@@ -32,16 +32,6 @@ export default async function handler (
             searchable: true,
         },
 
-        // html/js injections, f.e., GA, Pixel, etc.
-        inject: {
-            // only js code without the <script> tag
-            headJS: '',
-            // any html tags at the top of the <body> tag
-            prependBody: '',
-            // any html tags at the bottom of the <body> tag
-            appendBody: '',
-        },
-
         // relative paths
         globalLinks: {
             home: '/',

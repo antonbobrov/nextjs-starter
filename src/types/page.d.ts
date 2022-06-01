@@ -34,11 +34,6 @@ export interface GlobalProps {
     settings: {
         searchable: boolean;
     };
-    inject?: {
-        headJS?: string;
-        prependBody?: string;
-        appendBody?: string;
-    };
     globalLinks: {
         home: string;
     };
