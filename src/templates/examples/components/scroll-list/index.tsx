@@ -35,7 +35,7 @@ const ExampleScrollList = () => {
     }];
 
     return (
-        <SliderHScrollList>
+        <SliderHScrollList useDragCursor>
             <div className={styles.example_scroll_list}>
                 {items.map((item) => (
                     <div key={item.id}>
