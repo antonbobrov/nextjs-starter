@@ -136,7 +136,7 @@ export default class AppPage extends Page {
      * Create page scrollbar
      */
     protected _createScrollBar () {
-        if (!this.smoothScroll) {
+        if (app.isMobile) {
             return;
         }
         const container = this.smoothScroll || window;
