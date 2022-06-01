@@ -1,13 +1,17 @@
 import {
     Page, ProgressPreloader, ScrollBar, ScrollView,
-    SmoothScroll, SmoothScrollDragPlugin, SmoothScrollKeyboardPlugin,
+    SmoothScroll, SmoothScrollDragPlugin, SmoothScrollKeyboardPlugin, utils,
 } from 'vevet';
-import { selectOne } from 'vevet-dom';
-import app, { gui, useSmoothScroll } from 'src/app';
+import { selectAll, selectOne } from 'vevet-dom';
+import app, {
+    getScrollSelector, gui, preventInteractivity, useSmoothScroll,
+} from 'src/app';
 import store from '@/store/store';
 import { hideLoaderCurtain, showLoaderCurtain } from '@/components/layout/loader-curtain';
 import loadingSlice from '@/store/reducers/loading';
 import layoutSlice from '@/store/reducers/layout';
+import PCancelable from 'p-cancelable';
+import normalizers from '@/utils/normalizers';
 
 export default class AppPage extends Page {
     protected _needsInnerPreloader = store.getState().layout.preloader.hidden;
@@ -46,6 +50,10 @@ export default class AppPage extends Page {
             resolve,
         ) => {
             super._create().then(() => {
+                if (preventInteractivity) {
+                    app.html.classList.add('prevent-interactivity');
+                }
+
                 // create smooth scrolling
                 this._createSmoothScroll();
                 this._createScrollView();
@@ -237,18 +245,75 @@ export default class AppPage extends Page {
                 hideLoaderCurtain();
             }
 
-            // enable scrolling
-            if (this._smoothScroll) {
-                this._smoothScroll.changeProp({
-                    enabled: true,
-                });
-            }
-            if (this._scrollView) {
-                this._scrollView.changeProp({
-                    enabled: true,
-                });
-            }
+            // catch the moment when the page would be fully interactive
+            const interactivePromise = this._pageIsInteractive();
+            this.addCallback('destroy', () => {
+                interactivePromise.cancel();
+            });
+            return interactivePromise.then(() => {
+                // allow page interactivity
+                app.html.classList.remove('prevent-interactivity');
+
+                // enable scrolling
+                if (this._smoothScroll) {
+                    this._smoothScroll.changeProp({
+                        enabled: true,
+                    });
+                }
+                if (this._scrollView) {
+                    this._scrollView.changeProp({
+                        enabled: true,
+                    });
+                }
+
+                // hash anchor
+                if (window.location.hash) {
+                    try {
+                        const section = selectOne(window.location.hash);
+                        if (section) {
+                            utils.scroll.toElement({
+                                container: getScrollSelector(),
+                                el: section,
+                                top: normalizers.strToNum(
+                                    getComputedStyle(section).marginTop,
+                                ),
+                                duration: (
+                                    section.getBoundingClientRect().top / app.viewport.height
+                                ) * 125,
+                            });
+                        }
+                    } catch (e) {
+                        //
+                    }
+                }
+            }).catch(() => {});
         }).catch(() => {});
+    }
+
+    /**
+     * Some elements may have the attribute `data-block-page-interactivity="true"`
+     * This means that the page should not be interactive (and scrollable).
+     * Here we search for such elements.
+     * When there's no elements with this attribute, the page is interactive.
+     */
+    protected _pageIsInteractive () {
+        return new PCancelable<void>((resolve, reject) => {
+            if (this._destroyed) {
+                reject();
+            }
+            const elements = selectAll('[data-block-page-interactivity="true"]');
+            if (elements.length === 0 || !preventInteractivity) {
+                resolve();
+            } else {
+                setTimeout(() => {
+                    this._pageIsInteractive().then(() => {
+                        resolve();
+                    }).catch(() => {
+                        reject();
+                    });
+                }, 30);
+            }
+        });
     }
 
 

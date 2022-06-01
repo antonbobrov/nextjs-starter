@@ -22,6 +22,12 @@ export function getAppPage () {
 // testing state
 export const isTesting = process.env.NODE_ENV === 'development';
 
+// prevent interactivity by default
+export const preventInteractivity = false;
+if (app && preventInteractivity) {
+    app.html.classList.add('prevent-interactivity');
+}
+
 // Scroll Settings
 export const useSmoothScroll = !(!!app && (app.isMobile || app.osName === 'mac'));
 export const useWindowScroll = !useSmoothScroll;
