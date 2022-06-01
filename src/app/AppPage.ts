@@ -129,6 +129,7 @@ export default class AppPage extends Page {
                 dir: 'y',
             },
             viewportTarget: app.isMobile ? 'w' : '',
+            intersectionRoot: null,
         });
     }
 
