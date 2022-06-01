@@ -49,7 +49,7 @@ const LayoutHead = () => {
             {meta.description && <meta name="abstract" content={meta.description} />}
 
             <meta property="og:site_name" content={lexicon.siteName} />
-            <meta property="og:type" content="article" />
+            <meta property="og:type" content="website" />
             <meta property="og:title" content={document.pagetitle} />
             {meta.description && <meta property="og:description" content={meta.description} />}
             <meta property="og:url" content={url.url} />
