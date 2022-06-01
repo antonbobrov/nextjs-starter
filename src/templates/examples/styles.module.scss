@@ -1,6 +1,8 @@
 @import '@/styles/base';
 
 .template_examples {
+    overflow: hidden;
+    
     .wrap {
         padding: px-to-rem(30) var(--wrap) 0;
     }
