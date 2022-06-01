@@ -230,7 +230,7 @@ const VideoPopupWindow = forwardRef<
                                 videoIsLoaded ? styles.loaded : '',
                             ].join(' ')}
                         >
-                            {renderVideo ? (
+                            {renderVideo && (
                                 <VideoPlayer
                                     {...player}
                                     onLoaded={() => {
@@ -240,7 +240,7 @@ const VideoPopupWindow = forwardRef<
                                         setVideoIsLoaded(true);
                                     }}
                                 />
-                            ) : ''}
+                            )}
                         </div>
                     </div>
 

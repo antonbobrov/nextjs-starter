@@ -71,15 +71,13 @@ function MyApp ({ Component, pageProps }: AppProps) {
             <br />
             <h1>Error</h1>
             <br />
-            {!!props.response && !!props.response.error
-                ? (
-                    <>
-                        {props.response.error.message ? <h2>{props.response.error.message}</h2> : ''}
-                        <br />
-                        {props.response.error.response ? <pre>{props.response.error.response}</pre> : ''}
-                    </>
-                )
-                : ''}
+            {!!props.response && !!props.response.error && (
+                <>
+                    {props.response.error.message && <h2>{props.response.error.message}</h2>}
+                    <br />
+                    {props.response.error.response && <pre>{props.response.error.response}</pre>}
+                </>
+            )}
         </div>
     );
 }

@@ -40,25 +40,25 @@ const LayoutHead = () => {
             <meta name="theme-color" content="#000000" />
             <link rel="manifest" href="/api/manifest.webmanifest" />
 
-            {!settings.searchable ? <meta name="robots" content="noindex" /> : ''}
+            {!settings.searchable && <meta name="robots" content="noindex" />}
 
             {/* meta */}
-            {meta.description ? <meta name="description" content={meta.description} /> : ''}
-            {meta.keywords ? <meta name="keywords" content={meta.keywords} /> : ''}
-            {meta.keywords ? <meta name="lang" content={lang} /> : ''}
-            {meta.description ? <meta name="abstract" content={meta.description} /> : ''}
+            {meta.description && <meta name="description" content={meta.description} />}
+            {meta.keywords && <meta name="keywords" content={meta.keywords} />}
+            {meta.keywords && <meta name="lang" content={lang} />}
+            {meta.description && <meta name="abstract" content={meta.description} />}
 
             <meta property="og:site_name" content={lexicon.siteName} />
             <meta property="og:type" content="article" />
             <meta property="og:title" content={document.pagetitle} />
-            {meta.description ? <meta property="og:description" content={meta.description} /> : ''}
+            {meta.description && <meta property="og:description" content={meta.description} />}
             <meta property="og:url" content={url.url} />
-            {meta.image ? <meta property="og:image" content={meta.image} /> : ''}
+            {meta.image && <meta property="og:image" content={meta.image} />}
 
             <meta name="twitter:card" content="summary" />
             <meta name="twitter:title" content={document.pagetitle} />
-            {meta.description ? <meta name="twitter:description" content={meta.description} /> : ''}
-            {meta.image ? <meta property="twitter:image" content={meta.image} /> : ''}
+            {meta.description && <meta name="twitter:description" content={meta.description} />}
+            {meta.image && <meta property="twitter:image" content={meta.image} />}
 
             {/* links */}
             <base href={url.base} />
@@ -75,7 +75,7 @@ const LayoutHead = () => {
             ))}
 
             {/* logo microdata */}
-            {pageProps.templateName === 'home' ? (
+            {pageProps.templateName === 'home' && (
                 <script
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{
@@ -87,9 +87,11 @@ const LayoutHead = () => {
                         }),
                     }}
                 />
-            ) : ''}
+            )}
 
-            {!!inject && !!inject.headJS ? <script dangerouslySetInnerHTML={{ __html: inject.headJS }} /> : ''}
+            {!!inject && !!inject.headJS && (
+                <script dangerouslySetInnerHTML={{ __html: inject.headJS }} />
+            )}
 
         </NextHead>
     );

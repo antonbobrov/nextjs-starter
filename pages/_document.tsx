@@ -37,20 +37,20 @@ class MyDocument extends Document {
             >
                 <Head />
                 <body>
-                    {!!inject && inject.prependBody ? (
+                    {!!inject && inject.prependBody && (
                         <div
                             className="inject"
                             dangerouslySetInnerHTML={{ __html: inject.prependBody }}
                         />
-                    ) : ''}
+                    )}
                     <Main />
                     <NextScript />
-                    {!!inject && inject.appendBody ? (
+                    {!!inject && inject.appendBody && (
                         <div
                             className="inject"
                             dangerouslySetInnerHTML={{ __html: inject.appendBody }}
                         />
-                    ) : ''}
+                    )}
                 </body>
             </Html>
         );
