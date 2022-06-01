@@ -27,7 +27,7 @@
     "react-redux": "^7.2.6",
     "sass": "^1.49.9",
     "ts-essentials": "^9.1.2",
-    "vevet": "^2.15.2",
+    "vevet": "^2.15.3",
     "vevet-dom": "0.0.15",
     "video.js": "^7.17.0",
     "youtube-player": "^5.5.2"
