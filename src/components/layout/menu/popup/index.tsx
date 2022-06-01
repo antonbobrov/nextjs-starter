@@ -7,7 +7,7 @@ import app from 'src/app';
 import store from '@/store/store';
 import { useSelector } from 'react-redux';
 import { selectPagePropsGlobal } from '@/store/reducers/pageProps';
-import layoutSlice from '@/store/reducers/layout';
+import layoutSlice, { selectLayout } from '@/store/reducers/layout';
 import styles from './styles.module.scss';
 import LayoutMenuButton from '../button';
 import LayoutLanguagesList from '../../languages/list';
@@ -15,9 +15,12 @@ import LayoutLanguagesList from '../../languages/list';
 const duration = 450;
 
 const LayoutMenuPopup: VFC = () => {
-    const { siteMenu } = useSelector(selectPagePropsGlobal);
+    const globalProps = useSelector(selectPagePropsGlobal);
+    const layoutProps = useSelector(selectLayout);
+    const { siteMenu } = globalProps;
 
-    let focusElement: Element | null = null;
+    // elements
+    const focusElementRef = useRef<Element | null>(null);
     const parentRef = useRef<HTMLDivElement>(null);
     const overlayRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -41,9 +44,8 @@ const LayoutMenuPopup: VFC = () => {
         };
     }, []);
 
-
-
-    // menu handler
+    // create menu timeline
+    const timelineRef = useRef<Timeline | null>(null);
     useEffect(() => {
         // create a timeline
         const timeline = new Timeline({
@@ -67,39 +69,39 @@ const LayoutMenuPopup: VFC = () => {
                 container.style.transform = `translate(${(1 - data.easing) * 100}%, 0)`;
             }
         });
-
-        // subscribe to store
-        const storeListener = store.subscribe(() => {
-            const state = store.getState().layout.popupMenu.shown;
-            // prevent underneath scrolling
-            app.html.classList.toggle(styles.prevent_scroll, state);
-            // animate the parent element
-            if (state) {
-                timeline.play();
-            } else {
-                timeline.reverse();
-            }
-            // set focus
-            if (state) {
-                // eslint-disable-next-line react-hooks/exhaustive-deps
-                focusElement = document.activeElement;
-                setTimeout(() => {
-                    if (closeButtonRef.current) {
-                        closeButtonRef.current.focus();
-                    }
-                }, 250);
-            } else if (!state) {
-                if (focusElement instanceof HTMLElement) {
-                    focusElement.focus();
-                }
-            }
-        });
-
+        timelineRef.current = timeline;
         return () => {
-            storeListener();
             timeline.destroy();
+            timelineRef.current = null;
         };
     }, []);
+
+    // menu events
+    useEffect(() => {
+        const state = layoutProps.popupMenu.shown;
+        // prevent underneath scrolling
+        app.html.classList.toggle(styles.prevent_scroll, state);
+        // animate the parent element
+        if (state) {
+            timelineRef.current?.play();
+        } else {
+            timelineRef.current?.reverse();
+        }
+        // set focus
+        if (state) {
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            focusElementRef.current = document.activeElement;
+            setTimeout(() => {
+                if (closeButtonRef.current) {
+                    closeButtonRef.current.focus();
+                }
+            }, 250);
+        } else if (!state) {
+            if (focusElementRef.current instanceof HTMLElement) {
+                focusElementRef.current.focus();
+            }
+        }
+    }, [layoutProps.popupMenu.shown]);
 
     return (
         <div
@@ -122,7 +124,10 @@ const LayoutMenuPopup: VFC = () => {
             >
 
                 <div className={styles.close}>
-                    <LayoutMenuButton isActive />
+                    <LayoutMenuButton
+                        ref={closeButtonRef}
+                        isActive
+                    />
                 </div>
 
                 <div className={styles.wrap}>
