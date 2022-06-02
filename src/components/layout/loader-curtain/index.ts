@@ -32,9 +32,13 @@ export function hideLoaderCurtain () {
     return new Promise<void>((
         resolve,
     ) => {
-        create().hide().then(() => {
+        if (handler) {
+            handler.hide().then(() => {
+                resolve();
+            }).catch(() => {});
+        } else {
             resolve();
-        }).catch(() => {});
+        }
     });
 }
 
