@@ -154,7 +154,7 @@ export default class AppPage extends Page {
             parent: this,
             container,
             domParent: this.smoothScroll ? document.body : undefined,
-            optimizeCalculations: true,
+            optimizeCalculations: !(container instanceof Window),
         });
     }
 
