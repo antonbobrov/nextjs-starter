@@ -63,7 +63,7 @@ const SliderHScrollList: FC<Props> = ({
         if (useDrag) {
             scroll.addPlugin(new SmoothScrollDragPlugin({
                 speed: app.isMobile ? 2 : 1,
-                stopPropagation: {
+                stopPropagation: !app.isMobile ? undefined : {
                     dir: 'x',
                     threshold: 5,
                 },
