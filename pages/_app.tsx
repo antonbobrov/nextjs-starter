@@ -11,7 +11,7 @@ import lexiconSlice from '@/store/reducers/lexicon';
 
 import { Provider } from 'react-redux';
 
-import { SSPResponse } from '@/types/page';
+import { SspClient } from '@/types/ssp';
 import LayoutHead from '@/components/layout/head';
 import LayoutPreloader from '@/components/layout/preloader';
 import LayoutHeader from '@/components/layout/header';
@@ -21,15 +21,17 @@ import LayoutBreadCrumbsJSON from '@/components/layout/breadcrumbs/json';
 
 let storeUpdated = false;
 let rerenderProps = false;
-function updateStore (props: SSPResponse) {
-    store.dispatch(pagePropsSlice.actions.set(props.props!));
-    store.dispatch(configSlice.actions.set(props.config!));
-    store.dispatch(lexiconSlice.actions.set(props.lexicon!));
-    storeUpdated = true;
+function updateStore (props: SspClient) {
+    if (props.data) {
+        store.dispatch(pagePropsSlice.actions.set(props.data.props));
+        store.dispatch(configSlice.actions.set(props.data.config));
+        store.dispatch(lexiconSlice.actions.set(props.data.lexicon));
+        storeUpdated = true;
+    }
 }
 
 function MyApp ({ Component, pageProps }: AppProps) {
-    const props = pageProps as SSPResponse | {
+    const props = pageProps as SspClient | {
         statusCode: number;
     };
 
@@ -51,7 +53,7 @@ function MyApp ({ Component, pageProps }: AppProps) {
         return <h1>{props.statusCode}</h1>;
     }
 
-    if (!!props.response && props.response.success) {
+    if (props.data) {
         return (
             <Provider store={store}>
                 <LayoutHead />
@@ -69,13 +71,13 @@ function MyApp ({ Component, pageProps }: AppProps) {
     return (
         <div className="wrap">
             <br />
-            <h1>Error</h1>
+            <h1>Ooops</h1>
             <br />
-            {!!props.response && !!props.response.error && (
+            {props.error && (
                 <>
-                    {props.response.error.message && <h2>{props.response.error.message}</h2>}
+                    {props.error.name && <div>{props.error.name}</div>}
                     <br />
-                    {props.response.error.response && <pre>{props.response.error.response}</pre>}
+                    {props.error.body ? <pre>{props.error.body}</pre> : ''}
                 </>
             )}
         </div>

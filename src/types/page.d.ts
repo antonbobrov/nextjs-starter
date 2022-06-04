@@ -1,5 +1,4 @@
 import { LayoutBreadCrumbsProps } from '@/components/layout/breadcrumbs/types';
-import { LexiconData } from '../lexicon/types';
 
 export interface MenuLinkProps {
     id: number;
@@ -57,17 +56,4 @@ export interface PageApiProps <
     global: GlobalProps;
     templateName: string;
     template: TemplateProps;
-}
-
-export interface SSPResponse<T extends Record<string, any> = {}> {
-    response: {
-        success: boolean;
-        error?: {
-            message?: string | null;
-            response?: string | null;
-        };
-    };
-    props?: PageApiProps<T>;
-    config?: ConfigProps;
-    lexicon?: LexiconData;
 }

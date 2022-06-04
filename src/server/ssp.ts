@@ -1,99 +1,51 @@
-import { GetServerSidePropsContext, Redirect } from 'next';
-import {
-    ConfigProps, PageApiProps, SSPResponse,
-} from '@/types/page';
+import { ConfigProps, PageApiProps } from '@/types/page';
+import normalizers from '@/utils/normalizers';
+import { GetServerSidePropsContext } from 'next';
 import getLexicon from 'src/lexicon/getLexicon';
 import store from '@/store/store';
-import configSlice from '@/store/reducers/config';
 import pagePropsSlice from '@/store/reducers/pageProps';
+import configSlice from '@/store/reducers/config';
 import lexiconSlice from '@/store/reducers/lexicon';
+import { SspServer } from '@/types/ssp';
 import serverEnv from './env';
-import normalizers from '../utils/normalizers';
 
-interface ErrorProps {
-    isError: true;
-    message?: string;
-    response?: string;
-}
-
-interface RedirectProps {
-    redirect: Redirect;
-}
-
-interface CacheItem {
-    time: number;
-    redirected: boolean;
-    url: string;
-    status: number;
-    statusText: string;
-    text: string;
-}
-
-const pageCache: Map<string, CacheItem> = new Map();
-
-
+const pageCache: Map<string, SspServer> = new Map();
 
 /**
  * Fetch server side props
  */
 export default async function fetchSSP (
     context: GetServerSidePropsContext,
-): Promise<({
-    props: SSPResponse
-} | RedirectProps)> {
-    // get api props
-    const pageApiProps = await getAPIPageProps(context);
+) {
+    const { res } = context;
 
-    // process redirect
-    if ('redirect' in pageApiProps) {
-        return {
-            redirect: pageApiProps.redirect,
-        };
-    }
-
-    // process errors
-    if ('isError' in pageApiProps) {
-        return {
-            props: {
-                response: {
-                    success: false,
-                    error: {
-                        message: pageApiProps.message || null,
-                        response: pageApiProps.response || null,
-                    },
-                },
-            },
-        };
-    }
-
-    // add response
-    const props: SSPResponse = {
-        response: {
-            success: true,
-        },
-        props: pageApiProps,
-        config: getConfig(context),
-        lexicon: getLexicon(pageApiProps.global.lang),
-    };
-    props.props = setMetaImage(props.props!);
+    // get props
+    const props = await getSSP(context);
+    res.statusCode = props.api.statusCode;
+    res.statusMessage = props.api.statusText;
 
     // update store
-    store.dispatch(pagePropsSlice.actions.set(props.props!));
-    store.dispatch(configSlice.actions.set(props.config!));
-    store.dispatch(lexiconSlice.actions.set(props.lexicon!));
+    if (props.data) {
+        store.dispatch(pagePropsSlice.actions.set(props.data.props));
+        store.dispatch(configSlice.actions.set(props.data.config));
+        store.dispatch(lexiconSlice.actions.set(props.data.lexicon));
+    }
 
-    return {
-        props,
-    };
+    return props;
 }
 
-
-
-async function getAPIPageProps (
+/**
+ * Fetch page props or get them from cache
+ */
+async function getSSP (
     context: GetServerSidePropsContext,
-): Promise<PageApiProps | ErrorProps | RedirectProps> {
+) {
+    // setup
+    let data: SspServer | undefined;
+    const time = +new Date();
+
     // get urls
-    const { resolvedUrl, res, req } = context;
+    const { resolvedUrl, req } = context;
     let apiURL: URL;
     if (process.env.NEXT_PUBLIC_URL_API_PAGE) {
         apiURL = new URL(
@@ -104,144 +56,163 @@ async function getAPIPageProps (
             normalizers.urlSlashes(`${serverEnv.getReqUrlBase(req)}/api/page/${resolvedUrl}`),
         );
     }
+
+    // url settings
+    const clearCacheParam = apiURL.searchParams.get('clear-cache');
+    const noCacheParam = apiURL.searchParams.get('no-cache');
+
+    // remove extra params
     apiURL.searchParams.delete('slug');
+    apiURL.searchParams.delete('clear-cache');
+    apiURL.searchParams.delete('no-cache');
 
     // get cache settings
-    const clearCache = apiURL.searchParams.get('clear-cache');
-    const useCache = !apiURL.searchParams.get('no-cache') && typeof process.env.SSP_CACHE !== 'undefined' && !clearCache;
-    if (clearCache) {
-        if (clearCache === 'all') {
+    const useCache = !noCacheParam && !clearCacheParam && process.env.SSP_CACHE === 'true';
+
+    // clear cache
+    if (clearCacheParam) {
+        if (clearCacheParam === 'all') {
             pageCache.clear();
         } else {
             pageCache.delete(apiURL.href);
         }
+        return {
+            time,
+            api: {
+                url: apiURL.href,
+                statusCode: 200,
+                statusText: 'CACHE_CLEARED',
+            },
+            error: {
+                name: 'Cache is cleared',
+            },
+        };
     }
+
+    // check cache size
     if (useCache) {
-        let maxSize = parseInt(process.env.SSP_CACHE!, 10);
+        let maxSize = parseInt(process.env.SSP_CACHE_LIMIT!, 10);
         maxSize = Number.isInteger(maxSize) ? maxSize : 100;
         if (pageCache.size > maxSize) {
             pageCache.clear();
         }
     }
 
-    // remove cache identifiers from url
-    apiURL.searchParams.delete('no-cache');
-    apiURL.searchParams.delete('clear-cache');
+    // get cached data
+    let cachedData = useCache ? pageCache.get(apiURL.href) : undefined;
+    // and check its age
+    if (cachedData) {
+        if (time - cachedData.time > parseInt(process.env.SSP_CACHE_AGE!, 10) * 1000) {
+            cachedData = undefined;
+        }
+    }
+    data = cachedData;
 
-    // page data
-    let data: CacheItem;
-
-    // check if the url is already pageCache
-    const pageCacheResponse = useCache ? pageCache.get(apiURL.href) : undefined;
-    if (pageCacheResponse) {
-        data = pageCacheResponse;
-    } else {
-        // otherwise fetch props from api
+    // if there is no cached data, fetch it
+    if (!cachedData) {
+        // fetch props from api
         try {
-            const response = await (await fetch(apiURL.href, {
+            const response = await fetch(apiURL.href, {
                 headers: {
                     APIKEY: process.env.API_KEY || '',
                 },
-            }));
-            data = {
-                time: +new Date(),
-                redirected: response.redirected,
-                url: response.url,
-                status: response.status,
-                statusText: response.statusText,
-                text: await response.text(),
-            };
-            if (useCache && response.status === 200) {
-                pageCache.set(apiURL.href, data);
-            }
-        } catch (e: any) {
-            res.statusCode = 503;
-            return {
-                isError: true,
-                message: 'API unavailable ',
-                response: `${e}`,
-            };
-        }
-    }
+            });
 
-    // check if redirected
-    if (!/\.(.*)$/.test(resolvedUrl)) {
-        if (data.redirected) {
-            if (data.url) {
-                const redirectURL = normalizers.urlSlashes(`/${data.url.replace(
-                    process.env.NEXT_PUBLIC_URL_API_PAGE || '',
-                    '',
-                )}`);
-                return {
-                    redirect: {
+            // parse props
+            let jsonProps: PageApiProps;
+            try {
+                jsonProps = await response.json();
+                data = {
+                    time,
+                    api: {
+                        url: apiURL.href,
+                        statusCode: response.status,
+                        statusText: response.statusText,
+                    },
+                    data: {
+                        props: jsonProps,
+                        config: null as any,
+                        lexicon: null as any,
+                    },
+                };
+
+                // check for redirects
+                if ((!/\.(.*)$/.test(resolvedUrl)) && response.redirected) {
+                    const redirectURL = normalizers.urlSlashes(`/${response.url.replace(
+                        process.env.NEXT_PUBLIC_URL_API_PAGE || '',
+                        '',
+                    )}`);
+                    data.redirect = {
                         destination: redirectURL,
                         statusCode: 301,
+                    };
+                }
+
+                // add to cache
+                if (useCache && !response.redirected && response.status === 200) {
+                    pageCache.set(apiURL.href, data!);
+                }
+            } catch (e: any) {
+                // error when the properties cannot be parsed
+                data = {
+                    time,
+                    api: {
+                        url: apiURL.href,
+                        statusCode: 500,
+                        statusText: 'JSON_PARSE_ERROR',
+                    },
+                    error: {
+                        name: `${e}`,
+                        body: await response.text(),
                     },
                 };
             }
+        } catch (e: any) {
+            data = {
+                time,
+                api: {
+                    url: apiURL.href,
+                    statusCode: 502,
+                    statusText: 'API_UNAVAILABLE',
+                },
+                error: {
+                    name: `${e}`,
+                },
+            };
         }
     }
+    data = data!;
 
-    // set status
-    res.statusCode = data.status;
-    res.statusMessage = data.statusText;
+    // update lexicon
+    if (data.data) {
+        data.data.lexicon = getLexicon(data.data.props.global.lang);
+    }
 
-    // get json response
-    let props: PageApiProps;
-    try {
-        props = JSON.parse(data.text);
-    } catch (e) {
-        res.statusCode = 500;
-        return {
-            isError: true,
-            message: res.statusCode !== 200 ? `${res.statusCode} ${res.statusMessage}` : 'Cannot parse JSON',
-            response: data.text,
+    // update config
+    if (data.data) {
+        const baseUrl = serverEnv.getReqUrlBase(context.req);
+        const currentUrl = normalizers.urlSlashes(`${baseUrl}/${resolvedUrl}`);
+        const currentUrlData = new URL(currentUrl);
+        const url: ConfigProps['url'] = {
+            base: baseUrl,
+            url: currentUrl,
+            canonical: normalizers.urlSlashes(`${currentUrlData.origin}/${currentUrlData.pathname}`),
+        };
+        data.data.config = {
+            key: time,
+            url,
         };
     }
 
-    return props;
-}
-
-
-
-function getConfig (
-    context: GetServerSidePropsContext,
-): ConfigProps {
-    const key = +new Date();
-
-    // set url data
-    const { resolvedUrl } = context;
-    const baseUrl = serverEnv.getReqUrlBase(context.req);
-    const currentUrl = normalizers.urlSlashes(`${baseUrl}/${resolvedUrl}`);
-    const currentUrlData = new URL(currentUrl);
-    const url: ConfigProps['url'] = {
-        base: baseUrl,
-        url: currentUrl,
-        canonical: normalizers.urlSlashes(`${currentUrlData.origin}/${currentUrlData.pathname}`),
-    };
-
-    return {
-        key,
-        url,
-    };
-}
-
-
-
-function setMetaImage (
-    pageProps: PageApiProps,
-) {
-    const props: PageApiProps = {
-        ...pageProps,
-    } as PageApiProps;
-
-    // search meta image
-    if (!props.global.meta.image) {
-        const matches = JSON.stringify(props).match(new RegExp('(http?s)[^"\' ]*\\.(jpg|png)'));
-        if (matches) {
-            props.global.meta.image = matches.shift();
+    // set meta image
+    if (data.data) {
+        if (!data.data.props.global.meta.image) {
+            const matches = JSON.stringify(data.data.props).match(new RegExp('(http?s)[^"\' ]*\\.(jpg|png)'));
+            if (matches) {
+                data.data.props.global.meta.image = matches.shift();
+            }
         }
     }
 
-    return props;
+    return data;
 }

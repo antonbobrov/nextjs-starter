@@ -8,11 +8,21 @@ const Router = () => (
 export default Router;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const props = await fetchSSP(context);
-    if ('redirect' in props) {
+    const data = await fetchSSP(context);
+    if (data.redirect) {
         return {
-            redirect: props.redirect,
+            redirect: data.redirect,
         };
     }
-    return props;
+    if (data.data || data.error) {
+        return {
+            props: {
+                data: data.data || null,
+                error: data.error || null,
+            },
+        };
+    }
+    return {
+        notFound: true,
+    };
 };

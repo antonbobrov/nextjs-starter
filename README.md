@@ -15,16 +15,25 @@ NEXT_PUBLIC_URL_API_PAGE=https://cms.example.com/api/page/
 API_KEY=_____test_key_____
 
 NOINDEX=true
-SSP_CACHE=1000
 NEXT_PUBLIC_REGISTER_SERVICE_WORKER=true
+
+SSP_CACHE=false
+SSP_CACHE_LIMIT=100
+SSP_CACHE_AGE=2592000
 
 SENTRY_DSN=
 SENTRY_ORG=
 SENTRY_PROJECT=
 SENTRY_AUTH=
 
-NEXT_PUBLIC_USE_GUI=true
+NEXT_PUBLIC_USE_GUI=false
 ```
+Required production vars:
+```
+NEXT_PUBLIC_URL_API
+NEXT_PUBLIC_URL_API_PAGE
+```
+
 And run the commands:
 ```bash
 npm i
