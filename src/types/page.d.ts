@@ -48,6 +48,7 @@ export interface ConfigProps {
         url: string;
         canonical: string;
     };
+    updatedAt: string;
 }
 
 export interface PageApiProps <

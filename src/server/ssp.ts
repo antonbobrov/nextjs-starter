@@ -201,6 +201,7 @@ async function getSSP (
         data.data.config = {
             key: time,
             url,
+            updatedAt: new Date(data.time).toString(),
         };
     }
 
