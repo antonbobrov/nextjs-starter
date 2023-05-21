@@ -1,0 +1,23 @@
+$colors: (
+  'bg': #000,
+  'black': #000,
+  'white': #fff,
+  'highlight': #d97f2a,
+  'dark': #1f1f1f,
+);
+
+@function hex-to-rgb ($hex) {
+  @return red($hex), green($hex), blue($hex);
+}
+  
+:root {
+  @each $key, $value in $colors {
+    --color-#{$key}: #{$value};
+    --color-#{$key}--rgb: #{hex-to-rgb($value)};
+  }
+}
+
+html {
+  background-color: var(--color-dark);
+  color: var(--color-white);
+}

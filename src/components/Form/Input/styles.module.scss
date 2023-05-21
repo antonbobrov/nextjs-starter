@@ -1,0 +1,32 @@
+@import '@/styles/base';
+
+.form_input {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: px-to-rem(40);
+
+  &.is_textarea {
+    height: px-to-rem(120);
+  }
+
+}
+
+.input {
+  @include reset-input;
+  @include absolute-fullsize;
+  padding: 0 px-to-rem(20);
+
+  &.is_textarea {
+    padding: px-to-rem(10) px-to-rem(20);
+  }
+
+  background-color: rgba(var(--color-white--rgb), 0.1);
+  border: 1px solid var(--color-white);
+
+  color: var(--color-white);
+
+  &.is_invalid {
+    background-color: rgba(200, 0, 0, 0.2);
+  }
+}

@@ -1,0 +1,182 @@
+@import '@/styles/base';
+
+.richtext {
+  @include hide-overflow-text();
+
+  * {
+    @include reset-first-child-margin;
+    @include reset-last-child-margin;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  a {
+    font-weight: 500;
+    text-decoration: underline;
+    color: inherit;
+
+    @include hover {
+      text-decoration: none;
+    }
+      
+  }
+
+  blockquote,
+  q,
+  cite {
+    position: relative;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    padding: 0 0 0 px-to-rem(20);
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 2px;
+      height: 100%;
+      background-color: currentColor;
+    }
+
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0;
+  }
+
+  h1 {
+    font-family: inherit;
+    font-size: 2em;
+    font-weight: inherit;
+    text-transform: inherit;
+  }
+
+  h2 {
+    font-family: inherit;
+    font-size: 1.5em;
+    font-weight: inherit;
+    text-transform: inherit;
+  }
+
+  h3,
+  h4,
+  h5 {
+    font-family: inherit;
+    font-size: 1.25em;
+    font-weight: inherit;
+    text-transform: inherit;
+  }
+
+  ul,
+  ol {
+    @include reset-ul;
+
+    li {
+      + li {
+        margin-top: px-to-rem(20);
+      }
+    }
+  }
+
+  ul {
+    li {         
+      &::before {
+        content: '\2022';
+        color: currentColor;
+        font-weight: bold;
+        display: inline-block;
+        width: 1rem;
+      }
+    }
+  }
+
+  ol {
+    counter-reset: ol-counter;
+
+    li {
+      counter-increment: ol-counter;
+
+      &::before {
+        content: counter(ol-counter) '. ';
+        display: inline-block;
+        padding-right: px-to-rem(8);
+        color: currentColor;
+      }
+    }
+  }
+
+  :global .justifyleft {
+    text-align: left;
+  }
+
+  .justifyleft {
+    text-align: left;
+  }
+  
+  :global .justifycenter {
+    text-align: center;
+  }
+
+  .justifycenter {
+    text-align: center;
+  }
+
+  :global .justifyright {
+    text-align: right;
+  }
+
+  .justifyright {
+    text-align: right;
+  }
+
+  :global .justifyfull {
+    text-align: justify;
+  }
+
+  .justifyfull {
+    text-align: justify;
+  }
+
+  &.has_spacings {
+    p {
+      margin: px-to-rem(20) 0;
+    }
+
+    img {
+      margin: px-to-rem(8) 0;
+    }
+
+    blockquote,
+    q,
+    cite {
+      margin: px-to-rem(40) 0;
+    }
+  
+    h1,
+    h2,
+    h3 {
+      margin: px-to-rem(40) 0;    
+    }
+
+    h4,
+    h5,
+    h6 {
+      margin: px-to-rem(20) 0;
+    }
+
+    ul,
+    ol {
+      margin: px-to-rem(30) 0;
+    }
+  }
+
+}
