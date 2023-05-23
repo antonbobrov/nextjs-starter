@@ -19,8 +19,7 @@
 
     @include hover {
       text-decoration: none;
-    }
-      
+    }   
   }
 
   blockquote,
@@ -41,7 +40,6 @@
       height: 100%;
       background-color: currentColor;
     }
-
   }
 
   h1,
@@ -146,6 +144,35 @@
     text-align: justify;
   }
 
+  table {
+    width: 100%;
+  }
+
+  table,
+  th,
+  td {
+    border: 1px solid currentColor;
+    border-collapse: collapse;
+  }
+
+  td {
+    padding: px-to-rem(8);
+  }
+
+  img {
+    /* stylelint-disable-next-line selector-no-qualifying-type */
+    &:not([width]),
+    &[width=''],
+    &:not([height]) {
+      width: 100%;
+    }
+  }
+
+  figure {
+    padding: 0;
+    margin: 0;
+  }
+
   &.has_spacings {
     p {
       margin: px-to-rem(20) 0;
@@ -178,5 +205,4 @@
       margin: px-to-rem(30) 0;
     }
   }
-
 }
