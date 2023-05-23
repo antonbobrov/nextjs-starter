@@ -1,5 +1,5 @@
-import { TButtonanchor } from '@anton.bobrov/react-components';
+import { TButtonAnchor } from '@anton.bobrov/react-components';
 
-export type TButtonSimpleProps = TButtonanchor & {
+export type TButtonSimpleProps = TButtonAnchor & {
   text: string;
 };
