@@ -12,10 +12,10 @@
     "lint:style": "npx stylelint \"**/*.scss\""
   },
   "dependencies": {
-    "@anton.bobrov/react-components": "^1.8.0",
-    "@anton.bobrov/react-dat-gui": "^1.3.1",
-    "@anton.bobrov/react-hooks": "^1.4.0",
-    "@anton.bobrov/react-vevet-hooks": "^1.5.0",
+    "@anton.bobrov/react-components": "^1.9.0",
+    "@anton.bobrov/react-dat-gui": "^1.3.2",
+    "@anton.bobrov/react-hooks": "^1.5.0",
+    "@anton.bobrov/react-vevet-hooks": "^1.5.1",
     "@anton.bobrov/vevet-init": "^1.3.0",
     "@reduxjs/toolkit": "^1.8.5",
     "classnames": "^2.3.2",
