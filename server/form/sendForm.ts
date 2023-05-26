@@ -9,6 +9,13 @@ import { getFormData } from './getFormData';
 
 const MAX_UPLOAD_SIZE = 3 * 1024 * 1024;
 
+interface IValidateProps {
+  value: string | string[] | undefined;
+  name: string;
+  lexicon: string;
+  formFields: formidable.Fields;
+}
+
 interface IProps {
   req: NextApiRequest;
   subject: string;
@@ -16,11 +23,7 @@ interface IProps {
   fields: {
     name: string;
     lexicon: string;
-    validate: (
-      value: string | string[] | undefined,
-      name: string,
-      lexicon: string
-    ) => true | string;
+    validate: (props: IValidateProps) => true | string;
   }[];
 }
 
@@ -65,7 +68,7 @@ export async function sendForm({
   // validate fields
   fieldsValidator.forEach(({ name, lexicon, validate }) => {
     const value = formFields[name];
-    const isValid = validate(value, name, lexicon);
+    const isValid = validate({ value, name, lexicon, formFields });
     if (isBoolean(isValid) && !!isValid) {
       fields.push({ key: name, value: `${value}` });
     } else {
