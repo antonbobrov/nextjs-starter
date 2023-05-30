@@ -15,20 +15,17 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@/lexicon/*": [
-        "./lexicon/*"
-      ],
-      "@/mock/*": [
-        "./mock/*"
-      ],
-      "@/server/*": [
-        "./server/*"
-      ],
       "@/components/*": [
         "./src/components/*"
       ],
       "@/layout/*": [
         "./src/layout/*"
+      ],
+      "@/lexicon/*": [
+        "./src/lexicon/*"
+      ],
+      "@/mock/*": [
+        "./src/mock/*"
       ],
       "@/store/*": [
         "./src/store/*"
@@ -36,14 +33,14 @@
       "@/styles/*": [
         "./src/styles/*"
       ],
+      "@/templates/*": [
+        "./src/templates/*"
+      ],
       "@/types/*": [
         "./src/types/*"
       ],
       "@/utils/*": [
         "./src/utils/*"
-      ],
-      "@/templates/*": [
-        "./templates/*"
       ],
       "src/*": [
         "./src/*"

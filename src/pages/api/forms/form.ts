@@ -2,8 +2,8 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { DeepRequired } from 'ts-essentials';
 import { IFormResponse } from 'react-form-states';
 import emailValidator from 'email-validator';
-import { sendForm } from '@/server/form/sendForm';
 import { isString } from '@anton.bobrov/react-hooks';
+import { sendForm } from '@/utils/server/form/sendForm';
 
 export default async function handler(
   req: NextApiRequest,

@@ -10,4 +10,5 @@ const lexicon: DeepRequired<ILexicon> = {
   openMenu: 'Open Menu',
   closeMenu: 'Close Menu',
 };
+
 export default lexicon;
