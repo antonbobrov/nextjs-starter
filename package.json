@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@anton.bobrov/react-components": "^1.11.0",
-    "@anton.bobrov/react-dat-gui": "^1.3.3",
+    "@anton.bobrov/react-dat-gui": "^1.3.4",
     "@anton.bobrov/react-hooks": "^1.5.1",
     "@anton.bobrov/react-vevet-hooks": "^1.5.2",
     "@anton.bobrov/vevet-init": "^1.3.0",
