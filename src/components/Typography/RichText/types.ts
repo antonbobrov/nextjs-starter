@@ -1,10 +1,6 @@
-import { HTMLAttributes, ReactElement } from 'react';
+import { HTMLAttributes } from 'react';
 
 export interface IProps extends HTMLAttributes<HTMLDivElement> {
   /** @default true */
   hasSpacings?: boolean;
-}
-
-export interface ILinkEventEmitterProps {
-  children: ReactElement;
 }
