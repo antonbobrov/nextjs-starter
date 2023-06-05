@@ -16,11 +16,12 @@ export function isSSPRedirected(
 
   const url = new URL(responseURL, getHost(req));
 
-  if (
+  const isInternalRedirect =
     url.origin === getHost(req) ||
-    url.origin === process.env.NEXT_PUBLIC_API_PAGE ||
-    `${url.origin}/` === process.env.NEXT_PUBLIC_API_PAGE
-  ) {
+    (!!process.env.NEXT_PUBLIC_API_PAGE &&
+      url.origin === new URL(process.env.NEXT_PUBLIC_API_PAGE).origin);
+
+  if (isInternalRedirect) {
     return {
       destination: url.pathname + url.search,
       statusCode: 301,
