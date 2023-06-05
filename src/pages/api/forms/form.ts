@@ -17,7 +17,7 @@ export default async function handler(
       {
         name: 'name',
         lexicon: 'Name',
-        validate(value) {
+        validate({ value }) {
           if (!isString(value) || value.length < 2) return '';
 
           return true;
@@ -26,7 +26,7 @@ export default async function handler(
       {
         name: 'email',
         lexicon: 'Email',
-        validate(value) {
+        validate({ value }) {
           return emailValidator.validate(value?.toString() || '') || '';
         },
       },

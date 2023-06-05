@@ -14,6 +14,7 @@ export const Form: FC = () => {
     formRef,
     onProgress: setProgress,
     scrollToError: true,
+    resetOnSuccess: true,
   });
 
   return (
