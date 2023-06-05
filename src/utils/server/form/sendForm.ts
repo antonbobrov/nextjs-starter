@@ -5,6 +5,7 @@ import { IFormResponse } from 'react-form-states';
 import { DeepRequired } from 'ts-essentials';
 import FormData from 'form-data';
 import { isBoolean, removeDublicateSlashes } from '@anton.bobrov/react-hooks';
+import nodeFetch from 'node-fetch';
 import { getFormData } from './getFormData';
 
 const MAX_UPLOAD_SIZE = 3 * 1024 * 1024;
@@ -107,7 +108,7 @@ export async function sendForm({
 
   // send the message
   if (!!apiURL && response.success) {
-    const formResponse = await fetch(
+    const formResponse = await nodeFetch(
       new URL(removeDublicateSlashes(`${apiURL}/form/send/`)),
       {
         method: 'POST',
@@ -119,7 +120,7 @@ export async function sendForm({
     );
 
     if (formResponse) {
-      const jsonResponse = await formResponse.json();
+      const jsonResponse = (await formResponse.json()) as any;
 
       return jsonResponse;
     }

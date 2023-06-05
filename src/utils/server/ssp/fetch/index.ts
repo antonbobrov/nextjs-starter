@@ -1,6 +1,7 @@
 import getLexicon from '@/lexicon/getLexicon';
 import { IAppPage, IPage } from '@/types/Page';
 import { GetServerSidePropsContext, Redirect } from 'next';
+import nodeFetch from 'node-fetch';
 import { getSSPFetchUrl } from './getSSPFetchUrl';
 import { getSSPPageConfig } from './getSSPPageConfig';
 import { isSSPRedirected } from './isSSPRedirected';
@@ -22,7 +23,7 @@ export async function fetchSSP(
     delete headers.host;
 
     // fetch ssp
-    const response = await fetch(url.href, {
+    const response = await nodeFetch(url.href, {
       headers: {
         ...(headers as any),
         APIKEY: process.env.API_KEY || '',
@@ -40,7 +41,7 @@ export async function fetchSSP(
     res.statusMessage = response.statusText;
 
     // get page data
-    const jsonProps: IPage = await response.json();
+    const jsonProps: IPage = (await response.json()) as any;
     const props: IAppPage = {
       page: {
         props: jsonProps,

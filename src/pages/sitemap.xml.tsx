@@ -1,6 +1,7 @@
 import { url } from '@/utils/url';
 import { removeDublicateSlashes } from '@anton.bobrov/react-hooks';
 import { GetServerSideProps } from 'next';
+import nodeFetch from 'node-fetch';
 
 const Sitemap = () => {};
 export default Sitemap;
@@ -19,7 +20,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       removeDublicateSlashes(`${process.env.NEXT_PUBLIC_API}/sitemap/`)
     );
     apiUrl.searchParams.set('requireSiteMap', 'true');
-    const results = await fetch(apiUrl.href);
+    const results = await nodeFetch(apiUrl.href);
     const json = (await results.json()) as IURL[];
     if (Array.isArray(json)) {
       resources += json

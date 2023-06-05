@@ -1,8 +1,8 @@
 # Next.js Starter
 
 ## Config
-node v16.13.0 \
-npm v8.1.0
+node v20.2.0 \
+npm v9.6.6
 
 ## Getting started
 Create **.env.local** file with the following contents:
