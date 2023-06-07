@@ -14,22 +14,12 @@ export const BreadcrumbsJSON: FC = () => {
   const json = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
-    itemListElement: breadcrumbs.map(({ name, href }, index) => {
-      if (index < breadcrumbs.length - 1) {
-        return {
-          '@type': 'ListItem',
-          position: index + 1,
-          name,
-          item: removeDublicateSlashes(`${url.base}/${href}`),
-        };
-      }
-
-      return {
-        '@type': 'ListItem',
-        position: index + 1,
-        name,
-      };
-    }),
+    itemListElement: breadcrumbs.map(({ name, href }, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name,
+      item: removeDublicateSlashes(`${url.base}/${href}`),
+    })),
   };
 
   return (
