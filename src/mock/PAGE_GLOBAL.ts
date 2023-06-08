@@ -38,7 +38,7 @@ export const PAGE_GLOBAL: DeepRequired<IPageGlobal> = {
     {
       key: 1,
       name: 'Components',
-      href: '/_components/',
+      href: '/_components',
       isActive: false,
     },
   ],

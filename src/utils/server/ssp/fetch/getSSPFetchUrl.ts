@@ -19,7 +19,13 @@ export function getSSPFetchUrl(context: GetServerSidePropsContext): URL {
     );
   }
 
-  apiURL.searchParams.delete('slug');
+  const { origin, search } = apiURL;
+  const pathname = apiURL.pathname.endsWith('/')
+    ? apiURL.pathname.substring(0, apiURL.pathname.length - 1)
+    : apiURL.pathname;
 
-  return apiURL;
+  const finalUrl = new URL(`${origin}${pathname}${search}`);
+  finalUrl.searchParams.delete('slug');
+
+  return finalUrl;
 }

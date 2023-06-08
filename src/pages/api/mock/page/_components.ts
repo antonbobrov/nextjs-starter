@@ -16,7 +16,7 @@ const handler = async (
       },
       breadcrumbs: [
         ...PAGE_GLOBAL.breadcrumbs,
-        { id: 1, href: '/_components/', name: 'Components' },
+        { id: 1, href: '/_components', name: 'Components' },
       ],
     },
 

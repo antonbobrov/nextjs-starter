@@ -109,7 +109,7 @@ export async function sendForm({
   // send the message
   if (!!apiURL && response.success) {
     const formResponse = await nodeFetch(
-      new URL(removeDublicateSlashes(`${apiURL}/form/send/`)),
+      new URL(removeDublicateSlashes(`${apiURL}/form/send`)),
       {
         method: 'POST',
         headers: {

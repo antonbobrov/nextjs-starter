@@ -21,7 +21,7 @@ export const Form: FC = () => {
     <form
       ref={formRef}
       method="POST"
-      action="/api/forms/form/"
+      action="/api/forms/form"
       encType="multipart/form-data"
     >
       <FormInput

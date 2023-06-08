@@ -17,7 +17,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   let resources = '';
   if (process.env.NEXT_PUBLIC_API) {
     const apiUrl = new URL(
-      removeDublicateSlashes(`${process.env.NEXT_PUBLIC_API}/sitemap/`)
+      removeDublicateSlashes(`${process.env.NEXT_PUBLIC_API}/sitemap`)
     );
     apiUrl.searchParams.set('requireSiteMap', 'true');
     const results = await nodeFetch(apiUrl.href);

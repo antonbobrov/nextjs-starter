@@ -10,7 +10,6 @@ const rewrites = require('./config/rewrites');
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  trailingSlash: true,
   experimental: {
     esmExternals: 'loose',
   },
