@@ -18,8 +18,10 @@ const Home = dynamic(() => import('./Home'), {
 });
 
 export const TemplateRenderer: FC = () => {
-  const { template: templateProps, templateName } = useStorePageProps();
+  const { template, templateName } = useStorePageProps();
   const { key } = useStoreConfig();
+
+  const templateProps = template as any;
 
   useTemplateLayoutStates(key);
 
