@@ -1,22 +1,25 @@
-import { Heading } from '@/components/Typography/Heading';
-import { useStoreGlobalProps } from '@/store/reducers/pageProps';
 import { FC } from 'react';
 import { LayoutContainer } from '@/layout/Container';
-import { LayoutWrap } from '@/layout/Wrap';
-import { PageScroll, ScrollView } from '@anton.bobrov/react-components';
+import { PageScroll } from '@anton.bobrov/react-components';
 import { IHome } from './types';
+import { registry } from './registry';
+import styles from './styles.module.scss';
 
-const Home: FC<IHome> = () => {
-  const globalProps = useStoreGlobalProps();
+const Home: FC<IHome> = ({ components }) => {
+  const hasIntro = registry.apiHas(components, 'HomeIntro');
 
   return (
     <PageScroll.SmoothContainer>
-      <LayoutContainer>
-        <LayoutWrap variant={1}>
-          <ScrollView.Element animation="fadeInUp">
-            <Heading variant={1}>{globalProps.meta?.pagetitle}</Heading>
-          </ScrollView.Element>
-        </LayoutWrap>
+      <LayoutContainer
+        hasTopSpacing={!hasIntro}
+        hasContentTopSpacing={!hasIntro}
+      >
+        <div className={styles.grid}>
+          {registry.render(components, {
+            cssModule: styles,
+            order: ['HomeIntro'],
+          })}
+        </div>
       </LayoutContainer>
     </PageScroll.SmoothContainer>
   );
