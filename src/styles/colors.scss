@@ -4,6 +4,7 @@ $colors: (
   'white': #fff,
   'highlight': #d97f2a,
   'dark': #1f1f1f,
+  'error': #f00,
 );
 
 @function hex-to-rgb ($hex) {

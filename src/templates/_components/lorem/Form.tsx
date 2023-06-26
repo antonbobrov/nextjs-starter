@@ -1,82 +1,76 @@
+/* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 import { ButtonSimple } from '@/components/Button/Simple';
-import { FormInput } from '@/components/Form/Input/Input';
-import { Heading } from '@/components/Typography/Heading';
 import { FC, useRef, useState } from 'react';
-import { FormTextArea } from '@/components/Form/Input/TextArea';
-import { useForm } from '@/components/Form/hooks/useForm';
+import { useForm } from 'react-hook-form';
+import { Form as FormComponent } from '@/components/Form';
+import { BaseModal } from '@anton.bobrov/react-components';
+import { FormInput } from '@/components/Form/Input';
+import { FormTextarea } from '@/components/Form/Textarea';
+import { useEvent } from '@anton.bobrov/react-hooks';
 
 export const Form: FC = () => {
-  const formRef = useRef<HTMLFormElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const [progress, setProgress] = useState(0);
+  const form = useForm({ mode: 'all' });
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  const { formStore, id, isLoading, isSuccess } = useForm({
-    formRef,
-    onProgress: setProgress,
-    scrollToError: true,
-    resetOnSuccess: true,
+  const [email, setEmail] = useState('');
+
+  const reset = useEvent(() => {
+    form?.reset();
+    setEmail('');
   });
 
   return (
-    <form
-      ref={formRef}
-      method="POST"
-      action="/api/forms/form"
+    <FormComponent
+      form={form}
+      action="/api/form/lorem"
       encType="multipart/form-data"
+      onSuccess={() => {
+        setIsSuccess(true);
+        reset();
+      }}
+      scrollToError
     >
-      <FormInput
-        inputProps={{
-          name: 'name',
-          type: 'text',
-          id: `${id}form-name`,
-          placeholder: 'Name Field',
-          minLength: 2,
+      <div ref={containerRef} tabIndex={0}>
+        <FormInput label="Your name" name="name" required minLength={2} />
+        <br />
+
+        <FormInput
+          label="Your email"
+          name="email"
+          type="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <br />
+
+        <FormInput label="Upload a file" type="file" name="file" />
+        <br />
+
+        <FormTextarea label="Your comment" name="comment" />
+        <br />
+
+        <ButtonSimple
+          tag="button"
+          type="submit"
+          text="Send"
+          disabled={form.formState.isSubmitting}
+        />
+      </div>
+      <BaseModal
+        isOpen={isSuccess}
+        onClose={() => {
+          setIsSuccess(false);
+          containerRef.current?.focus();
         }}
-        formStore={formStore}
-      />
-      <br />
-
-      <FormInput
-        inputProps={{
-          name: 'email',
-          type: 'email',
-          id: `${id}form-email`,
-          placeholder: 'Email Field',
-        }}
-        formStore={formStore}
-      />
-      <br />
-
-      <FormTextArea
-        inputProps={{
-          name: 'comment',
-          id: `${id}form-comment`,
-          placeholder: 'Comment Field',
-        }}
-        formStore={formStore}
-      />
-      <br />
-
-      <FormInput
-        inputProps={{
-          name: 'file',
-          type: 'file',
-          id: `${id}form-file`,
-          placeholder: 'File Field',
-        }}
-        formStore={formStore}
-      />
-      <br />
-
-      <ButtonSimple
-        tag="button"
-        type="submit"
-        text="Send"
-        disabled={isLoading}
-      />
-
-      <p>Progress: {(progress * 100).toFixed(0)}%</p>
-      {isSuccess && <Heading variant={6}>Success</Heading>}
-    </form>
+        isRestoreFocusOnClose={false}
+      >
+        <div style={{ padding: '20px', background: '#fff', color: '#000' }}>
+          Success!
+        </div>
+      </BaseModal>
+    </FormComponent>
   );
 };

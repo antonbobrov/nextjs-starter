@@ -1,12 +1,12 @@
 @import '@/styles/base';
 
-.input {
+.textarea {
   @include reset-input;
 
   display: block;
   width: 100%;
-  height: px-to-rem(60);
-  padding: 0 px-to-rem(18);
+  height: px-to-rem(180);
+  padding: px-to-rem(18);
 
   font-size: px-to-rem(16);
   line-height: 100%;
