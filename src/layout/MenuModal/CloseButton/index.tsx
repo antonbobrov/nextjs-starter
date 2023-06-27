@@ -34,7 +34,7 @@ export const MenuModalCloseButton: FC<IWithTimeline> = ({
       tag="button"
       type="button"
       className={styles.close_button}
-      text={lexicon.closeMenu}
+      text={lexicon.menu.close}
       onClick={() => store.dispatch(menuSlice.actions.close())}
     />
   );

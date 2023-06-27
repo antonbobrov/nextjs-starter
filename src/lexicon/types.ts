@@ -1,9 +1,14 @@
 export interface ILexicon {
   siteName: string;
   copyright: string;
-  playVideo: string;
-  breadcrumbs: string;
-  close: string;
-  openMenu: string;
-  closeMenu: string;
+
+  navigation: {
+    close: string;
+    breadcrumbs: string;
+  };
+
+  menu: {
+    open: string;
+    close: string;
+  };
 }

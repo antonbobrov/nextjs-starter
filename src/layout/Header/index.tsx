@@ -29,7 +29,7 @@ export const Header: FC = () => {
         <ButtonSimple
           tag="button"
           type="button"
-          text={lexicon.openMenu}
+          text={lexicon.menu.open}
           onClick={() => store.dispatch(menuSlice.actions.open())}
         />
       </LayoutWrap>

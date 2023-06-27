@@ -14,7 +14,10 @@ export const BreadcrumbsList: FC = () => {
   }
 
   return (
-    <nav className={styles.breadcrumbs} aria-label={lexicon.breadcrumbs}>
+    <nav
+      className={styles.breadcrumbs}
+      aria-label={lexicon.navigation.breadcrumbs}
+    >
       <ul className={styles.list}>
         {breadcrumbs.map((item, index) => (
           <li

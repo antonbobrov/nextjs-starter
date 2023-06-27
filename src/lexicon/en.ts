@@ -4,11 +4,16 @@ import { ILexicon } from './types';
 const lexicon: DeepRequired<ILexicon> = {
   siteName: 'Next.js Starter',
   copyright: '© Copyright',
-  playVideo: 'Play Video',
-  breadcrumbs: 'Breadcrumbs',
-  close: 'Close',
-  openMenu: 'Open Menu',
-  closeMenu: 'Close Menu',
+
+  navigation: {
+    close: 'Close',
+    breadcrumbs: 'Breadcrumbs',
+  },
+
+  menu: {
+    open: 'Menu',
+    close: 'Close',
+  },
 };
 
 export default lexicon;
