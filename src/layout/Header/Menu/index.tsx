@@ -11,6 +11,7 @@ export const HeaderMenu: FC<IProps> = ({ className, style, links }) => (
         <Link
           href={href}
           className={cn(styles.link, isActive && styles.active)}
+          aria-current={isActive ? 'page' : undefined}
         >
           {name}
         </Link>

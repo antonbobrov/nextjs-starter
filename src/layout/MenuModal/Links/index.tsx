@@ -32,6 +32,7 @@ export const MenuModalLinks: FC<IWithTimeline> = ({ timeline, scope }) => {
           <Link
             href={href}
             className={cn(styles.anchor, isActive && styles.active)}
+            aria-current={isActive ? 'page' : undefined}
           >
             {name}
           </Link>
