@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import { forwardRef } from 'react';
 import { useForwardedRef } from '@anton.bobrov/react-hooks';
-import styles from './index.module.scss';
+import styles from './styles.module.scss';
 import { IProps } from './types';
 
 export const RichText = forwardRef<HTMLDivElement, IProps>(
