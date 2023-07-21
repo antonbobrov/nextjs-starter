@@ -1,5 +1,6 @@
 import { HTMLInputTypeAttribute } from 'react';
 import { ValidateResult } from 'react-hook-form';
+import emailValidator from 'email-validator';
 
 export function validateInputValueByType(
   value: string,
@@ -10,7 +11,7 @@ export function validateInputValueByType(
   }
 
   if (type === 'email') {
-    return /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value);
+    return emailValidator.validate(value);
   }
 
   return true;
