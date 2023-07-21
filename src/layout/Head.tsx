@@ -58,7 +58,12 @@ export const Head = () => {
 
         {/* languages */}
         {languages?.map(({ key, href }) => (
-          <link key={key} rel="alternate" href={href} hrefLang={`${key}`} />
+          <link
+            key={key}
+            rel="alternate"
+            href={new URL(href, url.base).href}
+            hrefLang={`${key}`}
+          />
         ))}
 
         {/* opengraph */}
