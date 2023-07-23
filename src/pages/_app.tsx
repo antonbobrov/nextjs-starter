@@ -11,6 +11,7 @@ import { Provider } from 'react-redux';
 import { Head } from '@/layout/Head';
 import { Layout } from '@/layout/Layout';
 import { isBrowser } from '@anton.bobrov/react-hooks';
+import { TemplateRenderer } from '@/templates/Renderer';
 
 // a crutch to update redux
 let isStoreUpdated = false;
@@ -55,7 +56,9 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       <Provider store={store}>
         <Head />
         <Layout>
-          <Component />
+          <TemplateRenderer>
+            <Component />
+          </TemplateRenderer>
         </Layout>
       </Provider>
     );

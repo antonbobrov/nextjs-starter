@@ -7,27 +7,32 @@ import { Block } from './Block';
 import { Buttons } from './lorem/Buttons';
 import { Form } from './lorem/Form';
 import { Typography } from './lorem/Typography';
+import { useTemplate } from '../_hooks/useTemplate';
 
-const Components: FC = () => (
-  <PageScroll.SmoothContainer>
-    <LayoutContainer>
-      <LayoutWrap variant={1}>
-        <BreadcrumbsList />
+const Components: FC = () => {
+  useTemplate();
 
-        <Block title="Typography">
-          <Typography />
-        </Block>
+  return (
+    <PageScroll.SmoothContainer>
+      <LayoutContainer>
+        <LayoutWrap variant={1}>
+          <BreadcrumbsList />
 
-        <Block title="Buttons">
-          <Buttons />
-        </Block>
+          <Block title="Typography">
+            <Typography />
+          </Block>
 
-        <Block title="Form">
-          <Form />
-        </Block>
-      </LayoutWrap>
-    </LayoutContainer>
-  </PageScroll.SmoothContainer>
-);
+          <Block title="Buttons">
+            <Buttons />
+          </Block>
+
+          <Block title="Form">
+            <Form />
+          </Block>
+        </LayoutWrap>
+      </LayoutContainer>
+    </PageScroll.SmoothContainer>
+  );
+};
 
 export default Components;

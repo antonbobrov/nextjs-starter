@@ -4,8 +4,11 @@ import { PageScroll } from '@anton.bobrov/react-components';
 import { IHome } from './types';
 import { registry } from './registry';
 import styles from './styles.module.scss';
+import { useTemplate } from '../_hooks/useTemplate';
 
 const Home: FC<IHome> = ({ components }) => {
+  useTemplate();
+
   const hasIntro = registry.apiHas(components, 'HomeIntro');
 
   return (

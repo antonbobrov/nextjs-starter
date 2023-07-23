@@ -21,6 +21,7 @@ const store = configureStore({
   middleware: [loadingMiddleware],
   devTools: process.env.NODE_ENV !== 'production',
 });
+
 export default store;
 
 export type TAppState = ReturnType<typeof rootReducer>;

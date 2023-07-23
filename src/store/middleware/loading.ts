@@ -7,7 +7,8 @@ export const loadingMiddleware: Middleware<{}, TAppState> =
     const result = next(action);
     const state = storeAPI.getState();
 
-    const isLoading = state.loading.ids.length > 0;
+    const isLoading =
+      state.loading.ids.length > 0 || state.layout.isPageLoading;
 
     if (isBrowser) {
       document.documentElement.classList.toggle('is-loading', isLoading);

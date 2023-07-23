@@ -5,8 +5,11 @@ import { FC } from 'react';
 import { LayoutContainer } from '@/layout/Container';
 import { PageScroll } from '@anton.bobrov/react-components';
 import { INotFound } from './types';
+import { useTemplate } from '../_hooks/useTemplate';
 
 const NotFound: FC<INotFound> = () => {
+  useTemplate();
+
   const globalProps = useStoreGlobalProps();
 
   return (

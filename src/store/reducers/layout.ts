@@ -2,16 +2,22 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
 import { TAppState } from '../store';
 
+type TRouterCurtainState = 'show' | 'hide' | 'shown' | 'hidden';
+
 type TState = {
   isFirstLoaded: boolean;
-  isVisible: boolean;
-  isCurtainVisible: boolean;
+  isPageLoading: boolean;
+  isPageReady: boolean;
+  isPageVisible: boolean;
+  routerCurtainState: TRouterCurtainState;
 };
 
 const initialState: TState = {
   isFirstLoaded: false,
-  isVisible: false,
-  isCurtainVisible: false,
+  isPageLoading: false,
+  isPageReady: false,
+  isPageVisible: false,
+  routerCurtainState: 'hidden',
 };
 
 export const layoutSlice = createSlice({
@@ -22,13 +28,24 @@ export const layoutSlice = createSlice({
       ...state,
       isFirstLoaded: true,
     }),
-    setIsVisible: (state, payload: PayloadAction<boolean>) => ({
+    setIsPageLoading: (state, payload: PayloadAction<boolean>) => ({
       ...state,
-      isVisible: payload.payload,
+      isPageLoading: payload.payload,
     }),
-    setIsCurtainVisible: (state, payload: PayloadAction<boolean>) => ({
+    setIsPageReady: (state, payload: PayloadAction<boolean>) => ({
       ...state,
-      isCurtainVisible: payload.payload,
+      isPageReady: payload.payload,
+    }),
+    setIsPageVisible: (state, payload: PayloadAction<boolean>) => ({
+      ...state,
+      isPageVisible: payload.payload,
+    }),
+    setRouterCurtainState: (
+      state,
+      payload: PayloadAction<TRouterCurtainState>
+    ) => ({
+      ...state,
+      routerCurtainState: payload.payload,
     }),
   },
 });

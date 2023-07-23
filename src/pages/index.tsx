@@ -1,8 +1,7 @@
 import { GetServerSideProps } from 'next';
-import { TemplateRenderer } from '@/templates/Renderer';
 import { ssp } from '@/utils/server/ssp';
 
-const Router = () => <TemplateRenderer />;
+const Router = () => null;
 export default Router;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {

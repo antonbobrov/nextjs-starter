@@ -1,11 +1,13 @@
-.router_curtain {
+.layout_router_curtain {
+  display: none;
+
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 150vh;
-  z-index: 9;
-  display: none;
+  z-index: 7;
+  
   background-color: var(--color-bg);
   opacity: 0;
 }

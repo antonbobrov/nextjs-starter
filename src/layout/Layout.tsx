@@ -13,10 +13,11 @@ import { BreadcrumbsJSON } from './Breadcrumbs/JSON';
 import { Preloader } from './Preloader';
 import { Header } from './Header';
 import { MenuModal } from './MenuModal';
+import { LayoutRouterCurtain } from './RouterCurtain';
 
 export const Layout: FC<PropsWithChildren> = ({ children }) => {
   const { key } = useStoreConfig();
-  const { isFirstLoaded, isVisible } = useStoreLayout();
+  const { isFirstLoaded, isPageVisible } = useStoreLayout();
 
   const router = useRouter();
 
@@ -33,11 +34,11 @@ export const Layout: FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <LinkClickInterceptor onInternalClick={onInternalLinkClick}>
-      <PageScroll.Provider smoothProps={{ enabled: isVisible }}>
+      <PageScroll.Provider smoothProps={{ enabled: isPageVisible }}>
         <PageScroll.ScrollBar resizeKey={key}>
           <ScrollView.Provider
             instanceKey={key}
-            isEnabled={isFirstLoaded && isVisible}
+            isEnabled={isFirstLoaded && isPageVisible}
           >
             <Preloader />
 
@@ -47,6 +48,8 @@ export const Layout: FC<PropsWithChildren> = ({ children }) => {
             {children}
 
             <MenuModal />
+
+            <LayoutRouterCurtain />
           </ScrollView.Provider>
         </PageScroll.ScrollBar>
       </PageScroll.Provider>

@@ -1,8 +1,7 @@
 import { useStoreConfig } from '@/store/reducers/config';
 import { useStorePageProps } from '@/store/reducers/pageProps';
 import dynamic from 'next/dynamic';
-import { FC } from 'react';
-import { useTemplateLayoutStates } from './_hooks/useTemplateLayoutStates';
+import { FC, PropsWithChildren } from 'react';
 
 const Empty = dynamic(() => import('./Empty'), {
   ssr: true,
@@ -17,13 +16,11 @@ const Home = dynamic(() => import('./Home'), {
   ssr: true,
 });
 
-export const TemplateRenderer: FC = () => {
+export const TemplateRenderer: FC<PropsWithChildren> = () => {
   const { template, templateName } = useStorePageProps();
   const { key } = useStoreConfig();
 
   const templateProps = template as any;
-
-  useTemplateLayoutStates(key);
 
   switch (templateName) {
     case '_components':

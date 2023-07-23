@@ -1,18 +1,15 @@
-/* eslint-disable promise/no-nesting */
 import Router from 'next/router';
 import { isBrowser } from '@anton.bobrov/react-hooks';
 import { NCallbacks, Callbacks } from '@anton.bobrov/vevet-init';
-import { hideRouterCurtain, showRouterCurtain } from './layout/RouterCurtain';
-import { loadingSlice } from './store/reducers/loading';
 import { layoutSlice } from './store/reducers/layout';
 import store from './store/store';
+import { onRouterCurtainCycle } from './layout/RouterCurtain/onRouterCurtainCycle';
+import { onStoreValue } from './store/utils/onStoreValue';
 
 interface ICallbackTypes extends NCallbacks.CallbacksTypes {
   push: false;
   updated: false;
 }
-
-let isLoading = false;
 
 // disable scroll restoration
 if (isBrowser) {
@@ -35,9 +32,7 @@ export const routerCallbacks = (
   // catch router
   const { router } = Router;
   if (!router) {
-    setTimeout(() => {
-      override();
-    }, 30);
+    setTimeout(() => override(), 30);
 
     return;
   }
@@ -48,47 +43,33 @@ export const routerCallbacks = (
     router.push(window.location.href, window.location.href);
   });
 
-  // override push
+  // override .push()
   const pushFunc = router.push.bind(router);
-  router.push = (...arg: Parameters<typeof pushFunc>) =>
-    new Promise<boolean>((resolve, reject) => {
-      if (isLoading) {
-        reject();
 
-        return;
+  router.push = async (...arg: Parameters<typeof pushFunc>) => {
+    if (store.getState().layout.isPageLoading) {
+      throw new Error('Page is already loading');
+    }
+
+    store.dispatch(layoutSlice.actions.setIsPageLoading(true));
+    routerCallbacks.tbt('push', false);
+
+    let isLoadResult = false;
+
+    await onRouterCurtainCycle(
+      async () => {
+        store.dispatch(layoutSlice.actions.setIsPageVisible(false));
+        store.dispatch(layoutSlice.actions.setIsPageReady(false));
+
+        isLoadResult = await pushFunc(...arg);
+
+        await onStoreValue((state) => state.layout.isPageReady);
+      },
+      async () => {
+        store.dispatch(layoutSlice.actions.setIsPageLoading(false));
       }
+    );
 
-      isLoading = true;
-      routerCallbacks.tbt('push', false);
-      store.dispatch(loadingSlice.actions.start('router'));
-      store.dispatch(layoutSlice.actions.setIsCurtainVisible(true));
-
-      showRouterCurtain()
-        .then(() => {
-          store.dispatch(layoutSlice.actions.setIsVisible(false));
-
-          pushFunc(...arg)
-            .then((param) => {
-              isLoading = false;
-              routerCallbacks.tbt('updated', false);
-              store.dispatch(loadingSlice.actions.end('router'));
-
-              hideRouterCurtain()
-                .then(() => {
-                  store.dispatch(
-                    layoutSlice.actions.setIsCurtainVisible(false)
-                  );
-                  resolve(param);
-                })
-                .catch(reject);
-            })
-            .catch((param) => {
-              isLoading = false;
-              routerCallbacks.tbt('updated', false);
-              store.dispatch(loadingSlice.actions.end('router'));
-              reject(param);
-            });
-        })
-        .catch(reject);
-    });
+    return isLoadResult;
+  };
 })();
