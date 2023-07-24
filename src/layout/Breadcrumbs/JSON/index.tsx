@@ -18,7 +18,7 @@ export const BreadcrumbsJSON: FC = () => {
       '@type': 'ListItem',
       position: index + 1,
       name,
-      item: removeDublicateSlashes(`${url.base}/${href}`),
+      item: removeDublicateSlashes(new URL(href, url.base).href),
     })),
   };
 
