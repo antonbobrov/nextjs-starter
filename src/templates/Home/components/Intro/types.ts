@@ -1,4 +1,4 @@
-import { IComponent } from '@/types/Component';
+import { IBaseComponent } from '@anton.bobrov/react-components';
 
 export interface IHomeIntro {
   /** nl2br */
@@ -7,4 +7,4 @@ export interface IHomeIntro {
   description: string;
 }
 
-export interface IProps extends IHomeIntro, IComponent {}
+export interface IProps extends IHomeIntro, IBaseComponent {}

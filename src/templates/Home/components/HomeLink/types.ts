@@ -1,4 +1,4 @@
-import { IComponent } from '@/types/Component';
+import { IBaseComponent } from '@anton.bobrov/react-components';
 
 export interface IHomeLink {
   name: string;
@@ -6,4 +6,4 @@ export interface IHomeLink {
   isExternal: boolean;
 }
 
-export interface IProps extends IHomeLink, IComponent {}
+export interface IProps extends IHomeLink, IBaseComponent {}

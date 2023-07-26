@@ -1,13 +1,13 @@
 import { forwardRef, useEffect } from 'react';
 import cn from 'classnames';
-import { IComponent } from '@/types/Component';
+import { IBaseComponent } from '@anton.bobrov/react-components';
 import { useStoreLexicon } from '@/store/reducers/lexicon';
 import { useClientSize, useForwardedRef } from '@anton.bobrov/react-hooks';
 import { vevet } from '@anton.bobrov/vevet-init';
 import { LayoutWrap } from '../Wrap';
 import styles from './styles.module.scss';
 
-export const Footer = forwardRef<HTMLDivElement, IComponent>(
+export const Footer = forwardRef<HTMLDivElement, IBaseComponent>(
   ({ className, style }, forwardedRef) => {
     const ref = useForwardedRef(forwardedRef);
 

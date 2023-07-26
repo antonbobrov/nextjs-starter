@@ -1,6 +1,6 @@
-import { IComponent } from '@/types/Component';
+import { IBaseComponent } from '@anton.bobrov/react-components';
 import { ILinkMenu } from '@/types/Link';
 
-export interface IProps extends IComponent {
+export interface IProps extends IBaseComponent {
   links: ILinkMenu[];
 }

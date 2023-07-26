@@ -1,4 +1,4 @@
-import { TKey } from '@/types/General';
+import { TKey } from '@anton.bobrov/react-components';
 
 export interface IBreadcrumb {
   id: TKey;

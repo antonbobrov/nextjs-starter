@@ -1,4 +1,4 @@
-import { TKey } from './General';
+import { TKey } from '@anton.bobrov/react-components';
 
 export interface ILink {
   key: TKey;
