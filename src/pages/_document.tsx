@@ -1,4 +1,3 @@
-import { IAppPage } from '@/types/Page';
 import Document, {
   Html,
   Head,
@@ -6,6 +5,7 @@ import Document, {
   NextScript,
   DocumentContext,
 } from 'next/document';
+import { IAppPage } from '@/types/Page';
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {

@@ -1,7 +1,7 @@
-import { useStoreConfig } from '@/store/reducers/config';
-import { useStorePageProps } from '@/store/reducers/pageProps';
 import dynamic from 'next/dynamic';
 import { FC, PropsWithChildren } from 'react';
+import { useStoreConfig } from '@/store/reducers/config';
+import { useStorePageProps } from '@/store/reducers/pageProps';
 
 const Empty = dynamic(() => import('./Empty'), {
   ssr: true,

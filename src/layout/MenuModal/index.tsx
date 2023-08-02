@@ -1,14 +1,14 @@
-import { menuSlice, useStoreMenu } from '@/store/reducers/menu';
-import store from '@/store/store';
 import cn from 'classnames';
 import { FC, useEffect, useRef, useState } from 'react';
-import { useOnRouterPush } from '@/utils/hooks/useOnRouterPush';
 import {
   useFocusTrap,
   useOnEscape,
   usePreventDocumentScrolling,
 } from '@anton.bobrov/react-hooks';
 import { useTimeline } from '@anton.bobrov/react-vevet-hooks';
+import { useOnRouterPush } from '@/utils/hooks/useOnRouterPush';
+import store from '@/store/store';
+import { menuSlice, useStoreMenu } from '@/store/reducers/menu';
 import styles from './styles.module.scss';
 import { MenuModalLinks } from './Links';
 import { MenuModalBackground } from './Background';

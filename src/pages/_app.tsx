@@ -1,16 +1,16 @@
 import '@/styles/index.scss';
 import 'src/router';
 import type { AppProps } from 'next/app';
+import { useEffect } from 'react';
+import { Provider } from 'react-redux';
+import { isBrowser } from '@anton.bobrov/react-hooks';
 import { IAppPage } from '@/types/Page';
 import { pagePropsSlice } from '@/store/reducers/pageProps';
 import { configSlice } from '@/store/reducers/config';
 import { lexiconSlice } from '@/store/reducers/lexicon';
 import store from '@/store/store';
-import { useEffect } from 'react';
-import { Provider } from 'react-redux';
 import { Head } from '@/layout/Head';
 import { Layout } from '@/layout/Layout';
-import { isBrowser } from '@anton.bobrov/react-hooks';
 import { TemplateRenderer } from '@/templates/Renderer';
 
 // a crutch to update redux

@@ -1,8 +1,8 @@
+import { FC } from 'react';
+import { PageScroll } from '@anton.bobrov/react-components';
 import { BreadcrumbsList } from '@/layout/Breadcrumbs/List';
 import { LayoutContainer } from '@/layout/Container';
 import { LayoutWrap } from '@/layout/Wrap';
-import { FC } from 'react';
-import { PageScroll } from '@anton.bobrov/react-components';
 import { Block } from './Block';
 import { Buttons } from './lorem/Buttons';
 import { Form } from './lorem/Form';

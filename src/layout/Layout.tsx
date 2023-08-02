@@ -5,10 +5,10 @@ import {
   ScrollView,
   TLinkClickInterceptorHandler,
 } from '@anton.bobrov/react-components';
-import { useStoreLayout } from '@/store/reducers/layout';
-import { useStoreConfig } from '@/store/reducers/config';
 import { useRouter } from 'next/router';
 import { useEvent } from '@anton.bobrov/react-hooks';
+import { useStoreLayout } from '@/store/reducers/layout';
+import { useStoreConfig } from '@/store/reducers/config';
 import { BreadcrumbsJSON } from './Breadcrumbs/JSON';
 import { Preloader } from './Preloader';
 import { Header } from './Header';

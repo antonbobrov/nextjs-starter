@@ -1,8 +1,8 @@
 import { FC } from 'react';
-import { useStoreGlobalProps } from '@/store/reducers/pageProps';
-import { useStoreLexicon } from '@/store/reducers/lexicon';
 import cn from 'classnames';
 import { Link } from '@anton.bobrov/react-components';
+import { useStoreGlobalProps } from '@/store/reducers/pageProps';
+import { useStoreLexicon } from '@/store/reducers/lexicon';
 import styles from './styles.module.scss';
 
 export const BreadcrumbsList: FC = () => {

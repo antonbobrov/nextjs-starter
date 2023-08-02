@@ -1,6 +1,6 @@
-import { getHost } from '@/utils/url/getHost';
 import { removeDublicateSlashes } from '@anton.bobrov/react-hooks';
 import { GetServerSidePropsContext } from 'next';
+import { getHost } from '@/utils/url/getHost';
 
 export function getSSPFetchUrl(context: GetServerSidePropsContext): URL {
   const { resolvedUrl, req } = context;

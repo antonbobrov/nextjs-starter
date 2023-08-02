@@ -1,7 +1,7 @@
-import { IPageConfig } from '@/types/Page';
-import { getHost } from '@/utils/url/getHost';
 import { removeDublicateSlashes } from '@anton.bobrov/react-hooks';
 import { GetServerSidePropsContext } from 'next';
+import { IPageConfig } from '@/types/Page';
+import { getHost } from '@/utils/url/getHost';
 
 export function getSSPPageConfig(
   context: GetServerSidePropsContext

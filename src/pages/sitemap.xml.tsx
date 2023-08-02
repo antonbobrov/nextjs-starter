@@ -1,7 +1,7 @@
-import { url } from '@/utils/url';
 import { removeDublicateSlashes } from '@anton.bobrov/react-hooks';
 import { GetServerSideProps } from 'next';
 import nodeFetch from 'node-fetch';
+import { url } from '@/utils/url';
 
 const Sitemap = () => {};
 export default Sitemap;

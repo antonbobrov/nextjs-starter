@@ -1,12 +1,12 @@
-import { layoutSlice, useStoreLayout } from '@/store/reducers/layout';
-import { useStoreMenu } from '@/store/reducers/menu';
-import store from '@/store/store';
 import {
   useDebouncedEffect,
   useIsOnceMounted,
 } from '@anton.bobrov/react-hooks';
 import PCancelable from 'p-cancelable';
 import { useEffect } from 'react';
+import { layoutSlice, useStoreLayout } from '@/store/reducers/layout';
+import { useStoreMenu } from '@/store/reducers/menu';
+import store from '@/store/store';
 
 const isReadyToVisible = () =>
   new PCancelable<void>((resolve, reject) => {

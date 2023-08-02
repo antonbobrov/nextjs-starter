@@ -1,8 +1,8 @@
-import { layoutSlice } from '@/store/reducers/layout';
-import store from '@/store/store';
 import cn from 'classnames';
 import { FC, useEffect, useRef, useState } from 'react';
 import { ProgressPreloader as PreloaderModule } from '@anton.bobrov/vevet-init';
+import store from '@/store/store';
+import { layoutSlice } from '@/store/reducers/layout';
 import styles from './styles.module.scss';
 
 export const Preloader: FC = () => {

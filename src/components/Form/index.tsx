@@ -1,10 +1,10 @@
-import { loadingSlice } from '@/store/reducers/loading';
-import store from '@/store/store';
 import { isString, useEvent } from '@anton.bobrov/react-hooks';
 import { useEffect, useId, useRef } from 'react';
 import { FieldValues, FormProvider, Form as HookForm } from 'react-hook-form';
 import { usePageScrollSelector } from '@anton.bobrov/react-components';
 import { utils, vevet } from '@anton.bobrov/vevet-init';
+import store from '@/store/store';
+import { loadingSlice } from '@/store/reducers/loading';
 import { IFormProps, IFormResponse } from './types';
 
 export const Form = <

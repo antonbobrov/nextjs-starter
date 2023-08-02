@@ -1,6 +1,6 @@
-import { IFormResponse } from '@/components/Form/types';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { DeepRequired } from 'ts-essentials';
+import { IFormResponse } from '@/components/Form/types';
 
 export default async function handler(
   req: NextApiRequest,

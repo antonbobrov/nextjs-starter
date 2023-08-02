@@ -1,6 +1,6 @@
-import { Heading } from '@/components/Typography/Heading';
 import { FC, PropsWithChildren, useState } from 'react';
 import { ScrollView } from '@anton.bobrov/react-components';
+import { Heading } from '@/components/Typography/Heading';
 import { IBlockProps } from './types';
 
 export const Block: FC<PropsWithChildren<IBlockProps>> = ({

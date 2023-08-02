@@ -1,9 +1,9 @@
 import { forwardRef, useEffect } from 'react';
 import cn from 'classnames';
 import { IBaseComponent } from '@anton.bobrov/react-components';
-import { useStoreLexicon } from '@/store/reducers/lexicon';
 import { useClientSize, useForwardedRef } from '@anton.bobrov/react-hooks';
 import { vevet } from '@anton.bobrov/vevet-init';
+import { useStoreLexicon } from '@/store/reducers/lexicon';
 import { LayoutWrap } from '../Wrap';
 import styles from './styles.module.scss';
 

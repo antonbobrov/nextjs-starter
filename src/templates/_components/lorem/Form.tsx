@@ -1,12 +1,12 @@
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
-import { ButtonSimple } from '@/components/Button/Simple';
 import { FC, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Form as FormComponent } from '@/components/Form';
 import { BaseModal } from '@anton.bobrov/react-components';
+import { useEvent } from '@anton.bobrov/react-hooks';
+import { ButtonSimple } from '@/components/Button/Simple';
+import { Form as FormComponent } from '@/components/Form';
 import { FormInput } from '@/components/Form/Input';
 import { FormTextarea } from '@/components/Form/Textarea';
-import { useEvent } from '@anton.bobrov/react-hooks';
 
 export const Form: FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);

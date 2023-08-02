@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import { LayoutContainer } from '@/layout/Container';
 import { PageScroll } from '@anton.bobrov/react-components';
+import { LayoutContainer } from '@/layout/Container';
 import { IHome } from './types';
 import { registry } from './registry';
 import styles from './styles.module.scss';

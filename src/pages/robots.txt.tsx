@@ -1,5 +1,5 @@
-import { url } from '@/utils/url';
 import { GetServerSideProps } from 'next';
+import { url } from '@/utils/url';
 
 const Robots = () => {};
 export default Robots;

@@ -1,9 +1,9 @@
+import { FC } from 'react';
+import { PageScroll } from '@anton.bobrov/react-components';
 import { Heading } from '@/components/Typography/Heading';
 import { LayoutWrap } from '@/layout/Wrap';
 import { useStoreGlobalProps } from '@/store/reducers/pageProps';
-import { FC } from 'react';
 import { LayoutContainer } from '@/layout/Container';
-import { PageScroll } from '@anton.bobrov/react-components';
 import { INotFound } from './types';
 import { useTemplate } from '../_hooks/useTemplate';
 

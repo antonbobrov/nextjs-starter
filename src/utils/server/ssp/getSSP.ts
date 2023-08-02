@@ -1,8 +1,8 @@
+import { GetServerSidePropsContext } from 'next';
 import { configSlice } from '@/store/reducers/config';
 import { lexiconSlice } from '@/store/reducers/lexicon';
 import { pagePropsSlice } from '@/store/reducers/pageProps';
 import store from '@/store/store';
-import { GetServerSidePropsContext } from 'next';
 import { fetchSSP } from './fetch';
 
 /**

@@ -1,6 +1,6 @@
-import { IPage } from '@/types/Page';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
+import { IPage } from '@/types/Page';
 import { TAppState } from '../store';
 
 type TState = IPage;

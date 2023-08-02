@@ -1,5 +1,5 @@
-import { IPageGlobal } from '@/types/Page';
 import { DeepRequired } from 'ts-essentials';
+import { IPageGlobal } from '@/types/Page';
 
 export const PAGE_GLOBAL: DeepRequired<IPageGlobal> = {
   lang: 'en',

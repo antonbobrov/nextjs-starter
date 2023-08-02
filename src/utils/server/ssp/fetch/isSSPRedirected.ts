@@ -1,6 +1,6 @@
-import { getHost } from '@/utils/url/getHost';
 import { GetServerSidePropsContext, Redirect } from 'next';
 import { Response } from 'node-fetch';
+import { getHost } from '@/utils/url/getHost';
 
 export function isSSPRedirected(
   context: GetServerSidePropsContext,

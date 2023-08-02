@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
-import { useStoreConfig } from '@/store/reducers/config';
-import { useStoreLexicon } from '@/store/reducers/lexicon';
-import { useStorePageProps } from '@/store/reducers/pageProps';
 import { removeDublicateSlashes } from '@anton.bobrov/react-hooks';
 import Script from 'next/script';
 import { FC } from 'react';
+import { useStoreConfig } from '@/store/reducers/config';
+import { useStoreLexicon } from '@/store/reducers/lexicon';
+import { useStorePageProps } from '@/store/reducers/pageProps';
 
 export const LayoutScripts: FC = () => {
   const pageProps = useStorePageProps();

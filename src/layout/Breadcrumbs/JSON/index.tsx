@@ -1,7 +1,7 @@
 import { FC } from 'react';
+import { removeDublicateSlashes } from '@anton.bobrov/react-hooks';
 import { useStoreConfig } from '@/store/reducers/config';
 import { useStoreGlobalProps } from '@/store/reducers/pageProps';
-import { removeDublicateSlashes } from '@anton.bobrov/react-hooks';
 
 export const BreadcrumbsJSON: FC = () => {
   const { breadcrumbs } = useStoreGlobalProps();

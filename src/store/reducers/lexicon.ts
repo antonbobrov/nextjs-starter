@@ -1,6 +1,6 @@
-import { ILexicon } from '@/lexicon/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
+import { ILexicon } from '@/lexicon/types';
 import { TAppState } from '../store';
 
 type TState = ILexicon;

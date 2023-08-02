@@ -1,7 +1,7 @@
-import getLexicon from '@/lexicon/getLexicon';
-import { IAppPage, IPage } from '@/types/Page';
 import { GetServerSidePropsContext, Redirect } from 'next';
 import nodeFetch from 'node-fetch';
+import getLexicon from '@/lexicon/getLexicon';
+import { IAppPage, IPage } from '@/types/Page';
 import { getSSPFetchUrl } from './getSSPFetchUrl';
 import { getSSPPageConfig } from './getSSPPageConfig';
 import { isSSPRedirected } from './isSSPRedirected';

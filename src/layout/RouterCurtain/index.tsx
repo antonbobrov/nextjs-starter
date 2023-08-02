@@ -1,7 +1,7 @@
 import { FC, useRef } from 'react';
 import { useTimeline } from '@anton.bobrov/react-vevet-hooks';
-import { layoutSlice, useStoreLayout } from '@/store/reducers/layout';
 import { useChange } from '@anton.bobrov/react-hooks';
+import { layoutSlice, useStoreLayout } from '@/store/reducers/layout';
 import store from '@/store/store';
 import styles from './styles.module.scss';
 

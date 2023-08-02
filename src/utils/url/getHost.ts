@@ -1,5 +1,5 @@
-import { NextApiRequest } from 'next';
 import { IncomingMessage } from 'http';
+import { NextApiRequest } from 'next';
 import { removeDublicateSlashes } from '@anton.bobrov/react-hooks';
 
 export function getHost(req: NextApiRequest | IncomingMessage, pathname = '') {
