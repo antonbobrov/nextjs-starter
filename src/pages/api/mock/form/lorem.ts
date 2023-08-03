@@ -10,7 +10,6 @@ export default async function handler(
   // res.status(422);
 
   res.json({
-    message: 'Will not work',
     errors: {
       email: ['Invalid email', 'Wrong domain'],
     },
