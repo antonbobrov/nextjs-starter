@@ -2,7 +2,7 @@ import { TPageScrollSelector } from '@anton.bobrov/react-components';
 import { FieldValues, FormProps, UseFormReturn } from 'react-hook-form';
 
 export interface IFormResponse {
-  errors: Record<string, string | string[]>;
+  errors?: Record<string, string | string[]>;
 }
 
 export interface IFormProps<

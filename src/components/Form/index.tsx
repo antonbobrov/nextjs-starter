@@ -87,14 +87,11 @@ export const Form = <
   const processErrors = useEvent(async (response: Response | undefined) => {
     const json = (await response?.json()) as IFormResponse;
 
-    if (!json.errors) {
-      throw new Error('The response has no errors.');
-    }
-
-    const errorKeys = Object.keys(json.errors);
+    const errorsObject = json.errors ?? {};
+    const errorKeys = Object.keys(errorsObject);
 
     errorKeys.forEach((key) => {
-      const error = json.errors[key];
+      const error = errorsObject[key];
 
       const errorText = isString(error)
         ? error
