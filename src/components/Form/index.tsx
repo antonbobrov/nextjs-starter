@@ -45,6 +45,10 @@ export const Form = <
     } else {
       store.dispatch(loadingSlice.actions.end(id));
     }
+
+    return () => {
+      store.dispatch(loadingSlice.actions.end(id));
+    };
   }, [id, isSubmitting]);
 
   const scrollToFirstError = useEvent((errorKeys: string[]) => {
