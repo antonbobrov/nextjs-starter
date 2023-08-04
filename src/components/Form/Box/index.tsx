@@ -17,9 +17,9 @@ export const FormInputBox: FC<IFormInputbox> = ({
     <label htmlFor={id} className={styles.label}>
       {label && <span className={styles.label_text}>{label}</span>}
 
-      <div className={cn(styles.input, isError && styles.is_error)}>
+      <span className={cn(styles.input, isError && styles.is_error)}>
         {children}
-      </div>
+      </span>
     </label>
 
     {error?.message && (
