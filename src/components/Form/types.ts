@@ -14,7 +14,7 @@ export interface IFormProps<
   > {
   form: UseFormReturn;
   action: string;
-  onSuccess?: () => void;
+  onSuccess?: (data: any) => void;
   onError?: (response: IFormResponse) => void;
   resetOnSuccess?: boolean;
   scrollToError?: boolean;

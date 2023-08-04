@@ -115,8 +115,9 @@ export const Form = <
   });
 
   /** Handle success */
-  const handleSuccess = useEvent(() => {
-    onSuccess?.();
+  const handleSuccess = useEvent(async (response: Response | undefined) => {
+    const json = (await response?.json()) as any;
+    onSuccess?.(json);
 
     if (resetOnSuccess) {
       reset();
@@ -130,7 +131,7 @@ export const Form = <
           {...props}
           action={action}
           method={method}
-          onSuccess={handleSuccess}
+          onSuccess={(data) => handleSuccess(data.response)}
           onError={(data) => processErrors(data.response)}
           control={form.control as any}
         >
