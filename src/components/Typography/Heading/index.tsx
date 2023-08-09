@@ -1,6 +1,6 @@
 import cn from 'classnames';
 import { forwardRef } from 'react';
-import styles from './index.module.scss';
+import styles from './styles.module.scss';
 import { IProps } from './types';
 
 export const Heading = forwardRef<HTMLHeadingElement, IProps>(

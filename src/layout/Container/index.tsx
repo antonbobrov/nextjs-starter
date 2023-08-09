@@ -1,6 +1,6 @@
 import { FC, PropsWithChildren } from 'react';
 import cn from 'classnames';
-import styles from './index.module.scss';
+import styles from './styles.module.scss';
 import { Footer } from '../Footer';
 import { IProps } from './types';
 
