@@ -78,7 +78,7 @@ export const FormInput = forwardRef<HTMLInputElement, IFormInputProps>(
           }}
           type={type}
           id={id}
-          aria-invalid={isError}
+          aria-invalid={type === 'hidden' ? undefined : isError}
           aria-describedby={isError ? errorId : undefined}
         />
       </FormInputBox>
