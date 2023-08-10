@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import cn from 'classnames';
-import { Link } from '@anton.bobrov/react-components';
+import { Link } from '@anton.bobrov/nextjs-sp-helpers';
 import { IProps } from './types';
 import styles from './styles.module.scss';
 

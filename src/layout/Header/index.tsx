@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Link } from '@anton.bobrov/react-components';
+import { Link } from '@anton.bobrov/nextjs-sp-helpers';
 import { useStoreGlobalProps } from '@/store/reducers/pageProps';
 import { useStoreLexicon } from '@/store/reducers/lexicon';
 import { ButtonSimple } from '@/components/Button/Simple';

@@ -1,7 +1,7 @@
 import { FC, useRef } from 'react';
 import cn from 'classnames';
 import { useScopedTimelineProgress } from '@anton.bobrov/react-vevet-hooks';
-import { Link } from '@anton.bobrov/react-components';
+import { Link } from '@anton.bobrov/nextjs-sp-helpers';
 import { useStoreGlobalProps } from '@/store/reducers/pageProps';
 import { IWithTimeline } from '../types';
 import styles from './styles.module.scss';

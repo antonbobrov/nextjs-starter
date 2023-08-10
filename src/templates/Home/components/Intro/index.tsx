@@ -14,10 +14,7 @@ const Component: FC<IProps> = ({ className, style, title, description }) => (
     </ScrollView.Element>
 
     <ScrollView.Element animation="fadeInUp">
-      <RichText
-        className={styles.description}
-        dangerouslySetInnerHTML={{ __html: description }}
-      />
+      <RichText className={styles.description} html={description} />
     </ScrollView.Element>
   </section>
 );

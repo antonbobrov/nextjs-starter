@@ -1,6 +1,5 @@
-import { HTMLAttributes } from 'react';
+import { TRichTextContentProps } from '@anton.bobrov/nextjs-sp-helpers';
 
-export interface IProps extends HTMLAttributes<HTMLDivElement> {
-  /** @default true */
+export type TProps = TRichTextContentProps & {
   hasSpacings?: boolean;
-}
+};

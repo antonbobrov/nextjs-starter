@@ -9,10 +9,7 @@ import styles from './styles.module.scss';
 const Component: FC<IProps> = ({ className, style, children, description }) => (
   <div className={cn(className, styles.home_about)} style={style}>
     <ScrollView.Element animation="fadeInUp">
-      <RichText
-        className={styles.description}
-        dangerouslySetInnerHTML={{ __html: description }}
-      />
+      <RichText className={styles.description} html={description} />
     </ScrollView.Element>
 
     {children}
