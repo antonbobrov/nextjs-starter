@@ -12,7 +12,7 @@
     "lint:style": "npx stylelint \"**/*.scss\""
   },
   "dependencies": {
-    "@anton.bobrov/nextjs-sp-helpers": "^0.1.0",
+    "@anton.bobrov/nextjs-sp-helpers": "1.0.0",
     "@anton.bobrov/react-components": "^1.24.1",
     "@anton.bobrov/react-dat-gui": "^1.3.13",
     "@anton.bobrov/react-hooks": "^1.8.1",

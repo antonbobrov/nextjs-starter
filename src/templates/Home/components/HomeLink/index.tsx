@@ -14,6 +14,7 @@ const Component = forwardRef<HTMLAnchorElement, IProps>(
         tag="a"
         href={href}
         target={isExternal ? '_blank' : undefined}
+        rel={isExternal ? 'noopener noreferrer' : undefined}
         text={name}
       />
     </ScrollView.Element>

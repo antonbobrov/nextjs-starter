@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import cn from 'classnames';
-import { Link } from '@anton.bobrov/nextjs-sp-helpers';
+import Link from 'next/link';
 import { useStoreGlobalProps } from '@/store/reducers/pageProps';
 import { useStoreLexicon } from '@/store/reducers/lexicon';
 import styles from './styles.module.scss';
