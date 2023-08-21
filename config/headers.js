@@ -1,5 +1,9 @@
 module.exports = [
   {
+    key: 'Access-Control-Allow-Origin',
+    value: '*',
+  },
+  {
     key: 'X-DNS-Prefetch-Control',
     value: 'on',
   },
