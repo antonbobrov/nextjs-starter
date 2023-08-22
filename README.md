@@ -6,8 +6,6 @@ npm v9.6.6
 
 ## P.S. Use next@13.4.7 (13.4.8+ reloads the whole page instead of hot replacement when editing child components of _app.tsx)
 
-## P.S. Use next@13.4.7 (13.4.8+ reloads the whole page instead of hot replacement when editing child components of _app.tsx)
-
 ## Getting started
 Create **.env.local** file with the following contents:
 ```
