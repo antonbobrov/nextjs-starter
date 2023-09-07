@@ -1,10 +1,10 @@
-import { FC, PropsWithChildren } from 'react';
+import { FC, PropsWithChildren, memo } from 'react';
 import cn from 'classnames';
 import styles from './styles.module.scss';
 import { Footer } from '../Footer';
 import { IProps } from './types';
 
-export const LayoutContainer: FC<PropsWithChildren<IProps>> = ({
+const Component: FC<PropsWithChildren<IProps>> = ({
   children,
   className,
   style,
@@ -34,3 +34,5 @@ export const LayoutContainer: FC<PropsWithChildren<IProps>> = ({
     {hasFooter && <Footer />}
   </>
 );
+
+export const LayoutContainer = memo(Component);

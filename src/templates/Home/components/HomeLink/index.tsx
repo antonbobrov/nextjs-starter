@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, memo } from 'react';
 import { registerComponent } from 'rc-api-registry';
 import { ScrollView } from '@anton.bobrov/react-components';
 import { ButtonSimple } from '@/components/Button/Simple';
@@ -23,4 +23,6 @@ const Component = forwardRef<HTMLAnchorElement, IProps>(
 
 Component.displayName = 'HomeLink';
 
-export const HomeLink = registerComponent()(Component, 'HomeLink');
+const MemoComponent = memo(Component);
+
+export const HomeLink = registerComponent()(MemoComponent, 'HomeLink');

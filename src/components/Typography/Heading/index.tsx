@@ -1,9 +1,9 @@
 import cn from 'classnames';
-import { forwardRef } from 'react';
+import { forwardRef, memo } from 'react';
 import styles from './styles.module.scss';
 import { IProps } from './types';
 
-export const Heading = forwardRef<HTMLHeadingElement, IProps>(
+const Component = forwardRef<HTMLHeadingElement, IProps>(
   ({ variant, as, children, className, ...props }, ref) => {
     const style = as || variant;
 
@@ -60,4 +60,6 @@ export const Heading = forwardRef<HTMLHeadingElement, IProps>(
   }
 );
 
-Heading.displayName = 'Heading';
+Component.displayName = 'Heading';
+
+export const Heading = memo(Component);

@@ -1,10 +1,10 @@
 import cn from 'classnames';
-import { forwardRef } from 'react';
+import { forwardRef, memo } from 'react';
 import { ButtonAnchor } from '@anton.bobrov/react-components';
 import styles from './styles.module.scss';
 import { TButtonSimpleProps } from './types';
 
-export const ButtonSimple = forwardRef<
+const Component = forwardRef<
   HTMLButtonElement | HTMLAnchorElement,
   TButtonSimpleProps
 >(({ className, style, text, ...props }, ref) => (
@@ -19,4 +19,6 @@ export const ButtonSimple = forwardRef<
   </ButtonAnchor>
 ));
 
-ButtonSimple.displayName = 'ButtonSimple';
+Component.displayName = 'ButtonSimple';
+
+export const ButtonSimple = memo(Component);

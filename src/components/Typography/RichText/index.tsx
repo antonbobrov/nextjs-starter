@@ -1,11 +1,11 @@
 import cn from 'classnames';
-import { forwardRef } from 'react';
+import { forwardRef, memo } from 'react';
 import { useForwardedRef } from '@anton.bobrov/react-hooks';
 import { RichTextContent } from '@anton.bobrov/nextjs-sp-helpers';
 import styles from './styles.module.scss';
 import { TProps } from './types';
 
-export const RichText = forwardRef<HTMLDivElement, TProps>(
+const Component = forwardRef<HTMLDivElement, TProps>(
   ({ hasSpacings = true, className, ...props }, forwardedRef) => {
     const ref = useForwardedRef(forwardedRef);
 
@@ -19,4 +19,6 @@ export const RichText = forwardRef<HTMLDivElement, TProps>(
   }
 );
 
-RichText.displayName = 'RichText';
+Component.displayName = 'RichText';
+
+export const RichText = memo(Component);

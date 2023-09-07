@@ -1,9 +1,9 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import { removeDublicateSlashes } from '@anton.bobrov/react-hooks';
 import { useStoreConfig } from '@/store/reducers/config';
 import { useStoreGlobalProps } from '@/store/reducers/pageProps';
 
-export const BreadcrumbsJSON: FC = () => {
+const Component: FC = () => {
   const { breadcrumbs } = useStoreGlobalProps();
   const { url } = useStoreConfig();
 
@@ -29,3 +29,5 @@ export const BreadcrumbsJSON: FC = () => {
     />
   );
 };
+
+export const BreadcrumbsJSON = memo(Component);

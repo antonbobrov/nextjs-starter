@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import cn from 'classnames';
 import { registerComponent } from 'rc-api-registry';
 import { ScrollView } from '@anton.bobrov/react-components';
@@ -16,7 +16,9 @@ const Component: FC<IProps> = ({ className, style, children, description }) => (
   </div>
 );
 
+const MemoComponent = memo(Component);
+
 export const HomeAbout = registerComponent<IHomeAbout>()(
-  Component,
+  MemoComponent,
   'HomeAbout'
 );

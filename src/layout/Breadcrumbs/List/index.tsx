@@ -1,11 +1,11 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import cn from 'classnames';
 import Link from 'next/link';
 import { useStoreGlobalProps } from '@/store/reducers/pageProps';
 import { useStoreLexicon } from '@/store/reducers/lexicon';
 import styles from './styles.module.scss';
 
-export const BreadcrumbsList: FC = () => {
+const Component: FC = () => {
   const { breadcrumbs } = useStoreGlobalProps();
   const lexicon = useStoreLexicon();
 
@@ -46,3 +46,5 @@ export const BreadcrumbsList: FC = () => {
     </nav>
   );
 };
+
+export const BreadcrumbsList = memo(Component);

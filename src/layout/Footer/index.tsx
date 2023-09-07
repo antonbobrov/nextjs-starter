@@ -1,4 +1,4 @@
-import { forwardRef, useEffect } from 'react';
+import { forwardRef, memo, useEffect } from 'react';
 import cn from 'classnames';
 import { IBaseComponent } from '@anton.bobrov/react-components';
 import { useClientSize, useForwardedRef } from '@anton.bobrov/react-hooks';
@@ -7,7 +7,7 @@ import { useStoreLexicon } from '@/store/reducers/lexicon';
 import { LayoutWrap } from '../Wrap';
 import styles from './styles.module.scss';
 
-export const Footer = forwardRef<HTMLDivElement, IBaseComponent>(
+const Component = forwardRef<HTMLDivElement, IBaseComponent>(
   ({ className, style }, forwardedRef) => {
     const ref = useForwardedRef(forwardedRef);
 
@@ -29,4 +29,6 @@ export const Footer = forwardRef<HTMLDivElement, IBaseComponent>(
   }
 );
 
-Footer.displayName = 'Footer';
+Component.displayName = 'Footer';
+
+export const Footer = memo(Component);

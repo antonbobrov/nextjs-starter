@@ -19,4 +19,5 @@ export const LayoutWrap = forwardRef<HTMLDivElement, IProps>(
     </div>
   )
 );
+
 LayoutWrap.displayName = 'LayoutWrap';
