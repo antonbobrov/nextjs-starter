@@ -11,7 +11,7 @@ export const LayoutWrap = forwardRef<HTMLDivElement, IProps>(
       className={cn(
         className,
         styles.layout_wrap,
-        variant === 1 && styles.variant_1
+        variant && styles[`variant_${variant}`]
       )}
       style={style}
     >
