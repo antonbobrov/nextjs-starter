@@ -5,6 +5,10 @@ const lexicon: DeepRequired<ILexicon> = {
   siteName: 'Next.js Starter',
   copyright: '© Copyright',
 
+  preloader: {
+    label: 'Loading',
+  },
+
   navigation: {
     close: 'Close',
     breadcrumbs: 'Breadcrumbs',

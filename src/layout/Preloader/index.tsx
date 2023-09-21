@@ -3,10 +3,13 @@ import { FC, useEffect, useRef, useState } from 'react';
 import { ProgressPreloader as PreloaderModule } from '@anton.bobrov/vevet-init';
 import store from '@/store/store';
 import { layoutSlice } from '@/store/reducers/layout';
+import { useStoreLexicon } from '@/store/reducers/lexicon';
 import styles from './styles.module.scss';
 
 export const Preloader: FC = () => {
   const parentRef = useRef<HTMLDivElement>(null);
+
+  const { preloader: lexicon } = useStoreLexicon();
 
   const [isDone, setIsDone] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -42,7 +45,11 @@ export const Preloader: FC = () => {
     <div
       ref={parentRef}
       className={cn(styles.container, 'v-preloader')}
-      aria-hidden
+      role="progressbar"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={parseInt((progress * 100).toFixed(0), 10)}
+      aria-label={lexicon.label}
     >
       <div
         className={styles.progress}
