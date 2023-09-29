@@ -1,6 +1,11 @@
 import { isString, useEvent } from '@anton.bobrov/react-hooks';
 import { useEffect, useId, useRef } from 'react';
-import { FieldValues, FormProvider, Form as HookForm } from 'react-hook-form';
+import {
+  FieldValues,
+  FormProvider,
+  FormSubmitHandler,
+  Form as HookForm,
+} from 'react-hook-form';
 import { usePageScrollSelector } from '@anton.bobrov/react-components';
 import { utils, vevet } from '@anton.bobrov/vevet-init';
 import store from '@/store/store';
@@ -124,6 +129,25 @@ export const Form = <
     }
   });
 
+  /** Fix file inputs */
+  const onSubmit: FormSubmitHandler<FieldValues> = useEvent(
+    async ({ formData }) => {
+      const fileInputs = Array.from(
+        containerRef.current?.querySelectorAll('input[type="file"]') ?? []
+      ) as HTMLInputElement[];
+
+      fileInputs.forEach((fileInput) => {
+        const inputName = fileInput.name;
+
+        formData.delete(inputName);
+
+        Array.from(fileInput.files ?? []).forEach((file) =>
+          formData.append(inputName, file)
+        );
+      });
+    }
+  );
+
   return (
     <FormProvider {...form}>
       <div ref={containerRef} className={className} style={style}>
@@ -134,6 +158,7 @@ export const Form = <
           onSuccess={(data) => handleSuccess(data.response)}
           onError={(data) => processErrors(data.response)}
           control={form.control as any}
+          onSubmit={onSubmit}
         >
           {children}
         </HookForm>
