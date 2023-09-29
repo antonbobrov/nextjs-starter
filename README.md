@@ -13,7 +13,6 @@ NEXT_PUBLIC_URL=...
 NEXT_PUBLIC_API=https://cms.example.com/api/
 NEXT_PUBLIC_API_PAGE=https://cms.example.com/api/page/
 NEXT_PUBLIC_STORAGE=https://cms.example.com/storage/:file*
-API_KEY=_____test_key_____
 
 SEARCHABLE=false
 ```

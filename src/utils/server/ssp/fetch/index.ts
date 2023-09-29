@@ -26,7 +26,6 @@ export async function fetchSSP(
     const response = await nodeFetch(url.href, {
       headers: {
         ...(headers as any),
-        APIKEY: process.env.API_KEY || '',
       },
     });
 
