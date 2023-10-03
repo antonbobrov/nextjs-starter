@@ -94,28 +94,33 @@ export const Form = <
 
   /** Process any response */
   const processErrors = useEvent(async (response: Response | undefined) => {
-    const json = (await response?.json()) as IFormResponse;
+    try {
+      const json = (await response?.json()) as IFormResponse;
 
-    const errorsObject = json.errors ?? {};
-    const errorKeys = Object.keys(errorsObject);
+      const errorsObject = json.errors ?? {};
+      const errorKeys = Object.keys(errorsObject);
 
-    errorKeys.forEach((key) => {
-      const error = errorsObject[key];
+      errorKeys.forEach((key) => {
+        const error = errorsObject[key];
 
-      const errorText = isString(error)
-        ? error
-        : error.map((v) => v).join('; ');
+        const errorText = isString(error)
+          ? error
+          : error.map((v) => v).join('; ');
 
-      setError(key, {
-        type: 'manual',
-        message: errorText,
+        setError(key, {
+          type: 'manual',
+          message: errorText,
+        });
       });
-    });
 
-    onError?.(json);
+      onError?.(json);
 
-    if (scrollToError) {
-      scrollToFirstError(errorKeys);
+      if (scrollToError) {
+        scrollToFirstError(errorKeys);
+      }
+    } catch (e) {
+      // eslint-disable-next-line no-alert
+      alert(e);
     }
   });
 
