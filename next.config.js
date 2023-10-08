@@ -12,6 +12,7 @@ const nextConfig = {
   swcMinify: true,
   experimental: {
     esmExternals: 'loose',
+    strictNextHead: true,
   },
   transpilePackages: [
     '@anton.bobrov/vevet-init',
