@@ -1,4 +1,3 @@
-import cn from 'classnames';
 import { FC, useEffect, useRef, useState } from 'react';
 import { ProgressPreloader as PreloaderModule } from '@anton.bobrov/vevet-init';
 import store from '@/store/store';
@@ -44,7 +43,7 @@ export const Preloader: FC = () => {
   return (
     <div
       ref={parentRef}
-      className={cn(styles.container, 'v-preloader')}
+      className={styles.container}
       role="progressbar"
       aria-valuemin={0}
       aria-valuemax={100}
