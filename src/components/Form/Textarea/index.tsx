@@ -63,6 +63,7 @@ export const FormTextarea = forwardRef<HTMLTextAreaElement, IFormTextareaProps>(
       >
         <textarea
           {...inputProps}
+          onWheelCapture={(event) => event.stopPropagation()}
           className={styles.textarea}
           {...registered}
           ref={(element) => {
