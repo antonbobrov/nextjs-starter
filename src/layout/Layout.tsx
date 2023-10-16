@@ -17,7 +17,7 @@ import { LayoutRouterCurtain } from './RouterCurtain';
 
 export const Layout: FC<PropsWithChildren> = ({ children }) => {
   const { key } = useStoreConfig();
-  const { isFirstLoaded, isPageVisible } = useStoreLayout();
+  const { isFirstLoaded, isPageVisible, isPageReady } = useStoreLayout();
 
   const router = useRouter();
 
@@ -35,7 +35,7 @@ export const Layout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <LinkClickInterceptor onInternalClick={onInternalLinkClick}>
       <PageScroll.Provider smoothProps={{ enabled: isPageVisible }}>
-        <PageScroll.ScrollBar resizeKey={key}>
+        <PageScroll.ScrollBar resizeKey={isPageReady ? key : undefined}>
           <ScrollView.Provider
             instanceKey={key}
             isEnabled={isFirstLoaded && isPageVisible}
