@@ -1,5 +1,6 @@
 import { forwardRef, useId, useImperativeHandle, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { stopWheelPropagationUnlessScrollEnd } from '@/utils/utils/stopWheelPropagationUnlessScrollEnd';
 import styles from './styles.module.scss';
 import { FormInputBox } from '../Box';
 import { IFormTextareaProps } from './types';
@@ -63,7 +64,7 @@ export const FormTextarea = forwardRef<HTMLTextAreaElement, IFormTextareaProps>(
       >
         <textarea
           {...inputProps}
-          onWheelCapture={(event) => event.stopPropagation()}
+          onWheelCapture={stopWheelPropagationUnlessScrollEnd}
           className={styles.textarea}
           {...registered}
           ref={(element) => {
