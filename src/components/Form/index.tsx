@@ -7,7 +7,7 @@ import {
   Form as HookForm,
 } from 'react-hook-form';
 import { usePageScrollSelector } from '@anton.bobrov/react-components';
-import { utils, vevet } from '@anton.bobrov/vevet-init';
+import { scrollToElement, vevet } from '@anton.bobrov/vevet-init';
 import store from '@/store/store';
 import { loadingSlice } from '@/store/reducers/loading';
 import { IFormProps, IFormResponse } from './types';
@@ -84,9 +84,9 @@ export const Form = <
       (a, b) => a!.bounding.top - b!.bounding.top
     )[0]!;
 
-    utils.scroll.toElement({
-      el: topElement.element,
+    scrollToElement({
       container: scrollSelector,
+      element: topElement.element,
       duration: 250,
       top: vevet.viewport.height / 3,
     });

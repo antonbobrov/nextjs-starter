@@ -21,11 +21,9 @@ export const Preloader: FC = () => {
 
     const preloader = new PreloaderModule({
       container,
-      hide: 500,
-      calc: {
-        lerp: 0.01,
-        forceEnd: 500,
-      },
+      hideAnimation: 500,
+      lerp: 0.01,
+      forceEnd: 500,
     });
 
     preloader.addCallback('progress', ({ progress: value }) =>

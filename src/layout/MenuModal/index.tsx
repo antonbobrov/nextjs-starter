@@ -49,7 +49,7 @@ export const MenuModal: FC = () => {
       setAnimating(true);
 
       timeline?.callbacks.add('end', () => setAnimating(false), {
-        once: true,
+        isOnce: true,
       });
 
       return;

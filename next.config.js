@@ -11,16 +11,8 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   experimental: {
-    esmExternals: 'loose',
     strictNextHead: true,
   },
-  transpilePackages: [
-    '@anton.bobrov/vevet-init',
-    '@anton.bobrov/react-vevet-hooks',
-    '@anton.bobrov/react-components',
-    'vevet',
-    'p-cancelable',
-  ],
   compiler: {
     styledComponents: true,
   },

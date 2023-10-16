@@ -2,8 +2,8 @@ import {
   useDebouncedEffect,
   useIsOnceMounted,
 } from '@anton.bobrov/react-hooks';
-import PCancelable from 'p-cancelable';
 import { useEffect } from 'react';
+import { PCancelable } from '@anton.bobrov/vevet-init';
 import { layoutSlice, useStoreLayout } from '@/store/reducers/layout';
 import { useStoreMenu } from '@/store/reducers/menu';
 import store from '@/store/store';

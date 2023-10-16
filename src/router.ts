@@ -6,7 +6,7 @@ import store from './store/store';
 import { onRouterCurtainCycle } from './layout/RouterCurtain/onRouterCurtainCycle';
 import { onStoreValue } from './store/utils/onStoreValue';
 
-interface ICallbackTypes extends NCallbacks.CallbacksTypes {
+interface ICallbackTypes extends NCallbacks.ITypes {
   push: false;
   updated: false;
 }
