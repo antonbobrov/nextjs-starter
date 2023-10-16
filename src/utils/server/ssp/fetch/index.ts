@@ -51,7 +51,7 @@ export async function fetchSSP(
 
     // set meta image
     if (props.page) {
-      if (!props.page.props.global.meta?.image && props.page.props.template) {
+      if (!props.page.props.global.meta.image && props.page.props.template) {
         const matches = JSON.stringify(props.page.props.template).match(
           /(http?s)?[^"' ]*\.(jpg|png)/
         );

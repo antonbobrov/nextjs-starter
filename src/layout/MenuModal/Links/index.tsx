@@ -27,7 +27,7 @@ export const MenuModalLinks: FC<IWithTimeline> = ({ timeline, scope }) => {
 
   return (
     <ul ref={ref} className={styles.list}>
-      {globalProps.menu?.map(({ key, href, name, isActive }) => (
+      {globalProps.menu.map(({ key, href, name, isActive }) => (
         <li key={key} className={styles.li}>
           <Link
             href={href}

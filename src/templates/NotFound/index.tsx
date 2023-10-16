@@ -16,7 +16,7 @@ const NotFound: FC<INotFound> = () => {
     <PageScroll.SmoothContainer>
       <LayoutContainer>
         <LayoutWrap variant={1}>
-          <Heading variant={1}>{globalProps.meta?.pagetitle}</Heading>
+          <Heading variant={1}>{globalProps.meta.pagetitle}</Heading>
         </LayoutWrap>
       </LayoutContainer>
     </PageScroll.SmoothContainer>

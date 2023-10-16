@@ -21,7 +21,7 @@ export const Head = () => {
           content="width=device-width, height=device-height, initial-scale=1"
         />
 
-        <title>{meta?.pagetitle || lexicon.siteName}</title>
+        <title>{meta.pagetitle || lexicon.siteName}</title>
 
         {/* icons */}
         {[16, 32, 64, 96].map((size) => (
@@ -40,7 +40,7 @@ export const Head = () => {
         <meta name="theme-color" content="#1f1f1f" />
         <link rel="manifest" href="/api/manifest.webmanifest" />
 
-        {!meta?.searchable && <meta name="robots" content="noindex" />}
+        {!meta.searchable && <meta name="robots" content="noindex" />}
 
         {/* meta */}
         {meta && (
@@ -57,7 +57,7 @@ export const Head = () => {
         )}
 
         {/* languages */}
-        {languages?.map(({ key, href }) => (
+        {languages.map(({ key, href }) => (
           <link
             key={key}
             rel="alternate"
@@ -69,7 +69,7 @@ export const Head = () => {
         {/* opengraph */}
         <meta property="og:site_name" content={lexicon.siteName} />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content={meta?.pagetitle} />
+        <meta property="og:title" content={meta.pagetitle} />
         {meta && meta.description && (
           <meta property="og:description" content={meta.description} />
         )}
@@ -80,7 +80,7 @@ export const Head = () => {
 
         {/* twiiter */}
         <meta name="twitter:card" content="summary" />
-        <meta name="twitter:title" content={meta?.pagetitle} />
+        <meta name="twitter:title" content={meta.pagetitle} />
         {meta && meta.description && (
           <meta name="twitter:description" content={meta.description} />
         )}

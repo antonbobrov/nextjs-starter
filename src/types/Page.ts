@@ -8,7 +8,7 @@ import { ILink, ILinkMenu, ILinksLanguage } from './Link';
 export interface IPageGlobal {
   lang: string;
   dir: 'ltr' | 'rtl';
-  meta?: {
+  meta: {
     pagetitle: string;
     description?: string;
     keywords?: string;
@@ -18,9 +18,9 @@ export interface IPageGlobal {
   links: {
     home: string;
   };
-  languages?: ILinksLanguage[];
-  menu?: ILinkMenu[];
-  breadcrumbs?: TBreadcrumbs;
+  languages: ILinksLanguage[];
+  menu: ILinkMenu[];
+  breadcrumbs: TBreadcrumbs;
   social: ILink[];
 }
 
