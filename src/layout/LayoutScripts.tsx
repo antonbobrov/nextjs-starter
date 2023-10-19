@@ -54,6 +54,15 @@ export const LayoutScripts: FC = () => {
           `,
         }}
       />
+
+      <Script
+        strategy="beforeInteractive"
+        id="js_viewport_css_vars"
+        dangerouslySetInnerHTML={{
+          __html:
+            'var update=function(){var e=document.documentElement.clientWidth,t=document.documentElement.clientHeight;document.documentElement.style.setProperty("--vw",e/100+"px"),document.documentElement.style.setProperty("--vh",t/100+"px"),document.documentElement.style.setProperty("--vr",Math.sqrt(e**2+t**2)/2/100+"px")};window.addEventListener("resize",update),update();',
+        }}
+      />
     </>
   );
 };
