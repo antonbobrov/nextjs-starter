@@ -25,7 +25,6 @@ export const Form: FC = () => {
     <FormComponent
       form={form}
       action="/api/form/lorem"
-      encType="multipart/form-data"
       onSuccess={() => {
         setIsSuccess(true);
         reset();
