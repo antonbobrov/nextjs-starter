@@ -1,5 +1,5 @@
+import { getHost } from '@/utils/server/getHost';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { url } from '@/utils/url';
 
 export default async function handler(
   req: NextApiRequest,
@@ -10,7 +10,7 @@ export default async function handler(
   res.json({
     name: 'Next.js Starter',
     short_name: 'Next.js Starter',
-    start_url: url.getHost(req),
+    start_url: getHost(req),
     display: 'fullscreen',
     background_color: '#000000',
     theme_color: '#000000',

@@ -1,9 +1,9 @@
 import { FC, useRef } from 'react';
 import { useScopedTimelineProgress } from '@anton.bobrov/react-vevet-hooks';
-import { useStoreLexicon } from '@/store/reducers/lexicon';
 import { ButtonSimple } from '@/components/Button/Simple';
 import store from '@/store/store';
 import { menuSlice } from '@/store/reducers/menu';
+import { useStoreLexicon } from '@/store/reducers/page';
 import { IWithTimeline } from '../types';
 import styles from './styles.module.scss';
 

@@ -1,22 +1,18 @@
 import { GetServerSidePropsContext } from 'next';
-import { configSlice } from '@/store/reducers/config';
-import { lexiconSlice } from '@/store/reducers/lexicon';
-import { pagePropsSlice } from '@/store/reducers/pageProps';
 import store from '@/store/store';
+import { pageSlice } from '@/store/reducers/page';
 import { fetchSSP } from './fetch';
 
 /**
- * Fetch server side props
+ * Get server side props
  */
 export async function getSSP(context: GetServerSidePropsContext) {
   const props = await fetchSSP(context);
 
-  if ('ssp' in props && props.ssp.page) {
-    const { page } = props.ssp;
+  if ('page' in props && props.page) {
+    const { page } = props;
 
-    store.dispatch(pagePropsSlice.actions.set(page.props));
-    store.dispatch(configSlice.actions.set(page.config));
-    store.dispatch(lexiconSlice.actions.set(page.lexicon));
+    store.dispatch(pageSlice.actions.set(page.props));
   }
 
   return props;

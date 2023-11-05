@@ -3,7 +3,7 @@ import cn from 'classnames';
 import { IBaseComponent } from '@anton.bobrov/react-components';
 import { useClientSize, useForwardedRef } from '@anton.bobrov/react-hooks';
 import { vevet } from '@anton.bobrov/vevet-init';
-import { useStoreLexicon } from '@/store/reducers/lexicon';
+import { useStoreLexicon } from '@/store/reducers/page';
 import { LayoutWrap } from '../Wrap';
 import styles from './styles.module.scss';
 

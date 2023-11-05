@@ -21,8 +21,10 @@ class MyDocument extends Document {
 
     let lang = 'en';
     let dir = 'ltr';
+
     if (props?.page?.props) {
       const { global } = props.page.props;
+
       if (global) {
         lang = global.lang;
         dir = global.dir;

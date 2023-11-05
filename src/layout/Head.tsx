@@ -1,19 +1,28 @@
 import NextHead from 'next/head';
-import { useStorePageProps } from '@/store/reducers/pageProps';
-import { useStoreConfig } from '@/store/reducers/config';
-import { useStoreLexicon } from '@/store/reducers/lexicon';
-import { LayoutScripts } from './LayoutScripts';
+import {
+  useStoreGlobal,
+  useStoreLexicon,
+  useStoreUrl,
+} from '@/store/reducers/page';
+import { isBoolean } from '@anton.bobrov/react-hooks';
+import { LayoutScripts } from './Scripts';
 
-export const Head = () => {
-  const pageProps = useStorePageProps();
-  const { url } = useStoreConfig();
+export const LayoutHead = () => {
+  const { meta, languages, lang } = useStoreGlobal();
+  const {
+    pagetitle,
+    description,
+    keywords,
+    image,
+    searchable: isSearchable,
+  } = meta;
+
+  const url = useStoreUrl();
   const lexicon = useStoreLexicon();
-  const { meta, lang, languages } = pageProps.global;
 
   return (
     <>
       <NextHead>
-        {/* meta */}
         <meta httpEquiv="X-UA-Compatible" content="IE=Edge" />
         <meta name="format-detection" content="telephone=no" />
         <meta
@@ -21,7 +30,52 @@ export const Head = () => {
           content="width=device-width, height=device-height, initial-scale=1"
         />
 
-        <title>{meta.pagetitle || lexicon.siteName}</title>
+        <title>{pagetitle}</title>
+
+        {/* robots */}
+        {isBoolean(isSearchable) && !isSearchable && (
+          <meta name="robots" content="noindex" />
+        )}
+
+        {/* links */}
+        <base href={url.base} />
+        <link rel="canonical" href={url.canonical} />
+
+        {/* languages */}
+        <meta name="lang" content={lang} />
+        {languages.map(({ key, href }) => (
+          <link
+            key={key}
+            rel="alternate"
+            href={new URL(href, url.base).href}
+            hrefLang={`${key}`}
+          />
+        ))}
+
+        {/* meta */}
+        {description && <meta name="description" content={description} />}
+        {keywords && <meta name="keywords" content={keywords} />}
+        {description && <meta name="abstract" content={description} />}
+
+        {/* opengraph */}
+        <meta property="og:site_name" content={lexicon.siteName} />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={pagetitle} />
+        {description && (
+          <meta property="og:description" content={description} />
+        )}
+        <meta property="og:url" content={url.href} />
+        {image && (
+          <meta property="og:image" content={new URL(image, url.base).href} />
+        )}
+
+        {/* twiiter */}
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content={pagetitle} />
+        {description && (
+          <meta name="twitter:description" content={description} />
+        )}
+        {image && <meta property="twitter:image" content={image} />}
 
         {/* icons */}
         {[16, 32, 64, 96].map((size) => (
@@ -33,64 +87,14 @@ export const Head = () => {
             sizes={`${size}x${size}`}
           />
         ))}
+
+        {/* apple icon */}
         <link rel="apple-touch-icon" href="/image/192x192.png" />
 
-        {/* web */}
+        {/* pwa */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="theme-color" content="#1f1f1f" />
         <link rel="manifest" href="/api/manifest.webmanifest" />
-
-        {!meta.searchable && <meta name="robots" content="noindex" />}
-
-        {/* meta */}
-        {meta && (
-          <>
-            {meta.description && (
-              <meta name="description" content={meta.description} />
-            )}
-            {meta.keywords && <meta name="keywords" content={meta.keywords} />}
-            {meta.keywords && <meta name="lang" content={lang} />}
-            {meta.description && (
-              <meta name="abstract" content={meta.description} />
-            )}
-          </>
-        )}
-
-        {/* languages */}
-        {languages.map(({ key, href }) => (
-          <link
-            key={key}
-            rel="alternate"
-            href={new URL(href, url.base).href}
-            hrefLang={`${key}`}
-          />
-        ))}
-
-        {/* opengraph */}
-        <meta property="og:site_name" content={lexicon.siteName} />
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content={meta.pagetitle} />
-        {meta && meta.description && (
-          <meta property="og:description" content={meta.description} />
-        )}
-        <meta property="og:url" content={url.url} />
-        {meta && meta.image && (
-          <meta property="og:image" content={meta.image} />
-        )}
-
-        {/* twiiter */}
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:title" content={meta.pagetitle} />
-        {meta && meta.description && (
-          <meta name="twitter:description" content={meta.description} />
-        )}
-        {meta && meta.image && (
-          <meta property="twitter:image" content={meta.image} />
-        )}
-
-        {/* links */}
-        <base href={url.base} />
-        <link rel="canonical" href={url.canonical} />
       </NextHead>
 
       <LayoutScripts />

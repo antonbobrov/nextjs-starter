@@ -1,10 +1,10 @@
 import { TBreadcrumbs } from '@/layout/Breadcrumbs/types';
 import { ILexicon } from '@/lexicon/types';
+import { DeepRequired } from 'ts-essentials';
+import { TKey } from '@anton.bobrov/react-components';
 import { ILink, ILinkMenu, ILinksLanguage } from './Link';
 
-/**
- * Global page props
- */
+/** Global page props */
 export interface IPageGlobal {
   lang: string;
   dir: 'ltr' | 'rtl';
@@ -13,7 +13,7 @@ export interface IPageGlobal {
     description?: string;
     keywords?: string;
     image?: string;
-    searchable: boolean;
+    searchable?: boolean;
   };
   links: {
     home: string;
@@ -24,35 +24,33 @@ export interface IPageGlobal {
   social: ILink[];
 }
 
-/**
- * Automatically server-side generated props
- */
-export interface IPageConfig {
-  key: number;
+/** Page props for API */
+export interface IPageAPI<
+  N extends string,
+  T extends Record<string, any>,
+  TemplateRequired extends boolean = false
+> {
+  global: IPageGlobal;
+  templateName: N;
+  template: TemplateRequired extends true ? DeepRequired<T> : T;
+}
+
+/** Page Props */
+export interface IPage<N extends string, T extends Record<string, any>>
+  extends IPageAPI<N, T> {
+  key: TKey;
+  lexicon: ILexicon;
   url: {
     base: string;
-    url: string;
+    href: string;
     canonical: string;
   };
 }
 
-/**
- * Page props
- */
-export interface IPage<T extends Record<string, any> = {}> {
-  global: IPageGlobal;
-  templateName: string;
-  template: T;
-}
-
-/**
- * Page APP Props
- */
+/** Page APP Props */
 export interface IAppPage {
   page?: {
-    props: IPage;
-    config: IPageConfig;
-    lexicon: ILexicon;
+    props: IPage<any, any>;
   };
   error?: {
     name?: string;

@@ -8,8 +8,9 @@ import { Buttons } from './lorem/Buttons';
 import { Form } from './lorem/Form';
 import { Typography } from './lorem/Typography';
 import { useTemplate } from '../_hooks/useTemplate';
+import { ILoremComponents } from './types';
 
-const Components: FC = () => {
+const LoremComponents: FC<ILoremComponents> = () => {
   useTemplate();
 
   return (
@@ -35,4 +36,4 @@ const Components: FC = () => {
   );
 };
 
-export default Components;
+export default LoremComponents;

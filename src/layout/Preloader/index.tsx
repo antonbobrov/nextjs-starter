@@ -2,7 +2,7 @@ import { FC, useEffect, useRef, useState } from 'react';
 import { ProgressPreloader as PreloaderModule } from '@anton.bobrov/vevet-init';
 import store from '@/store/store';
 import { layoutSlice } from '@/store/reducers/layout';
-import { useStoreLexicon } from '@/store/reducers/lexicon';
+import { useStoreLexicon } from '@/store/reducers/page';
 import styles from './styles.module.scss';
 
 export const Preloader: FC = () => {

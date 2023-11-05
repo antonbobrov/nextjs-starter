@@ -8,15 +8,15 @@ import {
 import { useRouter } from 'next/router';
 import { useEvent } from '@anton.bobrov/react-hooks';
 import { useStoreLayout } from '@/store/reducers/layout';
-import { useStoreConfig } from '@/store/reducers/config';
+import { useStorePage } from '@/store/reducers/page';
 import { BreadcrumbsJSON } from './Breadcrumbs/JSON';
 import { Preloader } from './Preloader';
 import { Header } from './Header';
 import { MenuModal } from './MenuModal';
-import { LayoutRouterCurtain } from './RouterCurtain';
+import { RouterCurtain } from './RouterCurtain';
 
 export const Layout: FC<PropsWithChildren> = ({ children }) => {
-  const { key } = useStoreConfig();
+  const { key } = useStorePage();
   const { isFirstLoaded, isPageVisible, isPageReady } = useStoreLayout();
 
   const router = useRouter();
@@ -49,7 +49,7 @@ export const Layout: FC<PropsWithChildren> = ({ children }) => {
 
             <MenuModal />
 
-            <LayoutRouterCurtain />
+            <RouterCurtain />
           </ScrollView.Provider>
         </PageScroll.ScrollBar>
       </PageScroll.Provider>

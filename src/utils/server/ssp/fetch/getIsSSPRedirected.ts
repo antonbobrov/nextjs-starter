@@ -1,8 +1,8 @@
 import { GetServerSidePropsContext, Redirect } from 'next';
 import { Response } from 'node-fetch';
-import { getHost } from '@/utils/url/getHost';
+import { getHost } from '@/utils/server/getHost';
 
-export function isSSPRedirected(
+export function getIsSSPRedirected(
   context: GetServerSidePropsContext,
   response: Response
 ): Redirect | null {

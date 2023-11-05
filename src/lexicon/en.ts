@@ -15,6 +15,7 @@ const lexicon: DeepRequired<ILexicon> = {
   },
 
   menu: {
+    label: 'Menu',
     open: 'Menu',
     close: 'Close',
   },

@@ -9,6 +9,7 @@ import { useTimeline } from '@anton.bobrov/react-vevet-hooks';
 import { useOnRouterPush } from '@/utils/hooks/useOnRouterPush';
 import store from '@/store/store';
 import { menuSlice, useStoreMenu } from '@/store/reducers/menu';
+import { useStoreLexicon } from '@/store/reducers/page';
 import styles from './styles.module.scss';
 import { MenuModalLinks } from './Links';
 import { MenuModalBackground } from './Background';
@@ -18,6 +19,8 @@ const DURATION = 2000;
 
 export const MenuModal: FC = () => {
   const parentRef = useRef<HTMLDivElement>(null);
+
+  const { menu: lexicon } = useStoreLexicon();
 
   const { isOpened } = useStoreMenu();
   const [isShown, setIsShown] = useState(false);
@@ -83,7 +86,13 @@ export const MenuModal: FC = () => {
   }, [timeline]);
 
   return (
-    <div ref={parentRef} className={cn(styles.menu, isShown && styles.show)}>
+    <div
+      ref={parentRef}
+      className={cn(styles.menu, isShown && styles.show)}
+      role="dialog"
+      aria-modal
+      aria-label={lexicon.label}
+    >
       <MenuModalBackground timeline={timeline} scope={[0, 0.6]} />
 
       <MenuModalCloseButton timeline={timeline} scope={[0.5, 0.8]} />

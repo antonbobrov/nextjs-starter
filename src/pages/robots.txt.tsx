@@ -1,5 +1,5 @@
+import { getHost } from '@/utils/server/getHost';
 import { GetServerSideProps } from 'next';
-import { url } from '@/utils/url';
 
 const Robots = () => {};
 export default Robots;
@@ -9,11 +9,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const content: string[] = [];
   content.push('User-agent: *');
+
   if (process.env.SEARCHABLE !== 'true') {
     content.push('Disallow: /');
   } else {
     content.push('Disallow: *?*');
-    content.push(`Sitemap: ${url.getHost(req, '/sitemap.xml')}`);
+    content.push(`Sitemap: ${getHost(req, '/sitemap.xml')}`);
   }
 
   res.setHeader('Content-Type', 'text/plain');

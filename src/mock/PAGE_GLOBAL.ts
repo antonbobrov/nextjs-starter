@@ -18,12 +18,12 @@ export const PAGE_GLOBAL: DeepRequired<IPageGlobal> = {
   },
 
   languages: [
-    { key: 'en', name: 'En', fullName: 'English', href: '/', isActive: true },
+    { key: 'en', name: 'En', fullName: 'English', href: '/en', isActive: true },
     {
       key: 'de',
       name: 'De',
       fullName: 'Deutsch',
-      href: '/',
+      href: '/de',
       isActive: false,
     },
   ],

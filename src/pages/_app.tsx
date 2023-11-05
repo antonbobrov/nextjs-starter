@@ -1,51 +1,50 @@
 import '@/styles/index.scss';
 import 'src/router';
 import type { AppProps } from 'next/app';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Provider } from 'react-redux';
-import { isBrowser } from '@anton.bobrov/react-hooks';
+import { isBrowser, useEvent } from '@anton.bobrov/react-hooks';
 import { IAppPage } from '@/types/Page';
-import { pagePropsSlice } from '@/store/reducers/pageProps';
-import { configSlice } from '@/store/reducers/config';
-import { lexiconSlice } from '@/store/reducers/lexicon';
 import store from '@/store/store';
-import { Head } from '@/layout/Head';
+import { LayoutHead } from '@/layout/Head';
 import { Layout } from '@/layout/Layout';
 import { TemplateRenderer } from '@/templates/Renderer';
+import { pageSlice } from '@/store/reducers/page';
 
-// a crutch to update redux
-let isStoreUpdated = false;
-let canRerenderProps = false;
-function updateStore(props: IAppPage) {
-  if (props.page) {
-    store.dispatch(pagePropsSlice.actions.set(props.page.props));
-    store.dispatch(configSlice.actions.set(props.page.config));
-    store.dispatch(lexiconSlice.actions.set(props.page.lexicon));
-    isStoreUpdated = true;
-  }
-}
+type TStaticProps = {
+  statusCode: number;
+};
+
+type TAppProps = IAppPage | TStaticProps;
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
-  const withStaticProps = pageProps as
-    | IAppPage
-    | {
-        statusCode: number;
-      };
+  const withStaticProps = pageProps as TAppProps;
 
-  if (isBrowser && !isStoreUpdated) {
+  const isStoreUpdatedRef = useRef(false);
+  const canRerenderPropsRef = useRef(false);
+
+  const updateStore = useEvent(() => {
+    if ('page' in withStaticProps && withStaticProps.page) {
+      store.dispatch(pageSlice.actions.set(withStaticProps.page.props));
+      isStoreUpdatedRef.current = true;
+    }
+  });
+
+  if (isBrowser && !isStoreUpdatedRef.current) {
     if (!('statusCode' in withStaticProps)) {
-      updateStore(withStaticProps);
+      updateStore();
     }
   }
 
   useEffect(() => {
-    if (canRerenderProps) {
+    if (canRerenderPropsRef.current) {
       if (!('statusCode' in withStaticProps)) {
-        updateStore(withStaticProps);
+        updateStore();
       }
     }
-    canRerenderProps = true;
-  }, [withStaticProps]);
+
+    canRerenderPropsRef.current = true;
+  }, [updateStore, withStaticProps]);
 
   if ('statusCode' in withStaticProps) {
     return <h1>{withStaticProps.statusCode}</h1>;
@@ -54,7 +53,8 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   if (withStaticProps.page) {
     return (
       <Provider store={store}>
-        <Head />
+        <LayoutHead />
+
         <Layout>
           <TemplateRenderer>
             <Component />
@@ -67,13 +67,17 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <div style={{ padding: '20px' }}>
       <h1>Ooops</h1>
+
       <br />
+
       {withStaticProps.error && (
         <>
           {withStaticProps.error.name && (
             <div>{withStaticProps.error.name}</div>
           )}
+
           <br />
+
           {withStaticProps.error.body ? (
             <pre>{withStaticProps.error.body}</pre>
           ) : (

@@ -1,21 +1,25 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
+import {
+  useStoreLexicon,
+  useStorePage,
+  useStoreUrl,
+} from '@/store/reducers/page';
 import { removeDublicateSlashes } from '@anton.bobrov/react-hooks';
 import Script from 'next/script';
 import { FC } from 'react';
-import { useStoreConfig } from '@/store/reducers/config';
-import { useStoreLexicon } from '@/store/reducers/lexicon';
-import { useStorePageProps } from '@/store/reducers/pageProps';
 
 export const LayoutScripts: FC = () => {
-  const pageProps = useStorePageProps();
-  const { url } = useStoreConfig();
+  const {
+    templateName,
+    global: { social },
+  } = useStorePage();
+  const url = useStoreUrl();
   const lexicon = useStoreLexicon();
-  const { social } = pageProps.global;
 
   return (
     <>
       {/* logo microdata */}
-      {pageProps.templateName === 'home' && (
+      {templateName === 'home' && (
         <Script
           strategy="beforeInteractive"
           id="js_application_microdata"

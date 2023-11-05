@@ -1,11 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { DeepRequired } from 'ts-essentials';
-import { IPage } from '@/types/Page';
 import { PAGE_GLOBAL } from '@/mock/PAGE_GLOBAL';
+import { TPageTemplateRegistryAPI } from '@/templates/Renderer';
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<DeepRequired<IPage>>
+  res: NextApiResponse<TPageTemplateRegistryAPI>
 ) => {
   res.json({
     global: {
@@ -20,7 +19,8 @@ const handler = async (
       ],
     },
 
-    templateName: '_components',
+    templateName: '_LoremComponents',
+
     template: {},
   });
 };

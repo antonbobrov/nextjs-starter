@@ -2,12 +2,12 @@ import { FC, useRef } from 'react';
 import cn from 'classnames';
 import { useScopedTimelineProgress } from '@anton.bobrov/react-vevet-hooks';
 import Link from 'next/link';
-import { useStoreGlobalProps } from '@/store/reducers/pageProps';
+import { useStoreGlobal } from '@/store/reducers/page';
 import { IWithTimeline } from '../types';
 import styles from './styles.module.scss';
 
 export const MenuModalLinks: FC<IWithTimeline> = ({ timeline, scope }) => {
-  const globalProps = useStoreGlobalProps();
+  const global = useStoreGlobal();
 
   const ref = useRef<HTMLUListElement>(null);
 
@@ -27,7 +27,7 @@ export const MenuModalLinks: FC<IWithTimeline> = ({ timeline, scope }) => {
 
   return (
     <ul ref={ref} className={styles.list}>
-      {globalProps.menu.map(({ key, href, name, isActive }) => (
+      {global.menu.map(({ key, href, name, isActive }) => (
         <li key={key} className={styles.li}>
           <Link
             href={href}

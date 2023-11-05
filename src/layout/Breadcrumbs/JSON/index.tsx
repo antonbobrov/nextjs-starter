@@ -1,11 +1,10 @@
 import { FC, memo } from 'react';
 import { removeDublicateSlashes } from '@anton.bobrov/react-hooks';
-import { useStoreConfig } from '@/store/reducers/config';
-import { useStoreGlobalProps } from '@/store/reducers/pageProps';
+import { useStoreGlobal, useStoreUrl } from '@/store/reducers/page';
 
 const Component: FC = () => {
-  const { breadcrumbs } = useStoreGlobalProps();
-  const { url } = useStoreConfig();
+  const { breadcrumbs } = useStoreGlobal();
+  const url = useStoreUrl();
 
   if (!breadcrumbs || !breadcrumbs.length) {
     return null;

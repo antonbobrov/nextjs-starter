@@ -5,7 +5,7 @@ import { layoutSlice, useStoreLayout } from '@/store/reducers/layout';
 import store from '@/store/store';
 import styles from './styles.module.scss';
 
-export const LayoutRouterCurtain: FC = () => {
+export const RouterCurtain: FC = () => {
   const ref = useRef<HTMLDivElement>(null);
 
   const { routerCurtainState } = useStoreLayout();

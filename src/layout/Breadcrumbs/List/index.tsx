@@ -1,23 +1,19 @@
 import { FC, memo } from 'react';
 import cn from 'classnames';
 import Link from 'next/link';
-import { useStoreGlobalProps } from '@/store/reducers/pageProps';
-import { useStoreLexicon } from '@/store/reducers/lexicon';
+import { useStoreGlobal, useStoreLexicon } from '@/store/reducers/page';
 import styles from './styles.module.scss';
 
 const Component: FC = () => {
-  const { breadcrumbs } = useStoreGlobalProps();
-  const lexicon = useStoreLexicon();
+  const { breadcrumbs } = useStoreGlobal();
+  const { navigation: lexicon } = useStoreLexicon();
 
   if (!breadcrumbs || !breadcrumbs.length) {
     return null;
   }
 
   return (
-    <nav
-      className={styles.breadcrumbs}
-      aria-label={lexicon.navigation.breadcrumbs}
-    >
+    <nav className={styles.breadcrumbs} aria-label={lexicon.breadcrumbs}>
       <ul className={styles.list}>
         {breadcrumbs.map((item, index) => (
           <li

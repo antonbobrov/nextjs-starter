@@ -8,8 +8,6 @@ const rewrites = require('./config/rewrites');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
-  swcMinify: true,
   experimental: {
     strictNextHead: true,
   },
