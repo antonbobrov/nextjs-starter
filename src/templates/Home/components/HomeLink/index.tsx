@@ -18,7 +18,7 @@ const Component = forwardRef<HTMLAnchorElement, IProps>(
         text={name}
       />
     </ScrollView.Element>
-  )
+  ),
 );
 
 Component.displayName = 'HomeLink';

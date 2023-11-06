@@ -11,7 +11,7 @@ import store from '@/store/store';
 const isReadyToVisible = () =>
   new PCancelable<void>((resolve, reject) => {
     const blockingElements = document.querySelectorAll(
-      '*[data-block-page-view]'
+      '*[data-block-page-view]',
     );
 
     if (blockingElements.length > 0) {
@@ -54,6 +54,6 @@ export function useTemplate() {
       return () => promise.cancel();
     },
     [isFirstLoaded, isMenuAnimating, isPageVisible, routerCurtainState],
-    100
+    100,
   );
 }

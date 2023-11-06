@@ -4,7 +4,7 @@ import emailValidator from 'email-validator';
 
 export function validateInputValueByType(
   value: string,
-  type: HTMLInputTypeAttribute
+  type: HTMLInputTypeAttribute,
 ): ValidateResult {
   if (value === '') {
     return true;

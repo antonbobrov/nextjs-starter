@@ -26,7 +26,7 @@ export const FormInput = forwardRef<HTMLInputElement, IFormInputProps>(
       disabled,
       ...inputProps
     },
-    forwardedRef
+    forwardedRef,
   ) => {
     const ref = useRef<HTMLInputElement | null>(null);
     useImperativeHandle(forwardedRef, () => ref.current!);
@@ -83,7 +83,7 @@ export const FormInput = forwardRef<HTMLInputElement, IFormInputProps>(
         />
       </FormInputBox>
     );
-  }
+  },
 );
 
 FormInput.displayName = 'FormInput';

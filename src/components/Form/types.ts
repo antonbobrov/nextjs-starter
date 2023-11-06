@@ -7,7 +7,7 @@ export interface IFormResponse {
 
 export interface IFormProps<
   T extends FieldValues,
-  U extends FieldValues | undefined = undefined
+  U extends FieldValues | undefined = undefined,
 > extends Omit<
     FormProps<T, U>,
     'control' | 'onSubmit' | 'onSuccess' | 'onError'

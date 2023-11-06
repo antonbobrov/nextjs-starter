@@ -28,7 +28,7 @@ export interface IPageGlobal {
 export interface IPageAPI<
   N extends string,
   T extends Record<string, any>,
-  TemplateRequired extends boolean = false
+  TemplateRequired extends boolean = false,
 > {
   global: IPageGlobal;
   templateName: N;

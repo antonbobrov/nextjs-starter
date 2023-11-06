@@ -18,7 +18,7 @@ async function fetchProps(context: GetServerSidePropsContext) {
   const currentUrl = removeDublicateSlashes(`${baseUrl}/${resolvedUrl}`);
   const currentUrlData = new URL(currentUrl);
   const canonicalUrl = removeDublicateSlashes(
-    `${currentUrlData.origin}/${currentUrlData.pathname}`
+    `${currentUrlData.origin}/${currentUrlData.pathname}`,
   );
 
   // set headers
@@ -63,7 +63,7 @@ async function fetchProps(context: GetServerSidePropsContext) {
   if (props.page) {
     if (!props.page.props.global.meta.image && props.page.props.template) {
       const matches = JSON.stringify(props.page.props.template).match(
-        /(http?s)?[^"' ]*\.(jpg|png)/
+        /(http?s)?[^"' ]*\.(jpg|png)/,
       );
 
       if (matches && props.page.props.global.meta) {
@@ -79,7 +79,7 @@ async function fetchProps(context: GetServerSidePropsContext) {
  * Fetch server side props
  */
 export async function fetchSSP(
-  context: GetServerSidePropsContext
+  context: GetServerSidePropsContext,
 ): Promise<TResult> {
   const { res } = context;
 

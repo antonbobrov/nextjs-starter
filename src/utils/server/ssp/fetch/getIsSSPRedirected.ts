@@ -4,7 +4,7 @@ import { getHost } from '@/utils/server/getHost';
 
 export function getIsSSPRedirected(
   context: GetServerSidePropsContext,
-  response: Response
+  response: Response,
 ): Redirect | null {
   const { req, resolvedUrl } = context;
 

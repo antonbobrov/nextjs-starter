@@ -42,7 +42,7 @@ export const layoutSlice = createSlice({
     }),
     setRouterCurtainState: (
       state,
-      payload: PayloadAction<TRouterCurtainState>
+      payload: PayloadAction<TRouterCurtainState>,
     ) => ({
       ...state,
       routerCurtainState: payload.payload,

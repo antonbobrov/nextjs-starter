@@ -10,12 +10,12 @@ export function getFetchURL(context: GetServerSidePropsContext): URL {
   if (process.env.NEXT_PUBLIC_API_PAGE) {
     apiURL = new URL(
       removeDublicateSlashes(
-        `${process.env.NEXT_PUBLIC_API_PAGE}/${resolvedUrl}`
-      )
+        `${process.env.NEXT_PUBLIC_API_PAGE}/${resolvedUrl}`,
+      ),
     );
   } else {
     apiURL = new URL(
-      removeDublicateSlashes(`${getHost(req)}/api/mock/page/${resolvedUrl}`)
+      removeDublicateSlashes(`${getHost(req)}/api/mock/page/${resolvedUrl}`),
     );
   }
 

@@ -14,7 +14,7 @@ import { IFormProps, IFormResponse } from './types';
 
 export const Form = <
   T extends FieldValues,
-  U extends FieldValues | undefined = undefined
+  U extends FieldValues | undefined = undefined,
 >({
   form,
   className,
@@ -81,7 +81,7 @@ export const Form = <
     }
 
     const topElement = elements.sort(
-      (a, b) => a!.bounding.top - b!.bounding.top
+      (a, b) => a!.bounding.top - b!.bounding.top,
     )[0]!;
 
     scrollToElement({
@@ -138,7 +138,7 @@ export const Form = <
   const onSubmit: FormSubmitHandler<FieldValues> = useEvent(
     async ({ formData }) => {
       const fileInputs = Array.from(
-        containerRef.current?.querySelectorAll('input[type="file"]') ?? []
+        containerRef.current?.querySelectorAll('input[type="file"]') ?? [],
       ) as HTMLInputElement[];
 
       fileInputs.forEach((fileInput) => {
@@ -147,10 +147,10 @@ export const Form = <
         formData.delete(inputName);
 
         Array.from(fileInput.files ?? []).forEach((file) =>
-          formData.append(inputName, file)
+          formData.append(inputName, file),
         );
       });
-    }
+    },
   );
 
   return (

@@ -27,7 +27,7 @@ export const Preloader: FC = () => {
     });
 
     preloader.addCallback('progress', ({ progress: value }) =>
-      setProgress(value)
+      setProgress(value),
     );
 
     preloader.addCallback('hidden', () => {

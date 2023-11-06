@@ -68,7 +68,7 @@ export const routerCallbacks = (
       async () => {
         store.dispatch(layoutSlice.actions.setIsPageLoading(false));
         routerCallbacks.tbt('updated', false);
-      }
+      },
     );
 
     return isLoadResult;

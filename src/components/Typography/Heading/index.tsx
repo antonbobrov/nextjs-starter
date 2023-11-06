@@ -9,7 +9,7 @@ const Component = forwardRef<HTMLHeadingElement, IProps>(
 
     const classNames = cn(
       className,
-      as !== false && styles[`heading_${style}`]
+      as !== false && styles[`heading_${style}`],
     );
 
     if (variant === 6) {
@@ -57,7 +57,7 @@ const Component = forwardRef<HTMLHeadingElement, IProps>(
         {children}
       </h1>
     );
-  }
+  },
 );
 
 Component.displayName = 'Heading';

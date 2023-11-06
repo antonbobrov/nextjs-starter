@@ -18,7 +18,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   if (process.env.NEXT_PUBLIC_API) {
     const apiUrl = new URL(
-      removeDublicateSlashes(`${process.env.NEXT_PUBLIC_API}/sitemap`)
+      removeDublicateSlashes(`${process.env.NEXT_PUBLIC_API}/sitemap`),
     );
     apiUrl.searchParams.set('requireSiteMap', 'true');
 
@@ -33,7 +33,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
           <loc>${getHost(req, item.loc)}</loc>
           <lastmod>${item.lastmod}</lastmod>
         </url>
-      `
+      `,
         )
         .join('');
     }

@@ -8,7 +8,7 @@ import { TProps } from './types';
 const Component = forwardRef<HTMLDivElement, TProps>(
   (
     { hasSpacings = true, hasStyles = true, className, ...props },
-    forwardedRef
+    forwardedRef,
   ) => {
     const ref = useForwardedRef(forwardedRef);
 
@@ -16,11 +16,11 @@ const Component = forwardRef<HTMLDivElement, TProps>(
       className,
       styles.richtext,
       hasSpacings && styles.has_spacings,
-      hasStyles && styles.has_styles
+      hasStyles && styles.has_styles,
     );
 
     return <RichTextContent ref={ref} {...props} className={classNames} />;
-  }
+  },
 );
 
 Component.displayName = 'RichText';

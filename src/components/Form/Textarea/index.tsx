@@ -23,7 +23,7 @@ export const FormTextarea = forwardRef<HTMLTextAreaElement, IFormTextareaProps>(
       disabled,
       ...inputProps
     },
-    forwardedRef
+    forwardedRef,
   ) => {
     const ref = useRef<HTMLTextAreaElement | null>(null);
     useImperativeHandle(forwardedRef, () => ref.current!);
@@ -77,7 +77,7 @@ export const FormTextarea = forwardRef<HTMLTextAreaElement, IFormTextareaProps>(
         />
       </FormInputBox>
     );
-  }
+  },
 );
 
 FormTextarea.displayName = 'FormTextarea';

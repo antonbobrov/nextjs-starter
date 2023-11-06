@@ -17,14 +17,14 @@ const Component: FC<PropsWithChildren<IProps>> = ({
       className={cn(
         styles.layout_container,
         className,
-        hasTopSpacing && styles.top_spacing
+        hasTopSpacing && styles.top_spacing,
       )}
       style={style}
     >
       <div
         className={cn(
           styles.content,
-          hasTopSpacing && hasContentTopSpacing && styles.top_spacing
+          hasTopSpacing && hasContentTopSpacing && styles.top_spacing,
         )}
       >
         {children}

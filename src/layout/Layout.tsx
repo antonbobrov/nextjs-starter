@@ -29,7 +29,7 @@ export const Layout: FC<PropsWithChildren> = ({ children }) => {
 
       event.preventDefault();
       router.push(element.href, element.href);
-    }
+    },
   );
 
   return (

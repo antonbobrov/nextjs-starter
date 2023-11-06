@@ -11,13 +11,13 @@ export const LayoutWrap = forwardRef<HTMLDivElement, IProps>(
       className={cn(
         className,
         styles.layout_wrap,
-        variant && styles[`variant_${variant}`]
+        variant && styles[`variant_${variant}`],
       )}
       style={style}
     >
       {children}
     </div>
-  )
+  ),
 );
 
 LayoutWrap.displayName = 'LayoutWrap';

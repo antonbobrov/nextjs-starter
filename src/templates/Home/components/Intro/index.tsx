@@ -23,5 +23,5 @@ const MemoComponent = memo(Component);
 
 export const HomeIntro = registerComponent<IHomeIntro>()(
   MemoComponent,
-  'HomeIntro'
+  'HomeIntro',
 );

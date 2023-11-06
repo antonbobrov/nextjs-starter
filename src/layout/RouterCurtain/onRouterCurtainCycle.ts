@@ -6,7 +6,7 @@ type TCallback = () => Promise<void>;
 
 export async function onRouterCurtainCycle(
   onShown: TCallback,
-  onHidden: TCallback
+  onHidden: TCallback,
 ) {
   store.dispatch(layoutSlice.actions.setRouterCurtainState('show'));
   await onStoreValue((state) => state.layout.routerCurtainState === 'shown');

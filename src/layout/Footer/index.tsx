@@ -26,7 +26,7 @@ const Component = forwardRef<HTMLDivElement, IBaseComponent>(
         <LayoutWrap>{copyright}</LayoutWrap>
       </footer>
     );
-  }
+  },
 );
 
 Component.displayName = 'Footer';

@@ -4,7 +4,7 @@ import { TPageTemplateRegistryAPI } from '@/templates/Renderer';
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<TPageTemplateRegistryAPI>
+  res: NextApiResponse<TPageTemplateRegistryAPI>,
 ) => {
   res.json({
     global: {

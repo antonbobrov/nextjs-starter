@@ -20,7 +20,7 @@ const Component: FC = () => {
             key={item.id}
             className={cn(
               styles.item,
-              index === breadcrumbs.length - 1 && styles.active
+              index === breadcrumbs.length - 1 && styles.active,
             )}
           >
             {index === breadcrumbs.length - 1 ? (
@@ -30,7 +30,7 @@ const Component: FC = () => {
                 href={item.href}
                 className={cn(
                   styles.link,
-                  index === breadcrumbs.length - 1 && styles.active
+                  index === breadcrumbs.length - 1 && styles.active,
                 )}
               >
                 <span>{item.name}</span>
