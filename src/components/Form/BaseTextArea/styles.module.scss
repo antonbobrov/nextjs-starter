@@ -1,0 +1,6 @@
+@import '@/styles/base';
+
+.base_textarea {
+  @include reset-input;
+  @include hide-scroll-bars;
+}

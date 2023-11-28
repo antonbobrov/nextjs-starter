@@ -1,28 +1,14 @@
 import { forwardRef, useId, useImperativeHandle, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { stopWheelPropagationUnlessScrollEnd } from '@/utils/utils/stopWheelPropagationUnlessScrollEnd';
+import cn from 'classnames';
 import styles from './styles.module.scss';
 import { FormInputBox } from '../Box';
-import { IFormTextareaProps } from './types';
+import { FormBaseTextArea } from '../BaseTextArea';
+import { IFormTextAreaProps } from './types';
 
-export const FormTextarea = forwardRef<HTMLTextAreaElement, IFormTextareaProps>(
+export const FormTextarea = forwardRef<HTMLTextAreaElement, IFormTextAreaProps>(
   (
-    {
-      className,
-      style,
-      name,
-      id: idProp,
-      label,
-      required,
-      maxLength,
-      minLength,
-      validate: customValidate,
-      value,
-      onChange,
-      onBlur,
-      disabled,
-      ...inputProps
-    },
+    { className, style, id: idProp, label, name, ...inputProps },
     forwardedRef,
   ) => {
     const ref = useRef<HTMLTextAreaElement | null>(null);
@@ -32,29 +18,14 @@ export const FormTextarea = forwardRef<HTMLTextAreaElement, IFormTextareaProps>(
     const id = idProp || generatedId;
     const errorId = useId();
 
-    const { register, formState } = useFormContext();
-
-    const { ref: setRef, ...registered } = register(name, {
-      required,
-      maxLength,
-      minLength,
-      validate: (val) => {
-        const isCustomValid = customValidate?.(val);
-
-        return isCustomValid;
-      },
-      value,
-      onChange,
-      onBlur,
-      disabled,
-    });
+    const { formState } = useFormContext();
 
     const error = formState.errors[name];
     const isError = !!error;
 
     return (
       <FormInputBox
-        className={className}
+        className={cn(className, styles.form_textarea)}
         style={style}
         id={id}
         label={label}
@@ -62,17 +33,12 @@ export const FormTextarea = forwardRef<HTMLTextAreaElement, IFormTextareaProps>(
         errorId={errorId}
         error={error}
       >
-        <textarea
+        <FormBaseTextArea
+          ref={ref}
           {...inputProps}
-          onWheelCapture={stopWheelPropagationUnlessScrollEnd}
-          className={styles.textarea}
-          {...registered}
-          ref={(element) => {
-            setRef(element);
-            ref.current = element;
-          }}
           id={id}
-          aria-invalid={isError}
+          name={name}
+          className={cn(styles.textarea, isError && styles.is_error)}
           aria-describedby={isError ? errorId : undefined}
         />
       </FormInputBox>

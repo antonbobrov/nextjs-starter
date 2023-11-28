@@ -1,31 +1,14 @@
 import { forwardRef, useId, useImperativeHandle, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
+import cn from 'classnames';
 import styles from './styles.module.scss';
 import { FormInputBox } from '../Box';
 import { IFormInputProps } from './types';
-import { validateInputValueByType } from './validate';
+import { FormBaseInput } from '../BaseInput';
 
 export const FormInput = forwardRef<HTMLInputElement, IFormInputProps>(
   (
-    {
-      className,
-      style,
-      name,
-      type = 'text',
-      id: idProp,
-      label,
-      required,
-      min,
-      max,
-      maxLength,
-      minLength,
-      validate: customValidate,
-      value,
-      onChange,
-      onBlur,
-      disabled,
-      ...inputProps
-    },
+    { className, style, id: idProp, label, name, ...inputProps },
     forwardedRef,
   ) => {
     const ref = useRef<HTMLInputElement | null>(null);
@@ -35,32 +18,14 @@ export const FormInput = forwardRef<HTMLInputElement, IFormInputProps>(
     const id = idProp || generatedId;
     const errorId = useId();
 
-    const { register, formState } = useFormContext();
-
-    const { ref: setRef, ...registered } = register(name, {
-      required,
-      min,
-      max,
-      maxLength,
-      minLength,
-      validate: (val) => {
-        const isTypeValid = validateInputValueByType?.(val, type);
-        const isCustomValid = customValidate?.(val);
-
-        return isTypeValid && isCustomValid;
-      },
-      value,
-      onChange,
-      onBlur,
-      disabled,
-    });
+    const { formState } = useFormContext();
 
     const error = formState.errors[name];
     const isError = !!error;
 
     return (
       <FormInputBox
-        className={className}
+        className={cn(className, styles.form_input)}
         style={style}
         id={id}
         label={label}
@@ -68,17 +33,12 @@ export const FormInput = forwardRef<HTMLInputElement, IFormInputProps>(
         errorId={errorId}
         error={error}
       >
-        <input
+        <FormBaseInput
+          ref={ref}
           {...inputProps}
-          className={styles.input}
-          {...registered}
-          ref={(element) => {
-            setRef(element);
-            ref.current = element;
-          }}
-          type={type}
           id={id}
-          aria-invalid={type === 'hidden' ? undefined : isError}
+          name={name}
+          className={cn(styles.input, isError && styles.is_error)}
           aria-describedby={isError ? errorId : undefined}
         />
       </FormInputBox>
