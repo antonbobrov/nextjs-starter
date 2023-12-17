@@ -1,7 +1,16 @@
 import { DeepRequired } from 'ts-essentials';
 import { IPageGlobal } from '@/types/Page';
+import { TPageTemplateRegistryAPI } from '@/templates/Renderer';
+import { NextApiRequest } from 'next';
 
-export const PAGE_GLOBAL: DeepRequired<IPageGlobal> = {
+interface IProps {
+  req: NextApiRequest;
+  templateName: TPageTemplateRegistryAPI['templateName'];
+}
+
+export const GET_PAGE_GLOBAL = ({
+  templateName,
+}: IProps): DeepRequired<IPageGlobal> => ({
   lang: 'en',
   dir: 'ltr',
 
@@ -34,13 +43,13 @@ export const PAGE_GLOBAL: DeepRequired<IPageGlobal> = {
       key: 0,
       name: 'Home',
       href: '/',
-      isActive: true,
+      isActive: templateName === 'Home',
     },
     {
       key: 1,
       name: 'Components',
       href: '/_components',
-      isActive: false,
+      isActive: templateName === '_LoremComponents',
     },
   ],
 
@@ -58,4 +67,4 @@ export const PAGE_GLOBAL: DeepRequired<IPageGlobal> = {
       href: 'https://instagram.com/',
     },
   ],
-};
+});
