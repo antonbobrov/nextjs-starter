@@ -17,6 +17,8 @@ const nextConfig = {
   },
   images: {
     minimumCacheTTL: 3600 * 24 * 365,
+    deviceSizes: [480, 560, 640, 750, 1024, 1440, 1920, 2560],
+    imageSizes: [480, 560, 640, 750, 1024, 1440, 1920, 2560],
   },
   headers() {
     return [
