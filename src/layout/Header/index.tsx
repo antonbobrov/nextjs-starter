@@ -23,7 +23,7 @@ export const Header: FC = () => {
           {lexicon.siteName}
         </Link>
 
-        <HeaderMenu className={styles.menu} links={menu || []} />
+        <HeaderMenu className={styles.menu} links={menu} />
 
         <ButtonSimple
           tag="button"

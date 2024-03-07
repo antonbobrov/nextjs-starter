@@ -1,15 +1,16 @@
 import { DeepRequired } from 'ts-essentials';
 import { IPageGlobal } from '@/types/Page';
 import { TPageTemplateRegistryAPI } from '@/templates/Renderer';
-import { NextApiRequest } from 'next';
+import { removeDublicateSlashes } from '@anton.bobrov/react-hooks';
 
 interface IProps {
-  req: NextApiRequest;
   templateName: TPageTemplateRegistryAPI['templateName'];
+  path: string;
 }
 
-export const GET_PAGE_GLOBAL = ({
+export const MOCK_GET_PAGE_GLOBAL = ({
   templateName,
+  path,
 }: IProps): DeepRequired<IPageGlobal> => ({
   lang: 'en',
   dir: 'ltr',
@@ -20,6 +21,7 @@ export const GET_PAGE_GLOBAL = ({
     keywords: '',
     image: '',
     searchable: true,
+    swr: true,
   },
 
   links: {
@@ -27,12 +29,18 @@ export const GET_PAGE_GLOBAL = ({
   },
 
   languages: [
-    { key: 'en', name: 'En', fullName: 'English', href: '/en', isActive: true },
+    {
+      key: 'en',
+      name: 'En',
+      fullName: 'English',
+      href: removeDublicateSlashes(`${path}-en`),
+      isActive: true,
+    },
     {
       key: 'de',
       name: 'De',
       fullName: 'Deutsch',
-      href: '/de',
+      href: removeDublicateSlashes(`${path}-de`),
       isActive: false,
     },
   ],
@@ -49,6 +57,12 @@ export const GET_PAGE_GLOBAL = ({
       name: 'Components',
       href: '/_components',
       isActive: templateName === '_LoremComponents',
+    },
+    {
+      key: 1,
+      name: '404',
+      href: '/404',
+      isActive: false,
     },
   ],
 

@@ -1,42 +1,43 @@
-import { getHost } from '@/utils/server/getHost';
+import { getBaseURL } from '@/utils/server/getBaseUrl';
 import { removeDublicateSlashes } from '@anton.bobrov/react-hooks';
 import { GetServerSideProps } from 'next';
-import nodeFetch from 'node-fetch';
 
 const Sitemap = () => {};
 export default Sitemap;
 
 interface IURL {
   loc: string;
-  lastmod: string;
+  lastmod?: string;
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { res, req } = context;
+  const { res } = context;
 
   let resources = '';
+  let array: IURL[] = [];
 
   if (process.env.NEXT_PUBLIC_API) {
     const apiUrl = new URL(
       removeDublicateSlashes(`${process.env.NEXT_PUBLIC_API}/sitemap`),
     );
-    apiUrl.searchParams.set('requireSiteMap', 'true');
 
-    const results = await nodeFetch(apiUrl.href);
-    const json = (await results.json()) as IURL[];
+    const results = await fetch(apiUrl.href);
+    array = (await results.json()) as IURL[];
+  } else {
+    array = [{ loc: '/' }];
+  }
 
-    if (Array.isArray(json)) {
-      resources += json
-        .map(
-          (item) => `
-        <url>
-          <loc>${getHost(req, item.loc)}</loc>
-          <lastmod>${item.lastmod}</lastmod>
-        </url>
-      `,
-        )
-        .join('');
-    }
+  if (Array.isArray(array)) {
+    resources += array
+      .map(
+        (item) => `
+          <url>
+            <loc>${getBaseURL(item.loc)}</loc>
+            ${item.lastmod ? `<lastmod>${item.lastmod}</lastmod>` : ''}
+          </url>
+        `,
+      )
+      .join('');
   }
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

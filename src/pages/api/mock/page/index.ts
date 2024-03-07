@@ -1,56 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { GET_PAGE_GLOBAL } from '@/mock/PAGE_GLOBAL';
-import { TPageTemplateRegistryAPI } from '@/templates/Renderer';
+import { MOCK_GET_PAGE } from '@/mock/GET_PAGE';
 
-const handler = async (
-  req: NextApiRequest,
-  res: NextApiResponse<TPageTemplateRegistryAPI>,
-) => {
-  const PAGE_GLOBAL = GET_PAGE_GLOBAL({
-    req,
-    templateName: 'Home',
-  });
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const path = Array.isArray(req.query.slug) ? req.query.slug.join('/') : '/';
 
-  res.json({
-    global: PAGE_GLOBAL,
-
-    templateName: 'Home',
-
-    template: {
-      components: [
-        {
-          key: 0,
-          componentName: 'HomeIntro',
-          props: {
-            title: 'Home Page',
-            description:
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-          },
-          children: null,
-        },
-        {
-          key: 1,
-          componentName: 'HomeAbout',
-          props: {
-            description:
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-          },
-          children: [
-            {
-              key: 0,
-              componentName: 'HomeLink',
-              props: {
-                name: 'Read more',
-                href: 'https://google.com',
-                isExternal: true,
-              },
-              children: null,
-            },
-          ],
-        },
-      ],
-    },
-  });
+  res.json(MOCK_GET_PAGE(path));
 };
 
 export default handler;
