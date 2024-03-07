@@ -15,6 +15,11 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
+  i18n: {
+    locales: ['default', 'en', 'de'],
+    defaultLocale: 'default',
+    localeDetection: true,
+  },
   images: {
     minimumCacheTTL: 3600 * 24 * 365,
     deviceSizes: [480, 560, 640, 750, 1024, 1440, 1920, 2560],
