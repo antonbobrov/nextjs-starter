@@ -5,15 +5,15 @@ node version > 18.x
 
 ## Environment variables
 - `NEXT_PUBLIC_URL` - website base URL;
-- `NEXT_PUBLIC_API` - back-end API routes base URL; preferred format - `https://data.website.com/api`;
-- `NEXT_PUBLIC_API_PAGE` - back-end pages base URL; preferred format - `https://data.website.com/api/page`;
-- `NEXT_PUBLIC_STORAGE` - back-end media storage; used to proxy static files; preferred format - `https://data.website.com/storage/:file*`
+- `API_URL` - back-end API routes base URL; preferred format - `https://data.website.com/api`;
+- `API_PAGE_URL` - back-end pages base URL; preferred format - `https://data.website.com/api/page`;
+- `STORAGE` - back-end media storage; used to proxy static files; preferred format - `https://data.website.com/storage/:file*`
 - `SECRET_TOKEN` - secret token for private actions;
 - `SEARCHABLE` - the website can be crawled by search engines; `false` by default.
 
 ### Required production vars:
 - `NEXT_PUBLIC_URL=___`
-- `NEXT_PUBLIC_API_PAGE=___`
+- `API_PAGE_URL=___`
 - `SECRET_TOKEN=___`
 - `SEARCHABLE=true`
 

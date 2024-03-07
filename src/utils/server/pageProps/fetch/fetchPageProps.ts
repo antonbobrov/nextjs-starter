@@ -11,9 +11,9 @@ interface IProps {
 export async function fetchPageProps({ path, locale }: IProps) {
   let props: IPageAPI<any, any>;
 
-  if (process.env.NEXT_PUBLIC_API_PAGE) {
+  if (process.env.API_PAGE_URL) {
     const fetchURL = new URL(
-      removeDublicateSlashes(`${process.env.NEXT_PUBLIC_API_PAGE}/${path}`),
+      removeDublicateSlashes(`${process.env.API_PAGE_URL}/${path}`),
     );
 
     if (locale) {
