@@ -59,7 +59,7 @@ export const MOCK_GET_PAGE_GLOBAL = ({
       isActive: templateName === '_LoremComponents',
     },
     {
-      key: 1,
+      key: 2,
       name: '404',
       href: '/404',
       isActive: false,
