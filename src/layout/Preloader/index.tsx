@@ -6,7 +6,7 @@ import { useStoreLexicon } from '@/store/reducers/page';
 import styles from './styles.module.scss';
 
 export const Preloader: FC = () => {
-  const parentRef = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   const { preloader: lexicon } = useStoreLexicon();
 
@@ -14,13 +14,12 @@ export const Preloader: FC = () => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const container = parentRef.current;
-    if (isDone || !container) {
-      return () => {};
+    if (isDone || !ref.current) {
+      return undefined;
     }
 
     const preloader = new PreloaderModule({
-      container,
+      container: ref.current,
       hideAnimation: 500,
       lerp: 0.01,
       forceEnd: 500,
@@ -36,11 +35,11 @@ export const Preloader: FC = () => {
     });
 
     return () => preloader.destroy();
-  }, [parentRef, isDone]);
+  }, [ref, isDone]);
 
   return (
     <div
-      ref={parentRef}
+      ref={ref}
       className={styles.container}
       role="progressbar"
       aria-valuemin={0}
