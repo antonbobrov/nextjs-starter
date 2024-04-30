@@ -24,7 +24,7 @@ const initialState: TState = {
 };
 
 export const layoutSlice = createSlice({
-  name: 'loading',
+  name: 'layout',
   initialState,
   reducers: {
     setKey: (state, payload: PayloadAction<TKey>) => ({
