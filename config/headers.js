@@ -16,10 +16,6 @@ module.exports = [
     value: 'nosniff',
   },
   {
-    key: 'X-Frame-Options',
-    value: 'sameorigin',
-  },
-  {
     key: 'X-XSS-Protection',
     value: '1; mode=block',
   },
