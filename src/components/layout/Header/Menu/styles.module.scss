@@ -1,0 +1,21 @@
+@import '@/styles/base';
+
+.list {
+  @include reset-ul;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: rem(20);
+}
+
+.link {
+  font-size: rem(16);
+  text-decoration: none;
+  color: currentColor;
+
+  &.active {
+    text-decoration: underline;
+  }
+}

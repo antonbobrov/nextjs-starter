@@ -7,13 +7,11 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-align: center;
+  gap: rem(32);
 
   padding: 0 var(--wrap);
-
-  > * + * {
-    margin-top: px-to-rem(32);
-  }
+  
+  text-align: center;
 
   .description {
     max-width: 30em;
@@ -21,6 +19,13 @@
 }
 
 .description {
-  font-size: px-to-rem(16);
   line-height: 120%;
+
+  @include viewport-tablet-min {
+    font-size: rem(16);
+  }
+
+  @include viewport-phone {
+    font-size: rem(14);
+  }
 }

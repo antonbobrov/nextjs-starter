@@ -1,0 +1,30 @@
+@import '@/styles/base';
+
+.layout_container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+
+  &.has_top_padding {
+    padding-top: var(--header-height);
+  }
+}
+
+.main {
+  padding-bottom: rem(40);
+  min-height: calc(100 * var(--svh) - var(--header-height));
+
+  &.has_x_padding {
+    padding-left: var(--wrap);
+    padding-right: var(--wrap);
+  }
+
+  &.has_top_padding {
+    padding-top: rem(30);
+  }
+}
+
+.footer {
+  flex-shrink: 0;
+}

@@ -1,0 +1,17 @@
+@import '@/styles/base';
+
+.media {
+  @include absolute-fullsize;
+
+  img,
+  video {
+    @include absolute-fullsize;
+    object-fit: cover;
+  }
+}
+
+.video {
+  &.replacable {
+    transition: 0s;
+  }
+}

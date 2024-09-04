@@ -1,0 +1,13 @@
+:root {
+  @include viewport-tablet-min {
+    font-size: #{1 / 1440 * 100 * 16}vw;
+  }
+
+  @include viewport-phone {
+    font-size: #{1 / 393 * 100 * 16}vw;
+
+    @media (orientation: landscape) {
+      font-size: 20px;
+    }
+  }
+}

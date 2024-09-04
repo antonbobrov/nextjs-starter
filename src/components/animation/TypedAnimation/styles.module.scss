@@ -1,0 +1,7 @@
+@import '@/styles/base';
+
+.typed_animation {
+  @include no-reduce-motion {
+    opacity: 0;
+  }
+}

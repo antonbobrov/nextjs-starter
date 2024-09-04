@@ -11,5 +11,6 @@ export interface ILinkMenu extends ILink {
 }
 
 export interface ILinksLanguage extends ILinkMenu {
+  key: string;
   fullName: string;
 }

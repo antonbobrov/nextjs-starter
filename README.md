@@ -1,51 +1,80 @@
+
 # Next.js Starter
 
-## Config
-node version > 18.x
+// todo: add languages
 
-## Environment variables
-- `NEXT_PUBLIC_URL` - website base URL;
-- `API_URL` - back-end API routes base URL; preferred format - `https://data.website.com/api`;
-- `API_PAGE_URL` - back-end pages base URL; preferred format - `https://data.website.com/api/page`;
-- `STORAGE` - back-end media storage; used to proxy static files; preferred format - `https://data.website.com/storage/:file*`
-- `SECRET_TOKEN` - secret token for private actions;
-- `SEARCHABLE` - the website can be crawled by search engines; `false` by default.
+A Next.js starter project with customizable configurations, routing, and SWR-based static regeneration. This template supports flexible content rendering.
 
-### Required production vars:
-- `NEXT_PUBLIC_URL=___`
-- `API_PAGE_URL=___`
-- `SECRET_TOKEN=___`
-- `SEARCHABLE=true`
+## Features
+- **Dynamic Routing**: Minimal routing with `index` and `slug` pages that render dynamic templates based on backend data.
+- **Caching Flexibility**: uses ISR & SWR for static regeneration and revalidation control.
 
-## Tasks
-* `dev` - local development
-* `build` - create a production build
-* `start` - start the website in production
+## Configuration
+- **Node Version**: Requires Node.js > 20.x
+- **Available Environment Variables**:
+  - `PUBLIC_URL` - Base URL of the website (e.g., `https://website.com/`)
+  - `API_PAGE_URL` - Base URL for page API routes, preferred format: `https://data.website.com/`
+  - `API_URL` - Base URL for backend API routes, preferred format: `https://data.website.com/api`
+  - `SECRET_TOKEN` - Secret token for private actions (default: `12345678`)
+  - `SEARCHABLE` - Determines if the website can be crawled by search engines (`false` by default)
+  - `SWR_TIME` - Cache time for SWR regeneration (default: `604800` seconds)
+  - `NEXT_PUBLIC_ASSETS_PREFIX` - assetsPrefix for CDNs (e.g. `https://website.b-cdn.net`)
+  - Sentry Variables (for error monitoring):
+    - `SENTRY_AUTH_TOKEN`
+    - `SENTRY_ORG`
+    - `SENTRY_PROJECT`
+- **Required for Production**:
+  - `PUBLIC_URL`
+  - `API_PAGE_URL`
+  - `SEARCHABLE`
 
-## Structure Overview
+## Setup Tasks
+- `dev` - Starts a local development server
+- `build` - Creates a production build
+- `start` - Runs the production build locally
 
-- `/config` - next.js additional config
-- `/public` - static resources
+## Project Structure
+
+- `/config` - Additional Next.js configuration files
+- `/public` - Static resources (images, icons, etc.)
 - `/src`
-  - `/__mock` - front-end mock data
-  - `/components` - React/Next components (that may be reused in different pages)
-  - `/layout` - global components that define the main layout of the page
-  - `/lexicon` - text localization
-  - `/pages` - next.js routes
-  - `/store` - redux store
-  - `/styles` - global styles
-  - `/templates` - custom page templates
-    - `/templates/*/components` - unique template components
-  - `/types` - global types
-  - `/utils` - global utilities
+  - `/components`
+    - `/ui` - Reusable UI components
+    - `/layout` - Layout components defining the main structure
+  - `/lexicon` - Text localization resources
+  - `/mock` - Dynamic mock data to simulate backend responses
+  - `/pages` - Next.js routes
+    - `/api` - API routes for server-side functionality
+      - `/mock` - Mock API routes, replaced when `API_PAGE_URL` is set
+  - `/setup` - Globally executed setup scripts
+  - `/store`
+    - `/page` - React context for global and template-specific data
+    - `/redux` - Redux store for managing layout state
+  - `/styles` - Global stylesheets
+  - `/templates` - Custom page templates
+  - `/types` - Global TypeScript types
+  - `/utils` - Global utility functions
 
-## `src/pages` directory
-In comparison to the classic Next.js application structure, this template has only 2 page endpoints: `index` & `slug`. These routes use ISR.
+## Routing Overview
 
-Both run the same function `getPageProps` which fetches data from back-end, and the fetching URL depends on the current URL of the page. For a user who runs `http://website.com/en/about`, the API URL will be `http://data.website.com/api/page/en/about`. User headers and GET parameters are not transferred through API.
+This starter uses a minimalistic approach to Next.js routing, typically with only two main routes:
+- `index` - Root route for the main page
+- `slug` - Dynamic route for all other pages
 
-While development without back-end, mocks in `src/__mock` should be created.
+These routes fetch global and page-specific data from the backend or mocks, then pass the data to the `_app.tsx` file, which triggers the `@/templates/_Renderer/Renderer` component. This setup enables flexible page rendering, ideal for CMS integrations with multiple templates.
 
-## Back-end preferences
-When updating a certain page, the back-end should send a request to clear the SWR cache via `/api/revalidate?token=12345678&path=/en` endpoint.
-This logic works well on Vercel but has pitfalls on DigitalOcean App Platform: specifically, AppPlatform runs through Cloudflare which creates a new layer of caching, which means that after revalidating the page may return old content because of Cloudflare cache. In this case, a newer version of the page may be seen when accessing it with a unique GET parameter or making SWR cache time shorter in `/settings.ts` or in `global.meta.swr` property.
+### Example Data Fetching Flow
+When a page loads (`https://website.com/en/about`), two backend endpoints are requested:
+1. **Global Data** (e.g., `https://data.website.com/__global?locale=en&path=/about`)
+2. **Page Data** (e.g., `https://data.website.com/about?locale=en`)
+
+The `templateName` in the page data determines which template to render. If `templateName` is not set, the default page content from Next will be rendered.
+
+## Backend Integration Notes
+To revalidate cached pages, the backend should trigger a cache-clear request to `https://website.com/api/revalidate?token=12345678&path=/en`.
+
+### Platform-Specific Caching
+- **Vercel**: Compatible with automatic cache revalidation.
+- **DigitalOcean App Platform**: Since it uses Cloudflare for additional caching, there may be a delay in cache updates. To mitigate this:
+  - Add a unique query parameter (e.g., `?refresh=1`) for updated page views.
+  - Adjust the cache time (`SWR_TIME`) in the `.env` file or `meta.swr` property.

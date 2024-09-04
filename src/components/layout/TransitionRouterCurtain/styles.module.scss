@@ -1,0 +1,15 @@
+@import '@/styles/base';
+
+.transition_router_curtain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 7;
+  background-color: var(--color-white);
+
+  display: none;
+  opacity: 0;
+  transform-origin: bottom left;
+}

@@ -1,96 +1,90 @@
-@mixin text-heading-styles {
+@mixin heading-styles {
   margin: 0;
   font-family: $font-family-heading;
-  font-weight: normal;
+  font-weight: 300;
   line-height: 120%;
 }
 
-@mixin text-heading-1 {
-  @include text-heading-styles;
-  font-weight: 100;
+@mixin heading-1 {
+  @include heading-styles;
 
   @include viewport-desktop {
-    font-size: px-to-rem(100);
+    font-size: rem(100);
   }
   @include viewport-tablet {
-    font-size: px-to-rem(80);
+    font-size: rem(70);
   }
   @include viewport-phone {
-    font-size: px-to-rem(60);
+    font-size: rem(40);
   }
 }
 
-@mixin text-heading-2 {
-  @include text-heading-styles;
-  font-weight: 100;
+@mixin heading-2 {
+  @include heading-styles;
 
   @include viewport-desktop {
-    font-size: px-to-rem(80);
+    font-size: rem(80);
   }
   @include viewport-tablet {
-    font-size: px-to-rem(64);
+    font-size: rem(58);
   }
   @include viewport-phone {
-    font-size: px-to-rem(50);
+    font-size: rem(36);
   }
 }
 
-@mixin text-heading-3 {
-  @include text-heading-styles;
-  font-weight: 300;
+@mixin heading-3 {
+  @include heading-styles;
 
   @include viewport-desktop {
-    font-size: px-to-rem(60);
+    font-size: rem(60);
   }
   @include viewport-tablet {
-    font-size: px-to-rem(50);
+    font-size: rem(45);
   }
   @include viewport-phone {
-    font-size: px-to-rem(40);
+    font-size: rem(30);
   }
 }
 
-@mixin text-heading-4 {
-  @include text-heading-styles;
-  font-weight: 300;
+@mixin heading-4 {
+  @include heading-styles;
 
   @include viewport-desktop {
-    font-size: px-to-rem(50);
+    font-size: rem(50);
   }
   @include viewport-tablet {
-    font-size: px-to-rem(40);
+    font-size: rem(36);
   }
   @include viewport-phone {
-    font-size: px-to-rem(30);
+    font-size: rem(24);
   }
 }
 
-@mixin text-heading-5 {
-  @include text-heading-styles;
-  font-weight: 300;
+@mixin heading-5 {
+  @include heading-styles;
 
   @include viewport-desktop {
-    font-size: px-to-rem(40);
+    font-size: rem(40);
   }
   @include viewport-tablet {
-    font-size: px-to-rem(32);
+    font-size: rem(30);
   }
   @include viewport-phone {
-    font-size: px-to-rem(24);
+    font-size: rem(20);
   }
 }
 
-@mixin text-heading-6 {
-  @include text-heading-styles;
-  font-weight: 300;
+@mixin heading-6 {
+  @include heading-styles;
 
   @include viewport-desktop {
-    font-size: px-to-rem(32);
+    font-size: rem(30);
   }
   @include viewport-tablet {
-    font-size: px-to-rem(24);
+    font-size: rem(24);
   }
   @include viewport-phone {
-    font-size: px-to-rem(18);
+    font-size: rem(18);
   }
 }

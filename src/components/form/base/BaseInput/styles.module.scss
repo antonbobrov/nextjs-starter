@@ -1,0 +1,63 @@
+@import '@/styles/base';
+
+.form_base_input {
+  position: relative;
+  width: 100%;
+}
+
+.label {
+  display: block;
+  width: 100%;
+
+  .text {
+    display: block;
+    margin-bottom: rem(10);
+
+    font-size: rem(14);
+    font-style: normal;
+    font-weight: 400;
+    color: currentColor;
+  }
+}
+
+.input {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: rem(44);
+  border: 1px solid currentColor;
+
+  @include transition((border-color 0.25s));
+
+  @include input-placeholder-color(currentColor);
+
+  input {
+    @include reset-input;
+    @include absolute-fullsize;
+
+    padding: 0 rem(16);
+
+    font-size: rem(16);
+    font-style: normal;
+    font-weight: 400;
+    color: currentColor;
+
+    @include transition((background-color 86400s, color 86400s));
+  }
+
+  &.is_error {
+    border-color: var(--color-error);
+  }
+}
+
+.error {
+  margin-top: rem(8);
+  
+  font-size: rem(10);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-error);
+}

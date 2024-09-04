@@ -1,8 +1,10 @@
-import { getBaseURL } from '@/utils/server/getBaseUrl';
+import { getBaseURL } from '@/utils/server/helpers/getBaseUrl';
 import { GetServerSideProps } from 'next';
+import { FC } from 'react';
 
-const Robots = () => {};
-export default Robots;
+const Page: FC = () => null;
+
+export default Page;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { res } = context;

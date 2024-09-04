@@ -1,2 +1,4 @@
-$font-family: 'Arial';
-$font-family-heading: 'Arial';
+$transition-timing-function: cubic-bezier(0.5, 1, 0.89, 1);
+
+$font-family: var(--font-family-inter);
+$font-family-heading: var(--font-family-inter);

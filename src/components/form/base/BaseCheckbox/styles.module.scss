@@ -1,0 +1,49 @@
+@import '@/styles/base';
+
+.form_base_checkbox {
+  position: relative;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: rem(16);
+
+  font-size: rem(14);
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  user-select: none;
+  cursor: pointer;
+
+  &.is_error {
+    color: var(--color-error);
+  }
+
+  input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+
+    + svg path {
+      opacity: 0;
+    }
+
+    &:checked + svg path {
+      opacity: 1;
+    }
+
+    &:focus-visible +svg {
+      background-color: rgba(var(--color-white--rgb), 0.5);
+    }
+  }
+
+  svg {
+    flex-shrink: 0;
+    width: rem(24);
+    height: auto;
+  }
+}

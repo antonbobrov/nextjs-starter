@@ -17,6 +17,8 @@
   background: transparent;
   border-radius: 0;
   cursor: pointer;
+  user-select: none;
+  color: currentColor;
 }
 
 @mixin reset-input {

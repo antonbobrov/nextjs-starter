@@ -1,54 +1,47 @@
 import '@/styles/index.scss';
-import 'src/router';
+import '@/setup';
 import type { AppProps } from 'next/app';
-import { useEffect, useRef } from 'react';
+import { TAppPage } from '@/types/PageApi';
 import { Provider } from 'react-redux';
-import { isBrowser, useEvent } from '@anton.bobrov/react-hooks';
-import store from '@/store/store';
-import { LayoutHead } from '@/layout/Head';
-import { Layout } from '@/layout/Layout';
-import { TemplateRenderer } from '@/templates/Renderer';
-import { pageSlice } from '@/store/reducers/page';
-import { TAppPage } from '@/types/Page';
+import store from '@/store/redux/store';
+import { PageContext } from '@/store/page/context';
+import { LayoutHead } from '@/components/layout/Head';
+import { Layout } from '@/components/layout/Layout';
+import { TemplateRenderer } from '@/templates/_Renderer/Renderer';
+import { Inter } from 'next/font/google';
 
-const MyApp = ({ Component, pageProps }: AppProps) => {
-  const props = pageProps as TAppPage;
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+});
 
-  const isStoreUpdatedRef = useRef(false);
-  const canRerenderPropsRef = useRef(false);
-
-  const updateStore = useEvent(() => {
-    if (props.page) {
-      store.dispatch(pageSlice.actions.set(props.page));
-      isStoreUpdatedRef.current = true;
-    }
-  });
-
-  if (isBrowser && !isStoreUpdatedRef.current) {
-    updateStore();
-  }
-
-  useEffect(() => {
-    if (canRerenderPropsRef.current) {
-      updateStore();
-    }
-
-    canRerenderPropsRef.current = true;
-  }, [updateStore, props]);
-
-  if ('statusCode' in props || Object.keys(props).length === 0) {
+const MyApp = ({ Component, pageProps, router }: AppProps<TAppPage>) => {
+  if ('statusCode' in pageProps) {
     return <Component />;
   }
 
   return (
     <Provider store={store}>
-      <LayoutHead />
+      <PageContext.Provider value={pageProps.page}>
+        <LayoutHead />
 
-      <Layout>
-        <TemplateRenderer>
-          <Component />
-        </TemplateRenderer>
-      </Layout>
+        <style jsx global>{`
+          html {
+            --font-family-inter: ${inter.style.fontFamily};
+          }
+        `}</style>
+
+        <Layout>
+          {pageProps.page.template?.templateName ? (
+            <TemplateRenderer
+              {...pageProps.page.template}
+              key={router.locale}
+            />
+          ) : (
+            <Component {...pageProps} key={router.locale} />
+          )}
+        </Layout>
+      </PageContext.Provider>
     </Provider>
   );
 };

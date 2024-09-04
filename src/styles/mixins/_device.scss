@@ -29,3 +29,15 @@
     }
   }
 }
+
+@mixin no-reduce-motion () {
+  @media (prefers-reduced-motion: no-preference) {
+    @content;
+  }
+}
+
+@mixin has-reduce-motion () {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
