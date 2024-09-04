@@ -3,7 +3,7 @@
 .grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: px-to-rem(30);
+  gap: rem(30);
 }
 
 .home_intro {

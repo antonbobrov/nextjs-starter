@@ -1,48 +1,39 @@
-import { getBaseURL } from '@/utils/server/getBaseUrl';
-import { removeDublicateSlashes } from '@anton.bobrov/react-hooks';
+import { ISitemapURL } from '@/types/Sitemap';
+import { getApiFetchURL } from '@/utils/server/helpers/getApiFetchURL';
+import { getBaseURL } from '@/utils/server/helpers/getBaseUrl';
 import { GetServerSideProps } from 'next';
+import { FC } from 'react';
 
-const Sitemap = () => {};
-export default Sitemap;
+const Page: FC = () => null;
 
-interface IURL {
-  loc: string;
-  lastmod?: string;
+export default Page;
+
+async function fetchSitemap() {
+  const fetchUrl = getApiFetchURL('sitemap');
+
+  const results = await fetch(fetchUrl.href);
+  const urls = (await results.json()) as ISitemapURL[];
+
+  return urls;
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { res } = context;
 
-  let resources = '';
-  let array: IURL[] = [];
+  const urls = await fetchSitemap();
 
-  if (process.env.API_URL) {
-    const apiUrl = new URL(
-      removeDublicateSlashes(`${process.env.API_URL}/sitemap`),
-    );
-
-    const results = await fetch(apiUrl.href);
-    array = (await results.json()) as IURL[];
-  } else {
-    array = [{ loc: '/' }];
-  }
-
-  if (Array.isArray(array)) {
-    resources += array
-      .map(
-        (item) => `
-          <url>
-            <loc>${getBaseURL(item.loc)}</loc>
-            ${item.lastmod ? `<lastmod>${item.lastmod}</lastmod>` : ''}
-          </url>
-        `,
-      )
-      .join('');
-  }
+  const resources = urls.map(
+    (item) => `
+      <url>
+        <loc>${getBaseURL(item.loc)}</loc>
+        ${item.lastmod ? `<lastmod>${item.lastmod}</lastmod>` : ''}
+      </url>
+    `,
+  );
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-      ${resources}
+      ${resources.join('')}
     </urlset>
   `;
 

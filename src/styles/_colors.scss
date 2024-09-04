@@ -1,10 +1,8 @@
 $colors: (
-  'bg': #000,
   'black': #000,
   'white': #fff,
-  'highlight': #d97f2a,
-  'dark': #1f1f1f,
-  'error': #f00,
+  'error': #b00,
+  'highlight': rgb(60, 129, 241)
 );
 
 @function hex-to-rgb ($hex) {
@@ -19,6 +17,6 @@ $colors: (
 }
 
 html {
-  background-color: var(--color-dark);
+  background-color: var(--color-black);
   color: var(--color-white);
 }

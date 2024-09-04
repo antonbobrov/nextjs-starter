@@ -3,9 +3,12 @@
 @import './base';
 @import './settings';
 
-@import '~@anton.bobrov/react-components/lib/styles';
-@import '~@anton.bobrov/nextjs-sp-helpers/lib/styles';
+@import '~@anton.bobrov/react-components/lib/styles/settings';
+@import '~@anton.bobrov/react-components/lib/styles/components/PageScroll';
+@import '~@anton.bobrov/react-components/lib/styles/components/ScrollView';
+@import '~@anton.bobrov/react-components/lib/styles/components/ExpandContent';
+@import '~@anton.bobrov/react-components/lib/styles/components/BaseModal';
 
 @import './colors';
 @import './common';
-@import './wrap';
+@import './root';

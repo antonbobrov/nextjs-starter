@@ -1,0 +1,200 @@
+@import '@/styles/base';
+
+// RESET & ADD BASE STYLES
+
+.richtext {
+  * {
+    @include reset-first-child-margin;
+    @include reset-last-child-margin;
+  }
+
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0;
+  }
+
+  ul,
+  ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li + li {
+      margin-top: 1.25rem;
+    }
+  }
+
+  ul {
+    li {         
+      &::before {
+        content: '\2022';
+        color: currentColor;
+        font-weight: bold;
+        display: inline-block;
+        width: 1rem;
+      }
+    }
+  }
+
+  ol {
+    counter-reset: ol-counter;
+
+    li {
+      counter-increment: ol-counter;
+
+      &::before {
+        content: counter(ol-counter) '. ';
+        display: inline-block;
+        padding-right: 0.5rem;
+        color: currentColor;
+      }
+    }
+  }
+
+  :global(.justifyleft) {
+    text-align: left;
+  }
+  
+  :global(.justifycenter) {
+    text-align: center;
+  }
+
+  :global(.justifyright) {
+    text-align: right;
+  }
+
+  :global(.justifyfull) {
+    text-align: justify;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  table,
+  th,
+  td {
+    border: 1px solid currentColor;
+    border-collapse: collapse;
+  }
+
+  td {
+    padding: 0.5rem;
+  }
+
+  img {
+    /* stylelint-disable-next-line selector-no-qualifying-type */
+    &:not([width]),
+    &[width=''],
+    &:not([height]) {
+      width: 100%;
+    }
+  }
+
+  figure {
+    padding: 0;
+    margin: 0;
+  }
+}
+
+// ADD SOME STYLING
+
+.richtext {
+  a {
+    font-weight: 500;
+    text-decoration: underline;
+    color: inherit;
+
+    @include hover {
+      text-decoration: none;
+    }   
+  }
+
+  blockquote,
+  q,
+  cite {
+    position: relative;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    padding: 0 0 0 rem(20);
+  }
+
+  blockquote::before,
+  q::before,
+  cite::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background-color: currentColor;
+  }
+
+  h1 {
+    @include heading-1;
+  }
+
+  h2 {
+    @include heading-2;
+  }
+
+  h3 {
+    @include heading-3;
+  }
+
+  h4 {
+    @include heading-4;
+  }
+
+  h5 {
+    @include heading-5;
+  }
+
+  h6 {
+    @include heading-6;
+  }
+}
+
+// ADD SPACINGS
+
+.richtext {
+  &.has_spacings {
+    p {
+      margin: rem(20) 0;
+    }
+
+    img { 
+      margin: rem(8) 0; 
+    }
+
+    blockquote,
+    q,
+    cite {
+      margin: rem(40) 0;
+    }
+  
+    h1,
+    h2,
+    h3 {
+      margin: rem(40) 0;    
+    }
+
+    h4,
+    h5,
+    h6 {
+      margin: rem(20) 0;
+    }
+
+    ul,
+    ol {
+      margin: rem(30) 0;
+    }
+  }
+}

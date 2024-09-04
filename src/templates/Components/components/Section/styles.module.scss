@@ -1,0 +1,38 @@
+@import '@/styles/base';
+
+.section {
+  margin: rem(40) 0;
+}
+
+.thumb {
+  @include reset-button;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+
+  width: max-content;
+
+  @include heading-4;
+  text-align: left;
+
+  &::before {
+    content: '+';
+    display: block;
+    width: 1em;
+  }
+
+  &.active::before {
+    content: '-';
+  }
+}
+
+.wrapper {
+  padding: rem(20) 0 0;
+}
+
+.children {
+  padding: rem(20);
+  background-color: rgba(var(--color-white--rgb), 0.1);
+}

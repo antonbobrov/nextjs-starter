@@ -1,27 +1,27 @@
-import { forwardRef, memo } from 'react';
+import { FC, memo } from 'react';
 import { registerComponent } from 'rc-api-registry';
-import { ScrollView } from '@anton.bobrov/react-components';
-import { ButtonSimple } from '@/components/Button/Simple';
+import { Button } from '@/components/ui/Button';
+import { TypedAnimation } from '@/components/animation/TypedAnimation';
 import { IProps } from './types';
 
-const Component = forwardRef<HTMLAnchorElement, IProps>(
-  ({ className, style, name, href, isExternal }, forwardedRef) => (
-    <ScrollView.Element animation="fadeInUp">
-      <ButtonSimple
-        ref={forwardedRef}
-        className={className}
-        style={style}
-        tag="a"
-        href={href}
-        target={isExternal ? '_blank' : undefined}
-        rel={isExternal ? 'noopener noreferrer' : undefined}
-        text={name}
-      />
-    </ScrollView.Element>
-  ),
+const Component: FC<IProps> = ({
+  className,
+  style,
+  name,
+  href,
+  isExternal,
+}) => (
+  <TypedAnimation>
+    <Button
+      className={className}
+      style={style}
+      tag="a"
+      href={href}
+      target={isExternal ? '_blank' : undefined}
+      text={name}
+    />
+  </TypedAnimation>
 );
-
-Component.displayName = 'HomeLink';
 
 const MemoComponent = memo(Component);
 

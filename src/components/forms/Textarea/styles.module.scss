@@ -1,0 +1,17 @@
+@import '@/styles/base';
+
+.form_textarea {
+  .textarea {
+    display: block;
+    width: 100%;
+    height: rem(180);
+    padding: rem(18);
+  
+    font-size: rem(16);
+    line-height: 100%;
+    color: currentColor;
+  
+    transition: color 86400s, background-color 86400s;
+  }
+  
+}

@@ -1,16 +1,17 @@
-import { getSwrRevalidate } from '@/utils/server/getSwrRevalidate';
-import { getPageProps } from '@/utils/server/pageProps/getPageProps';
+import { getSwrTime } from '@/utils/server/helpers/getSwrTime';
 import { GetStaticProps } from 'next';
+import { getPage } from '@/utils/server/page/getPage';
 
-const Router = () => null;
+const Page = () => null;
 
-export default Router;
+export default Page;
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  const data = await getPageProps({ path: '/not-found', locale });
+  const data = await getPage({ props: { path: '/not-found', locale } });
+  const { template } = data.page;
 
   return {
     props: data,
-    revalidate: getSwrRevalidate(data.page.global.meta.swr),
+    revalidate: getSwrTime(template?.meta.swr),
   };
 };

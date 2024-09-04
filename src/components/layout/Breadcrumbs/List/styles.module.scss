@@ -1,0 +1,36 @@
+@import '@/styles/base';
+
+.breadcrumbs_list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+
+  padding: rem(20) 0;
+
+  border-bottom: 1px solid rgba(var(--color-white--rgb), 0.5);
+}
+
+.list {
+  @include reset-ul;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+
+  .item + .item::before {
+    content: '-';
+    display: block;
+    margin: 0 0.5em;
+  }
+}
+
+.item {
+  display: flex;
+}
+
+.link {
+  text-decoration: underline;
+  color: currentColor;
+}

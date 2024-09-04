@@ -1,4 +1,4 @@
-import { TAppPage } from '@/types/Page';
+import { TAppPage } from '@/types/PageApi';
 import Document, {
   Html,
   Head,
@@ -19,19 +19,15 @@ class MyDocument extends Document {
     const props = this.props.__NEXT_DATA__.props
       .pageProps as Required<TAppPage>;
 
-    let lang = 'en';
-    let dir = 'ltr';
-
-    if (props.page) {
-      lang = props.page.global.lang;
-      dir = props.page.global.dir;
-    }
+    const lang = props.page ? props.page.global.lang : 'en';
 
     return (
-      <Html lang={lang} dir={dir} className={dir}>
+      <Html lang={lang}>
         <Head />
+
         <body>
           <Main />
+
           <NextScript />
         </body>
       </Html>

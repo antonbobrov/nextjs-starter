@@ -1,0 +1,12 @@
+:root {
+  --wrap: #{rem(60)};
+  --header-height: #{rem(80)};
+
+  @include viewport-tablet {
+    --wrap: #{rem(40)};
+  }
+
+  @include viewport-phone {
+    --wrap: #{rem(20)};
+  }
+}

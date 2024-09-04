@@ -12,7 +12,7 @@
   padding: 0 var(--wrap);
 
   > * + * {
-    margin-top: px-to-rem(32);
+    margin-top: rem(32);
   }
 
   .description {
@@ -21,6 +21,13 @@
 }
 
 .description {
-  font-size: px-to-rem(16);
   line-height: 120%;
+
+  @include viewport-tablet-min {
+    font-size: rem(16);
+  }
+
+  @include viewport-phone {
+    font-size: rem(14);
+  }
 }

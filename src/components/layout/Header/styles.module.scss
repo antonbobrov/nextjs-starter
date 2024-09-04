@@ -1,0 +1,43 @@
+@import '@/styles/base';
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9;
+  width: 100%;
+  height: var(--header-height);
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  
+  padding: 0 var(--wrap);
+
+  background-color: var(--color-black);
+  border-bottom: 1px solid var(--color-white);
+  
+  color: var(--color-white);
+
+  @include viewport-tablet-max {
+    .menu {
+      display: none;
+    }
+  }  
+}
+
+.wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: rem(16);
+  text-transform: uppercase;
+  text-decoration: none;
+  color: currentColor;
+}
